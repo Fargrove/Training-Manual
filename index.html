@@ -1,0 +1,2585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Canada Post - Delivery Reference</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--red:#e00000;--dark:#1a1a2e;--card:#ffffff;--bg:#f5f5f7;--text:#1a1a2e;--muted:#6b7280;--border:#e5e7eb;--accent-light:#fef2f2;--search-bg:#fff;--shadow:0 1px 3px rgba(0,0,0,.08)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
+.header{background:var(--dark);color:#fff;padding:12px 16px;position:sticky;top:0;z-index:100}
+.header h1{font-size:16px;font-weight:600;display:flex;align-items:center;gap:8px}
+.header h1 span{color:var(--red)}
+.search-wrap{padding:8px 16px 12px;background:var(--dark);position:sticky;top:44px;z-index:99}
+.search-wrap input{width:100%;padding:10px 14px 10px 38px;border:none;border-radius:8px;font-size:15px;background:var(--search-bg);outline:none}
+.search-wrap .icon{position:absolute;left:28px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:16px}
+.search-wrap .clear-btn{position:absolute;right:28px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;display:none;padding:4px}
+.cats{padding:12px 16px;display:flex;flex-wrap:wrap;gap:8px}
+.cat-btn{padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--card);font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .15s}
+.cat-btn.active,.cat-btn:hover{background:var(--red);color:#fff;border-color:var(--red)}
+.content{padding:0 16px 100px}
+.section{margin-bottom:16px}
+.section-title{font-size:15px;font-weight:700;padding:12px 14px;background:var(--card);border-radius:10px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;box-shadow:var(--shadow);border-left:4px solid var(--red);user-select:none;-webkit-user-select:none}
+.section-title .arrow{transition:transform .2s;font-size:12px;color:var(--muted)}
+.section-title.open .arrow{transform:rotate(90deg)}
+.section-body{display:none;padding:12px 14px;background:var(--card);border-radius:0 0 10px 10px;margin-top:-8px;box-shadow:var(--shadow)}
+.section-body.show{display:block}
+.sub-section{margin:12px 0}
+.sub-section h3{font-size:14px;font-weight:600;color:var(--red);margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.sub-section h4{font-size:13px;font-weight:600;margin:8px 0 4px;color:var(--dark)}
+.sub-section p,.sub-section li{font-size:13.5px;color:#374151}
+.sub-section ul,.sub-section ol{padding-left:20px;margin:4px 0 8px}
+.sub-section li{margin-bottom:3px}
+table{width:100%;border-collapse:collapse;margin:8px 0;font-size:13px}
+th{background:var(--dark);color:#fff;padding:6px 8px;text-align:left;font-weight:600;font-size:12px}
+td{padding:6px 8px;border-bottom:1px solid var(--border)}
+tr:nth-child(even){background:#f9fafb}
+.warn{background:#fef3cd;border-left:3px solid #f59e0b;padding:8px 10px;border-radius:4px;margin:8px 0;font-size:13px;font-weight:500}
+.danger{background:var(--accent-light);border-left:3px solid var(--red);padding:8px 10px;border-radius:4px;margin:8px 0;font-size:13px;font-weight:500}
+.steps{counter-reset:s;list-style:none;padding-left:0}
+.steps li{counter-increment:s;padding:4px 0 4px 28px;position:relative;font-size:13.5px}
+.steps li::before{content:counter(s);position:absolute;left:0;width:20px;height:20px;background:var(--red);color:#fff;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;top:5px}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;margin:2px}
+.tag-red{background:var(--accent-light);color:var(--red)}
+.tag-green{background:#ecfdf5;color:#059669}
+.tag-blue{background:#eff6ff;color:#2563eb}
+.tag-yellow{background:#fefce8;color:#a16207}
+.na-row{opacity:.4;text-decoration:line-through}
+.na-row td{color:#9ca3af}
+.depot-badge{display:inline-block;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:700;background:#2563eb;color:#fff;margin-left:8px;vertical-align:middle}
+.no-results{text-align:center;padding:40px 16px;color:var(--muted);font-size:15px}
+mark{background:#fde68a;padding:0 2px;border-radius:2px}
+.diagram{margin:12px 0;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:#fff}
+.diagram svg{width:100%;height:auto;display:block}
+.diagram-caption{font-size:12px;color:var(--muted);text-align:center;padding:6px 8px;background:#f9fafb;border-top:1px solid var(--border);font-style:italic}
+.diagram-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+@media(max-width:500px){.diagram-grid{grid-template-columns:1fr}}
+.answer-box{background:linear-gradient(135deg,#fef2f2,#fff);border:2px solid var(--red);border-radius:12px;padding:16px;margin-bottom:16px;box-shadow:0 2px 12px rgba(224,0,0,.1)}
+.answer-box .answer-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--red);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.answer-box .answer-source{font-size:12px;color:var(--muted);margin-top:10px;padding-top:8px;border-top:1px solid var(--border)}
+.answer-box .answer-source a{color:var(--red);cursor:pointer;text-decoration:underline}
+.answer-box .answer-passage{font-size:14px;line-height:1.65;color:#1f2937}
+.answer-box .answer-passage mark{background:#fde68a;padding:1px 3px;border-radius:3px;font-weight:600}
+.snippet{background:var(--card);border-radius:10px;padding:12px 14px;margin-bottom:8px;box-shadow:var(--shadow);border-left:4px solid var(--border);cursor:pointer;transition:border-color .15s}
+.snippet:hover{border-left-color:var(--red)}
+.snippet .snippet-title{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:2px}
+.snippet .snippet-section{font-size:11px;color:var(--muted);margin-bottom:6px}
+.snippet .snippet-text{font-size:13px;color:#374151;line-height:1.55}
+.snippet .snippet-text mark{background:#fde68a;padding:0 2px;border-radius:2px}
+.result-count{font-size:12px;color:var(--muted);padding:0 4px 8px;font-weight:500}
+.back-top{position:fixed;bottom:20px;right:20px;width:44px;height:44px;border-radius:50%;background:var(--red);color:#fff;border:none;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2);display:none;align-items:center;justify-content:center;z-index:50}
+@media(min-width:768px){
+.content{max-width:800px;margin:0 auto}
+.cats{max-width:800px;margin:0 auto}
+.search-wrap input{max-width:800px;margin:0 auto;display:block}
+}
+</style>
+</head>
+<body>
+<div class="header"><h1><span>&#x2709;</span> Canada Post Delivery Reference</h1></div>
+<div class="search-wrap">
+<span class="icon">&#x1F50D;</span>
+<input type="text" id="search" placeholder="Search procedures, terms, rules..." autocomplete="off" autocapitalize="off">
+<button class="clear-btn" id="clearBtn" onclick="clearSearch()">&#x2715;</button>
+</div>
+<div class="cats" id="cats"></div>
+<div class="content" id="content"></div>
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#x2191;</button>
+
+<script>
+const DATA = [
+{cat:"OTJ Checklist",title:"OTJ Training Checklist",subs:[
+{h:"About This Checklist",content:`<p>This is the On-the-Job (OTJ) Training Session Checklist your peer mentor/coach will use to evaluate you. Tasks are marked <b>Observed</b> (you explained or demonstrated knowledge) or <b>Completed</b> (you performed it yourself). Tap any task to see the full procedure.</p>
+<p><span class="depot-badge">SEQUENCED DEPOT</span> Your depot is sequenced. Non-sequenced depot tasks are <span style="opacity:.4;text-decoration:line-through">crossed out</span> below.</p>
+<div class="warn">Review these tasks before each training day so you know what to focus on with your trainer.</div>`},
+{h:"1. Start of Day (Inside Depot)",content:`
+<h4>1.1 Identify main types of information on header board</h4>
+<p>The header board has 6 main sections:</p>
+<ul>
+<li><b>General Information:</b> Depot name, route number, start time, departure time, total POC count, hazards/warnings, keys needed, phone, special instructions, AM/PM delivery portions, scheduled pickups, SLB clearances</li>
+<li><b>OT Splits:</b> How to split the route if overtime is needed</li>
+<li><b>NM Delivery:</b> Neighbourhood Mail schedule (3-day or 5-day cycle, colour days)</li>
+<li><b>RPO / FSA / Stop:</b> The RPO, FSA, and stop number for each section</li>
+<li><b>Street Distribution:</b> Ordered list of streets, address ranges, LDUs, tie-outs, stops</li>
+<li><b>Transportation:</b> Vehicle type and details</li>
+</ul>
+<div class="danger">Always study the header board FIRST when on a new route.</div>
+
+<h4>1.2 Identify how sort case is laid out</h4>
+<p>The A-62 sortation case has 2-3 <b>modules</b>, each with multiple shelves. Each shelf has slots called <b>separations</b> (typically one per POC). Below each shelf is a <b>case strip</b> showing civic numbers and street names.</p>
+<ul>
+<li>Read modules like a book: left to right, top to bottom</li>
+<li>Change in strip colour = change in street name</li>
+<li>Tie-out numbers on the strip = order for pulling and bundling</li>
+<li>Coloured stripes at base = NM colour day</li>
+<li>Dog sticker = dog at that address</li>
+<li>Red dot = Consumers' Choice opt-out (after civic number). Yellow dot = apartment/business opt-out</li>
+</ul>
+<div class="warn">In an A-62 case, you sort ABOVE the case strips.</div>
+
+<h4>1.3 Sort in case cards - Forwarding/Hold</h4>
+<p><b>Hold Mail (yellow card):</b> Do not deliver mail to this address for the dates shown. Barcoded items (not parcels) can be held. Parcels are excluded from Hold Mail and must be treated as RTS.</p>
+<p><b>Forwarding/Redirection (orange card):</b> Remove mail for this address from the case and forward it to the new address. Card shows original address, new address, names, start/end dates, permanent or temporary, and local or forward. If your depot has no RS clerk, the A card goes with the forwarded mail and the B card replaces it in the case.</p>
+<p>Remove expired case cards on the first working day AFTER the expiry date.</p>
+
+<h4>1.4 Bring to workstation and sort manual S/L, O/S mail</h4>
+<p>Collect your manual Short and Long (S/L) and Oversize (O/S) mail using your C-48 cart and bring it to your A-62 case.</p>
+<ul>
+<li>Start with <b>Standard Lettermail (STD)</b>: pick up a bundle addresses facing up</li>
+<li>For each item: find the street name on the case strip, place mail in the separation ABOVE the address</li>
+<li>Small OS items that fit go in case separations like STD</li>
+<li>Large OS: place an identifier (flasher card or DNC) in the separation, put the OS item in an LFT or relay bag</li>
+</ul>
+<p><b>Blocking Technique</b> (for learning a new case): divide all mail by street name first, then sort into the case one street at a time.</p>
+
+<h4>1.4.1 <span class="tag tag-blue">Sequenced Depot</span> Bring sequenced Lettermail to workstation (foot route only)</h4>
+<p>In a sequenced depot, a large portion of STD mail is already machine-sorted into delivery sequence. Collect your sequenced lettermail trays and bring them to your workstation. You will merge these with your manually sorted mail during tie-out.</p>
+
+<h4>1.5 Bring to workstation and sort Packets and Documents</h4>
+<ul>
+<li>Small packets/documents that fit in case separations are sorted like STD and OS mail</li>
+<li>For large or unevenly shaped items that don't fit: place an identifier in the appropriate separation, put the item in an LFT or relay bag</li>
+<li><b>All barcoded items must be scanned before they are sorted</b></li>
+</ul>
+
+<p class="na-row">1.5.1 <span class="tag tag-yellow">Non-Sequenced</span> Bring to workstation and sort Parcels (Motorized Route only) - N/A for your depot</p>
+
+<h4>1.6 Revise the case - remove and place HOLD, FORWARDING mail</h4>
+<p>After sorting, "revise" the case by removing mail you won't deliver on route. Items to remove:</p>
+<ul>
+<li><b>Mail forwarding</b> items (orange redirection case card)</li>
+<li><b>Hold Mail</b> items (yellow case card)</li>
+<li><b>Directs and Callers</b> (large-volume customers)</li>
+<li><b>Missorts</b> (wrong route: put on case ledge or in missort separation)</li>
+<li><b>Return to Sender</b> / Undeliverable items</li>
+<li><b>Damaged mail</b></li>
+</ul>
+
+<h4>1.7 Obtain key ring and route supplies, including DNCs</h4>
+<ul>
+<li>Get your key ring from the key management area. Keys must be on a CPC-issued key ring, key tag, and lanyard.</li>
+<li>Attach keys to your person by belt clip, belt loop, or parka D-ring.</li>
+<li>Grab an adequate supply of DNCs for your call-for site(s).</li>
+<li>Verify you have the correct DNCs for the correct call-for site.</li>
+</ul>
+`},
+{h:"2. Neighbourhood Mail (NM)",content:`
+<h4>2.1 Obtain the NM mailings prepared during last shift</h4>
+<p>NM is typically prepared the previous evening (or end of the prior shift). Collect your pre-prepared NM bundles from the designated staging area.</p>
+
+<h4>2.2 Scan DCS barcode colour of mailings being delivered today</h4>
+<p>Each NM bundle has a Delivery Control Slip (DCS) with a blue barcode. Scan the DCS barcode before leaving the depot. This registers what NM you are taking out for delivery.</p>
+<div class="warn">You must scan the DCS barcode for each NM mailing you are delivering that day.</div>
+
+<h4>2.3 Prepare NM mail</h4>
+<ul>
+<li>Check the header board for the NM delivery schedule (colour day) and which sections of the route receive NM today</li>
+<li>Count pieces per bundle using DCS totals</li>
+<li>Use the NM totals from the header board: total POCs minus Consumers' Choice POCs = how many pieces you need per stop</li>
+</ul>
+
+<h4>2.4 Identify Consumers' Choice locations</h4>
+<ul>
+<li><b>Red dot</b> on case strip (after the civic number) = residential customer opted out of NM. Do NOT deliver NM to this address.</li>
+<li><b>Yellow dot</b> = apartment or business opted out of NM</li>
+</ul>
+`},
+{h:"3. PDT (Inside Depot)",content:`
+<h4>3.1 Obtain PDT, log in and confirm battery charge</h4>
+<p>Pick up your PDT from the charging cradle. Log in, then verify the battery is fully charged. Keep PDT secured at all times. Lock the touch screen when not using it.</p>
+
+<h4>3.2 Download and verify Out for Delivery items (OFD) in Itinerary</h4>
+<p>After logging in, your OFD itinerary downloads automatically. Review the list of barcoded items assigned to your route for delivery today.</p>
+
+<h4>3.3 Edit alerts in PDT for Mail Forwarding items</h4>
+<p>The PDT will show alerts for addresses with active mail forwarding (redirection). Review these alerts and confirm they match the orange redirection case cards in your case. Remove forwarded mail from your delivery.</p>
+
+<h4>3.4 Edit alerts in PDT for Hold Mail items</h4>
+<p>Similarly, the PDT will show alerts for Hold Mail addresses. Confirm these match the yellow Hold Mail case cards. Remove held mail from your delivery. Remember: parcels cannot be held and must be returned to sender.</p>
+
+<h4>3.5 Place Forwarding Mail, Hold Mail, incomplete address and Missorted mail in designated areas</h4>
+<ul>
+<li><b>Forwarding mail:</b> Place in the designated redirection/forwarding area</li>
+<li><b>Hold Mail:</b> Place in the Hold Mail separation or area</li>
+<li><b>Incomplete address:</b> Place in the designated incomplete address area</li>
+<li><b>Missorted in-depot:</b> Put on case ledge or in case separation designated for missorts</li>
+<li><b>Missorted out-of-depot:</b> Same location, it will be routed to the correct depot</li>
+</ul>
+
+<h4>3.6 Prepare Card for Pickup items (COD and DTPO items)</h4>
+<p>Identify items requiring Collect on Delivery (customs fees, postage due) and Deliver to Post Office (DTPO) items. Set these aside for special handling during delivery. DTPO goes directly to the designated post office, not to the customer's address.</p>
+
+<h4>3.7 Sort and scan all Packets and Documents</h4>
+<p>All barcoded packets and documents must be scanned before sorting into the case. Use the four scanning rules:</p>
+<ol>
+<li>Hash marks and logo? Scan that barcode.</li>
+<li>Logo only? Scan that barcode.</li>
+<li>RaCHEL rule: 2-9-2 barcode starting with R, C, H, E, or L? Scan it.</li>
+<li>None of the above? Don't scan.</li>
+</ol>
+
+<h4>3.8 Confirm OFD itinerary</h4>
+<p>After sorting and scanning, confirm your OFD itinerary on the PDT. This verifies that all items assigned to your route are accounted for.</p>
+
+<h4>3.9 Review Pickups list</h4>
+<p>Check the PDT for any scheduled commercial pickups on your route today. Note the customer name, address, and pickup time. Check your header board for scheduled customer pickups too.</p>
+
+<h4>3.10 Review Clearances list</h4>
+<p>Check the PDT and header board for SLB, CMB, and RPO clearances on your route. Note locations and any special instructions.</p>
+
+<h4>3.11 Scan key ring: Key Ring Check Out in PDT</h4>
+<p>Before leaving the depot, scan your key ring barcode on the PDT to check out your keys. This records that you have the keys and creates accountability.</p>
+
+<h4>3.12 Obtain a blank IDB form as PDT backup</h4>
+<p>Get a blank Items Delivered Bill (IDB) form in case your PDT becomes inoperable on route. The IDB is a paper backup for recording deliveries. Forms 108 and 105 must accompany you on route in case the PDT fails.</p>
+<div class="warn">You must check your PDT daily before leaving the depot for customer pickup info. On Demand pickups may be added during the day.</div>
+`},
+{h:"4. Foot Route (Departure)",content:`
+<h4>4.1 Tag all Relay Bags</h4>
+<p>Label each relay bag with a route card identifying the route and relay box location. This ensures bags are delivered to the correct relay box by the motorized transport.</p>
+
+<h4>4.1.1 <span class="tag tag-blue">Sequenced Depot</span> Tie out case-sorted mail while merging with sequenced mail</h4>
+<p>In a sequenced depot, you merge your manually sorted mail with the machine-sequenced lettermail during tie-out:</p>
+<ol>
+<li>Start at tie-out #1 and pull the manually sorted mail from the case separations in order</li>
+<li>Combine with the corresponding sequenced mail for each tie-out</li>
+<li>Bundle each tie-out together with an elastic band</li>
+<li>Place bundled mail into LFTs or relay bags in delivery sequence</li>
+</ol>
+
+<p class="na-row">4.1.2 <span class="tag tag-yellow">Non-Sequenced</span> Tie out all case-sorted mail - N/A for your depot</p>
+
+<h4>4.2 Load relay bags with sorted mail, NM, packets, etc.</h4>
+<p>Place bundled tie-outs, NM, packets, and documents into relay bags in delivery order. Include any oversize items or identifier cards.</p>
+
+<h4>4.3 Load satchel for first route segment (Carry section)</h4>
+<p>Load your dual satchel with the mail for your first carry section. Max load: <b>15.9 kg (35 lb)</b>. Include the corresponding NM, packets, and any barcoded items for that segment.</p>
+`},
+{h:"5. Motorized Route (Departure)",content:`
+<h4>5.1 Tie out LFT for Park and Loop (lay bundles flat)</h4>
+<p>For Park and Loop stops, tie out your mail and lay the bundles <b>flat</b> in the LFT. This keeps them organized for when you park and walk the loop.</p>
+
+<h4>5.2 Tie out LFT for Stop and Go (stand bundles on end)</h4>
+<p>For Stop and Go (dismount) stops, tie out your mail and stand the bundles <b>on end</b> in the LFT. This makes them easy to grab one at a time as you drive stop to stop.</p>
+
+<h4>5.2.1 <span class="tag tag-blue">Sequenced Depot</span> Bring all tied-out mail to Consolidation Area</h4>
+<p>In your sequenced depot, bring all your tied-out manual mail to the Consolidation Area where it will be combined with sequenced mail and parcels for loading.</p>
+
+<h4>5.2.2 <span class="tag tag-blue">Sequenced Depot</span> Obtain Parcels and Sequenced Lettermail</h4>
+<p>Pick up your parcels and sequenced lettermail trays from the consolidation area. These are organized by your route for loading into the vehicle.</p>
+
+<p class="na-row">5.2.3 <span class="tag tag-yellow">Non-Sequenced</span> Bring all sorted mail items to loading dock - N/A for your depot</p>
+
+<h4>5.3 Obtain supplies to be delivered to RPOs, if applicable</h4>
+<p>If your route includes RPO supply delivery, collect the supplies (blank forms, materials, etc.) from the designated area before loading your vehicle.</p>
+
+<h4>5.4 Obtain vehicle keys, fuel card, Route Kit, etc.</h4>
+<p>Collect your vehicle keys, fuel card, and route kit. The route kit may include a dolly, SO-95 containers for SLB clearances, and other equipment.</p>
+
+<h4>5.5 Perform pre-trip inspection of vehicle and record info on PDT</h4>
+<ol>
+<li>Go to parking lot and locate your vehicle</li>
+<li>Perform a complete pre-trip inspection (lights, tires, mirrors, fluid levels, damage)</li>
+<li>Record the vehicle's mileage and date in the PDT</li>
+<li>Move vehicle from parking lot to designated dock space, back in carefully</li>
+</ol>
+`},
+{h:"6. Prepare for Departure",content:`
+<h4>6.1 Assess weather conditions for whole day/route</h4>
+<p>Check the weather forecast and conditions. Plan for temperature changes throughout the day. Note if ice, rain, or extreme heat may affect your route.</p>
+
+<h4>6.2 Obtain/put on personal protective equipment</h4>
+<ul>
+<li><b>High-visibility vest</b> - wear zipped up at all times (depot and route)</li>
+<li><b>Puncture-resistant gloves</b> - for clearing SLBs</li>
+<li><b>Dog repellent or air horn</b> - carry in holster, even if no warnings on the report</li>
+<li><b>Anti-slip devices</b> - have them with you, wear on ice, remove before going indoors/driving</li>
+<li><b>Head lamp</b> - if working in low light</li>
+<li>Weather-appropriate clothing and footwear</li>
+<li>Emergency medication (epi-pen, inhaler) if needed</li>
+</ul>
+
+<h4>6.3 Organize/bring route/emergency contact information</h4>
+<p>Have your team leader's phone number and emergency contact information. Review the Hazards & Warnings report on your PDT (POCUR app > Reports) for dog hazards and other warnings on your route.</p>
+
+<h4>6.4 Final test PDT and ensure battery is charged</h4>
+<p>Verify the PDT is working properly and has sufficient battery charge for the full shift. You can dial 911 from the PDT in emergencies (select phone key, dial 911, select phone icon).</p>
+`},
+{h:"7. Delivery to Mail Receptacles",content:`
+<h4>7.1 <span class="tag tag-blue">Sequenced Depot</span> Back-to-back delivery method</h4>
+<p>Bundle sequenced and manual mail together (and NM if applicable) and deliver using the back-to-back method:</p>
+<ol>
+<li>Obtain a bundle from the satchel, hold in your preferred carrying hand</li>
+<li>Remove elastics with your other hand</li>
+<li>Place both bundles onto your forearm</li>
+<li>Take sequenced bundle and place it upside-down in your hand (address facing away)</li>
+<li>Move manual mail down in front of sequenced mail. Addresses will face opposite directions.</li>
+<li>To see sequenced mail: pivot/rotate your carrying hand, resting bundle on forearm</li>
+<li>Grab required mail for the POC with your other hand</li>
+<li>Reverse the bundle to obtain manual mail for that POC</li>
+<li>Hold and deliver with your other hand</li>
+<li>Grab corresponding NM for that POC</li>
+</ol>
+
+<h4>7.2 Obtain mail from a relay box (foot route only)</h4>
+<p>At each relay box location on your route, retrieve the relay bag left by the motorized transport. Load your satchel with the mail for the next carry section.</p>
+
+<h4>7.3 Deliver mail from a Park and Loop stop (motorized only)</h4>
+<p>Park the vehicle at the designated stop. Grab the appropriate tie-out bundles from the LFT (laid flat). Walk the loop delivering to each POC, then return to the vehicle and drive to the next stop.</p>
+
+<h4>7.4 Deliver mail from a Stop and Go stop (motorized only)</h4>
+<p>Drive to each POC, park, get out, deliver the mail, return to the vehicle and drive to the next POC. Bundles are standing on end in the LFT for easy grab-and-go.</p>
+
+<h4>7.5 Deliver mail/parcel to a CMB</h4>
+<ol>
+<li>Retrieve returned parcel compartment keys from the outgoing mail slot. Put each key back in its correct compartment.</li>
+<li>Sort the letter mail into customer compartments</li>
+<li>Place NM into compartments (skip Consumers' Choice customers)</li>
+<li>Put packets and small parcels into compartments</li>
+<li>Put larger parcels into parcel compartments. Write the date on the parcel. Place the parcel compartment key in the customer's mail compartment.</li>
+<li>If Attention box says Signature/Payment/Proof of Age/Deliver to Door, or parcel compartment is full (items under 2 days) or item too large: deliver to the customer's door instead.</li>
+</ol>
+<div class="warn">Always scan the outgoing mail compartment barcode, even if no mail to deliver. Always clear the outgoing mail.</div>
+
+<h4>7.6 Deliver a parcel to a Parcel Locker</h4>
+<ol>
+<li>Open master door with your corporate key</li>
+<li>Transfer returned compartment keys from outgoing slot to proper compartments</li>
+<li>Remove and card overdue parcels (over 5 days, or 2+ days if room needed)</li>
+<li>Deposit new parcels with date facing out. Note compartment keys with apartment numbers.</li>
+<li>At the mailroom/lockbox assembly, remove parcel locker keys for carded items, deliver DNCs to POCs</li>
+<li>Deliver all other mail and NM</li>
+<li>Return to parcel locker on your way out, deposit retrieved keys in outgoing slot</li>
+</ol>
+
+<h4>7.7 Clear and card parcel past 5 days in CMB/Parcel Locker</h4>
+<ol>
+<li>Check endorsement dates on parcels in the compartment</li>
+<li>Remove the unclaimed item</li>
+<li>Complete a DNC and place it in the customer's mail compartment</li>
+<li>Scan the parcel and change status to Carded on PDT</li>
+<li>Transfer the item to the RPO</li>
+</ol>
+<div class="warn">Parcels can remain up to 5 business days if space is not needed. If you need room for new parcels, you can card items that have been there 2+ days.</div>
+
+<h4>7.8 Deliver mail to a residential mail box</h4>
+<p>Place mail in the customer's residential mailbox. Follow the route as designed. Verify the entire address. Do not nest NM inside other mail pieces.</p>
+
+<h4>7.9 Deliver mail to an apartment mail room</h4>
+<p>Use your corporate key to access the mail room. Sort mail into the individual lock box compartments. Pick up any mail dropped on the floor (mark with small X on back, re-sort). Watch for barcoded items mixed in with regular mail.</p>
+
+<h4>7.10 Deliver mail to a panel</h4>
+<p>A panel is a set of letter slots (similar to apartment lock boxes) typically found in commercial or multi-unit buildings. Sort mail into the correct slots by unit number or name.</p>
+
+<h4>7.11 Deliver mail door-to-door in an apartment/condominium</h4>
+<p>For buildings where you deliver directly to each unit's door (no central mail room). Take the mail for the building, proceed floor by floor, and deliver to each door's mail slot or receptacle.</p>
+
+<h4>7.12 Deliver mail to each POC in a business tower</h4>
+<p>Deliver to each business suite or office within the tower. You may deliver to a reception desk, mailroom counter, or individual suites depending on the building arrangement.</p>
+`},
+{h:"8. Delivery with PDT / PCI Items",content:`
+<h4>8.1 Deliver a signature required item</h4>
+<p>Check the label for "Signature Required." Scan the item with your PDT. Have the customer sign on the PDT screen. Deliver the item.</p>
+<div class="warn">Never sign for an item on behalf of the receiver. If the person can't sign, enter an X. If you can't get their name, enter an X.</div>
+
+<h4>8.2 Deliver a non-signature item</h4>
+<p>Scan the barcoded item with your PDT. No signature needed. Deliver to the mail receptacle or safe drop if appropriate. Always verify the address.</p>
+
+<h4>8.3 Card an item (Delivery Notice Card) at the door</h4>
+<ol>
+<li>Verify you're using the correct DNC for the call-for site matching the address</li>
+<li>Write the customer's first and last name and address</li>
+<li>Check off delivery options that apply. Enter funds due if applicable.</li>
+<li>Enter the date and when the item will be available</li>
+<li>Scan the item as "carded," then scan the DNC's barcode</li>
+</ol>
+<p>Leave the DNC in the customer's mail receptacle or on the door, ensuring it's visible. If the customer appears after you left the DNC but before you leave the POC: tear up the DNC, use PDT for signature/payment/proof of age, hand over the item.</p>
+
+<h4>8.4 Deliver a Customs Postal Import item</h4>
+<p>Check the PDT for the customs amount owing. Inform the customer of the fee. Collect payment (credit card, prepaid card, CPC commercial account, or Proof of Payment number). If the customer disputes the fee, explain they can appeal through CBSA. <b>If they refuse to pay, do NOT deliver the item.</b></p>
+<div class="danger">Customers CANNOT pay with cash, cheques, money orders, or debit cards. If they want these methods, provide a DNC and direct them to the RPO.</div>
+
+<h4>8.5 Deliver a Proof of Age required item</h4>
+<p>The label will show "18+ SIGNATURE." Ask for government-issued photo ID. Verify the customer's age. If they are under age or can't provide valid ID, card the item. Proof of Age items cannot be safe dropped.</p>
+
+<h4>8.6 Deliver a Safe Drop item</h4>
+<p>If no one is home and it's a non-PCI item, check safe drop eligibility:</p>
+<ul>
+<li>Safe-drop approved neighbourhood</li>
+<li>Location is protected from weather and out of sight</li>
+<li>Not perishable</li>
+<li>Label does NOT say "No safe drop"</li>
+</ul>
+<p>Scan the item, mark as safe drop on PDT. Take a photo with PDT to document where you left it.</p>
+
+<h4>8.7 Deliver a Leave At Door (Do Not Card) item</h4>
+<p>Label reads "Leave at Door." First attempt to deliver to the POC's mail receptacle (e.g., mailbox, CMB). If the delivery attempt is unsuccessful, safe drop the item as long as eligibility requirements are met.</p>
+
+<h4>8.8 Deliver a Deliver to the Door (All Modes) item</h4>
+<p>Label reads "DELIVER TO DOOR." You <b>must</b> go to the customer's door, regardless of the regular delivery method (even if normal delivery is to a CMB, apartment mailbox, etc.).</p>
+
+<h4>8.9 Deliver a PCI using an IDB instead of PDT</h4>
+<p>If your PDT is inoperable, use the paper IDB (Items Delivered Bill) form. Record the tracking number, customer information, and delivery details. Have the customer sign the IDB form. Note: you cannot accept credit cards when using an IDB.</p>
+`},
+{h:"9. Transfers to RPOs",content:`
+<h4>9.1 Drop off mail and supplies for the RPO; record in PDT</h4>
+<p>If your route includes an RPO supply delivery, drop off the supplies and mail at the RPO. Record the drop-off on your PDT.</p>
+
+<h4>9.2 Deliver carded items with a Delivery Transfer Bill to the RPO using PDT</h4>
+<p>Transfer all carded items to the call-for site (RPO) by the cut-off time noted on the Transfer Bill. Scan each item on the PDT during the transfer. Place carded items behind bulkhead in your vehicle, organized by call-for location.</p>
+
+<h4>9.3 Drop off carded items to appropriate RPO if scheduled</h4>
+<p>Some routes have a scheduled RPO drop-off time. Make sure you arrive on time. Separate carded items by RPO if your route serves more than one call-for site.</p>
+`},
+{h:"10. Pickups & Clearances (Motorized Only)",content:`
+<h4>10.1 Clear mail from an SLB and scan barcode with PDT</h4>
+<ol>
+<li>Wear puncture-resistant gloves</li>
+<li>Open the door and look inside to check for safety hazards</li>
+<li>Place any suspicious materials in a separate container and note the location</li>
+<li>Remove the SO-95 container with the posted mail</li>
+<li>Scan the SLB barcode with your PDT</li>
+<li>Replace with an empty SO-95</li>
+</ol>
+<div class="danger">Do not handle dangerous goods. Contact your supervisor immediately. You MUST always clear SLBs and capture it on the PDT, even if there is no outgoing mail.</div>
+
+<h4>10.2 Clear outgoing mail from a CMB/Parcel Locker and scan barcode with PDT</h4>
+<p>At every CMB on your route, clear the outgoing mail compartment and scan the barcode (right inside edge of the outgoing compartment). If the interior barcode is damaged, scan the exterior barcode.</p>
+<div class="warn">You must check every CMB on your route, even if no mail is being delivered there that day.</div>
+
+<h4>10.3 Clear mail from an RPO; record in PDT</h4>
+<ol>
+<li>Lock your vehicle, go into the RPO with equipment (dolly, SO-95s)</li>
+<li>Place mail containers and parcels on the dolly. Keep types separate per local guidelines.</li>
+<li>Collect mail from indoor and outdoor receptacles, plus containers/parcels from Retail staff</li>
+<li>Scan the RPO's barcode with your PDT</li>
+<li>Separate damaged mail into designated container</li>
+</ol>
+
+<h4>10.4 Complete a scheduled pick-up and verify shipping documents</h4>
+<ol>
+<li>Check your PDT for pickup instructions</li>
+<li>If unsure about volume, bring a dolly</li>
+<li>At the location, select the customer from the pickup list on your PDT</li>
+<li>Select the appropriate label option</li>
+<li>Verify the shipping documents: Bill of Lading (BOL), Manifest, Prepaid label, or EST-generated label</li>
+<li>Scan the labels or manifest as required</li>
+<li>If "MANIFEST NOT REQ" is on the label, it's paperless (no docs to collect)</li>
+<li>Load your vehicle, keeping pickups separate from outgoing deliveries</li>
+</ol>
+<div class="warn">Always begin pickups at or after the scheduled start time. Never arrive early. If 50+ items on a manifest, you can visually estimate the count.</div>
+
+<h4>10.5 Complete scheduled pickup: Full Rate/Stamped Lettermail</h4>
+<p>Some pickups are just regular stamped lettermail (no barcoded parcels). Collect the mail, record on PDT, and load into your vehicle separate from deliveries.</p>
+
+<h4>10.6 Complete scheduled pickup: No Pickup</h4>
+<p>If you arrive at a scheduled pickup and there is nothing to pick up, record "No Pickup" on your PDT so it's documented.</p>
+
+<h4>10.7 Accept/Decline an On Demand pickup request on the PDT</h4>
+<p>On-Demand requests appear on your PDT during the day. You can accept or decline. Valid decline reasons: Not in my area, Vehicle disabled, Unable to reach before business close, No room in my truck, On break.</p>
+<p>Make every effort to accept. If you decline and no one else is available, you may need to return to the depot to unload and go back.</p>
+
+<h4>10.8 Complete an On Demand pickup using the PDT</h4>
+<p>Same process as a scheduled pickup: go to the location, select the customer on PDT, verify shipping documents, scan items, load separately from deliveries.</p>
+`},
+{h:"11. Return to Depot (End of Day)",content:`
+<h4>11.1 Unload all collected mail and stage in proper mail streams</h4>
+<p>Back into the dock safely. Use your consolidation cart to transport items. Unload all mail collected on route (SLB mail, RPO mail, pickup items) into the designated containers at the dock. Keep different mail streams separate.</p>
+
+<h4>11.2 Park and secure vehicle - remove all items and confirm empty</h4>
+<p>After unloading, park your vehicle in the assigned space. Check every part of the vehicle to confirm it's completely empty of all mail and equipment, including DNCs.</p>
+<div class="danger">Always ensure your vehicle is empty of ALL mail and equipment at the end of day, including DNCs.</div>
+
+<h4>11.3 Return and secure keys/Log Book</h4>
+<p>Return your corporate keys and other items. Return the vehicle log book if applicable. Never leave keys in your car, even in a locked trunk.</p>
+
+<h4>11.4 Perform End-of-day PDT tasks:</h4>
+
+<p><b>11.4.1 Complete a Money Slip on the PDT</b></p>
+<p>If you collected any payments during the day (customs fees, COD), complete a Money Slip on the PDT to account for all funds collected.</p>
+
+<p><b>11.4.2 Return, scan and secure Key Ring (Key Ring Check In)</b></p>
+<p>Scan your key ring barcode on the PDT to check in your keys. Return them to the appropriate area/board.</p>
+
+<p><b>11.4.3 Record NM Shortages/Overages in PDT (NM-DCS Exceptions)</b></p>
+<ol>
+<li>Select 'End of Day' then 'NM Exceptions' on PDT</li>
+<li>Scan the blue barcode on the DCS (same one you scanned in the morning)</li>
+<li>Select 'Overage' or 'Shortage'</li>
+<li>Enter the count of extra or missing pieces</li>
+<li>Submit</li>
+</ol>
+
+<p><b>11.4.4 Upload and dock PDT (Upload & Logout)</b></p>
+<p>Confirm that you have completed the vehicle check. Select LOGOUT on PDT. Attach the PDT to the charging cradle. Verify it's properly installed and charging before walking away.</p>
+
+<h4>11.5 Prepare NM for next day delivery:</h4>
+
+<p><b>11.5.1 Determine delivery day - segment colour</b></p>
+<p>Check the header board or NM Delivery Control board to determine tomorrow's colour day (which segments of the route receive NM).</p>
+
+<p><b>11.5.2 Identify mailings to deliver from NM Delivery Control board</b></p>
+<p>Find which NM mailings (flyers, brochures, etc.) need to go out tomorrow based on the colour day.</p>
+
+<p><b>11.5.3 Verify and obtain each NM mailing and associated DCS</b></p>
+<p>Collect each NM mailing bundle and its matching Delivery Control Slip. Verify the counts match.</p>
+
+<p><b>11.5.4 Determine delivery instructions from a DCS</b></p>
+<p>Read the DCS for any special delivery instructions (how many per POC, which sections of the route, etc.).</p>
+
+<p><b>11.5.5 Bundle, collate and prepare each NM mailing according to DCS instructions</b></p>
+<p>Assemble the NM bundles for each section of the route. Collate multiple NM items together if delivering more than one mailing to the same section. Use the NM totals from the header board (total POCs minus Consumers' Choice).</p>
+
+<p><b>11.5.6 Record number of NM items delivered on the NM Form, if applicable</b></p>
+<p>If your depot uses an NM delivery tracking form, record the number of items prepared for tomorrow's delivery.</p>
+`},
+{h:"Letter Carrier C-46 Cart Skills",content:`
+<h4>1. Place satchel on cart</h4>
+<p>Lock the cart in position before loading. Place a single satchel on the platform. Secure the satchel by sliding the metal rings over the cart hooks.</p>
+
+<h4>2. Adjust cart</h4>
+<p>Adjust the handle height to a comfortable position. When pulling uphill, the handle should be high enough to avoid foot contact. When pushing downhill, set handle at elbow height.</p>
+
+<h4>3. Pull cart</h4>
+<p>Place the cart behind you to pull up hills. Ensure handle is high enough to avoid contact with your foot while walking. Avoid extending your arm behind you or excessively bending your elbow.</p>
+
+<h4>4. Push cart</h4>
+<p>Place cart in front of you to push down hills. Adjust handle to elbow height. Arm should be relaxed at your side to prevent strain.</p>
+
+<h4>5. Go up/down curbs and steps</h4>
+<p><b>Going up:</b> Position wheels touching the curb. Stand facing the cart. Bend knees and pull cart up using the handle.</p>
+<p><b>Going down:</b> Position cart facing the stairs at the edge. Bend knees and use the handle to carefully roll the cart over the step's edge.</p>
+<p>Avoid moving carts over flights of more than 4 stairs.</p>
+
+<h4>6. Go up/down hills, inclines/ramps and uneven surfaces</h4>
+<p>Pull uphill (cart behind you), push downhill (cart in front). Watch for cracks, uneven surfaces, and tipping hazards. Avoid running over grass and uneven edges.</p>
+
+<h4>7. Laneways/walkways and security</h4>
+<p>Be aware of your surroundings. Hold the handle to maintain control at all times. Do not retrieve mail while the cart is in motion. Use ramps, elevators, and automatic door openers when available.</p>
+
+<h4>8-9. Door opening toward/away from you</h4>
+<p><b>Door toward you:</b> Position the cart to one side, open the door, hold it with your body, and maneuver the cart through.</p>
+<p><b>Door away from you:</b> Push the door open, prop it if possible, and guide the cart through while maintaining control.</p>
+
+<h4>10. Safe lifting techniques</h4>
+<p>Bend at the knees, keep the load close to your body, lift with your legs (not your back). When loading/unloading the cart from a vehicle, ensure the satchel is detached first. Lay the cart flat in the vehicle.</p>
+
+<h4>11. Load mail from a relay box</h4>
+<p>At the relay box, retrieve your relay bag. Load the mail from the relay bag into your satchel on the cart. Organize for the next carry section.</p>
+
+<h4>12-13. Load into / Unload from a vehicle</h4>
+<p>Detach the satchel from the cart before loading. Use safe lifting techniques. Lay the cart flat in the vehicle to prevent rolling or tipping during transport.</p>
+
+<h4>14. Board/disembark from bus (if applicable)</h4>
+<p>When using the cart on a city bus: sit as close to the front as possible. Ensure the cart is not blocking an aisle. Keep one hand on the cart while the bus is in motion.</p>
+`}
+]},
+{cat:"Glossary",title:"Glossary & Acronyms",subs:[
+{h:"Key Terms",content:`<table>
+<tr><th>Term</th><th>Definition</th></tr>
+<tr><td><b>Header Board</b></td><td>The document that contains everything you need to know to deliver a route</td></tr>
+<tr><td><b>Neighbourhood Mail (NM)</b></td><td>Advertising mail: flyers, coupons, samples, brochures, public notices, government and election promotions</td></tr>
+<tr><td><b>Point of Call (POC)</b></td><td>Another word for an address or specific delivery location</td></tr>
+<tr><td><b>Tie-out</b></td><td>Specific points of call bundled together for delivery</td></tr>
+<tr><td><b>Stop</b></td><td>The location where you park your vehicle or replenish your mail</td></tr>
+<tr><td><b>Bundle</b></td><td>A stack of mail tied together with elastics</td></tr>
+<tr><td><b>Missort</b></td><td>A mail item sorted into the wrong location</td></tr>
+<tr><td><b>Consumers' Choice</b></td><td>Customer has opted out of receiving Neighbourhood Mail (red dot on case strip; yellow dot for apartment/business)</td></tr>
+<tr><td><b>Directs</b></td><td>Mail delivered by motorized employee to a large-volume customer</td></tr>
+<tr><td><b>Callers</b></td><td>Large-volume customer who picks up mail at the depot</td></tr>
+<tr><td><b>Block Face</b></td><td>A row of POCs that share the same LDU</td></tr>
+<tr><td><b>Separation</b></td><td>A slot in the A-62 case, typically one per POC</td></tr>
+<tr><td><b>Case Strip</b></td><td>Information strip below each shelf showing civic numbers, street names, tie-outs, colour days</td></tr>
+</table>`},
+{h:"CPC Acronyms (A-D)",content:`<table>
+<tr><th>Acronym</th><th>Full Name</th></tr>
+<tr><td><b>AIM / AMS</b></td><td>Address Inventory Management (application within the Address Management System)</td></tr>
+<tr><td><b>AO</b></td><td>Autres Objets (Other Articles)</td></tr>
+<tr><td><b>APC</b></td><td>Area Performance Centre</td></tr>
+<tr><td><b>APL</b></td><td>Automated Parcel Locker</td></tr>
+<tr><td><b>APOC</b></td><td>Association of Postal Officials of Canada</td></tr>
+<tr><td><b>APT</b></td><td>Apartment</td></tr>
+<tr><td><b>AR</b></td><td>Advice of Receipt</td></tr>
+<tr><td><b>BOL</b></td><td>Bill of Lading</td></tr>
+<tr><td><b>BRM</b></td><td>Business Reply Mail</td></tr>
+<tr><td><b>CBSA</b></td><td>Canada Border Services Agency</td></tr>
+<tr><td><b>CC</b></td><td>Consumers Choice</td></tr>
+<tr><td><b>C&D</b></td><td>Collection & Delivery</td></tr>
+<tr><td><b>CMB</b></td><td>Community Mailbox</td></tr>
+<tr><td><b>CMS</b></td><td>Corporate Manual System</td></tr>
+<tr><td><b>COAN</b></td><td>Change of Address Notification</td></tr>
+<tr><td><b>COD</b></td><td>Collect on Delivery</td></tr>
+<tr><td><b>CPC</b></td><td>Canada Post Corporation</td></tr>
+<tr><td><b>CPI</b></td><td>Customs Postal Import</td></tr>
+<tr><td><b>CPU</b></td><td>Commercial Pickup</td></tr>
+<tr><td><b>CSN</b></td><td>Commercial Services Network</td></tr>
+<tr><td><b>CUPW</b></td><td>Canadian Union of Postal Workers</td></tr>
+<tr><td><b>CUS</b></td><td>Combined Urban Services</td></tr>
+<tr><td><b>C-48</b></td><td>Mail Collection Cart (Silver Bullet)</td></tr>
+<tr><td><b>DA / (R)LC</b></td><td>Delivery Agent / (Relief) Letter Carrier</td></tr>
+<tr><td><b>DCF</b></td><td>Distribution Centralized Facility</td></tr>
+<tr><td><b>DCS</b></td><td>Delivery Control Slip</td></tr>
+<tr><td><b>DIA</b></td><td>Delivery Information Application</td></tr>
+<tr><td><b>DNC</b></td><td>Delivery Notice Card</td></tr>
+<tr><td><b>DRS</b></td><td>Decentralized Redirection Service</td></tr>
+<tr><td><b>DTB</b></td><td>Depot Transfer Bill</td></tr>
+<tr><td><b>DTPO</b></td><td>Deliver to Post Office</td></tr>
+<tr><td><b>DVIR</b></td><td>Daily Vehicle Inspection Report</td></tr>
+</table>`},
+{h:"CPC Acronyms (E-L)",content:`<table>
+<tr><th>Acronym</th><th>Full Name</th></tr>
+<tr><td><b>EFAP</b></td><td>Employee Family Assistance Program</td></tr>
+<tr><td><b>EM</b></td><td>Event Manager</td></tr>
+<tr><td><b>EMS</b></td><td>Express Mail Service</td></tr>
+<tr><td><b>ERN</b></td><td>Employer Notification Request</td></tr>
+<tr><td><b>ESDC</b></td><td>Employee & Social Development Canada</td></tr>
+<tr><td><b>ESS</b></td><td>Employee Self-Service</td></tr>
+<tr><td><b>EST</b></td><td>Electronic Shipping Tools</td></tr>
+<tr><td><b>FSA</b></td><td>Forward Sortation Area</td></tr>
+<tr><td><b>GD</b></td><td>General Delivery</td></tr>
+<tr><td><b>HH</b></td><td>Householder</td></tr>
+<tr><td><b>HOIR</b></td><td>Hazardous Occurrence Incident Report</td></tr>
+<tr><td><b>IA / LCA</b></td><td>Inside Assistant / Letter Carrier Assistant</td></tr>
+<tr><td><b>IDB</b></td><td>Items Delivered Bill</td></tr>
+<tr><td><b>IDC</b></td><td>Induct to Delivery Cart</td></tr>
+<tr><td><b>KMA (KMS)</b></td><td>Key Management Application (formerly Key Management System)</td></tr>
+<tr><td><b>LB(A)</b></td><td>Lock Box (Assembly)</td></tr>
+<tr><td><b>LC</b></td><td>Letter Carrier</td></tr>
+<tr><td><b>LCD</b></td><td>Letter Carrier Depot</td></tr>
+<tr><td><b>LDU</b></td><td>Local Delivery Unit</td></tr>
+<tr><td><b>LFT</b></td><td>Letterflatainer</td></tr>
+<tr><td><b>LJHSC</b></td><td>Local Joint Health and Safety Committee</td></tr>
+<tr><td><b>LTA</b></td><td>Long Term Assignment</td></tr>
+<tr><td><b>LVM</b></td><td>Large Volume Mailer</td></tr>
+<tr><td><b>LVR</b></td><td>Large Volume Receiver</td></tr>
+</table>`},
+{h:"CPC Acronyms (M-R)",content:`<table>
+<tr><th>Acronym</th><th>Full Name</th></tr>
+<tr><td><b>MLC / MM</b></td><td>Motorized Letter Carrier / Mail Mobile</td></tr>
+<tr><td><b>MMHE</b></td><td>Motorized Mail Handling Equipment</td></tr>
+<tr><td><b>MONO</b></td><td>Monotainer</td></tr>
+<tr><td><b>MR</b></td><td>Mailroom</td></tr>
+<tr><td><b>MSC</b></td><td>Mail Service Courier</td></tr>
+<tr><td><b>NGB</b></td><td>Next Generation Barcode</td></tr>
+<tr><td><b>NM</b></td><td>Neighbourhood Mail</td></tr>
+<tr><td><b>OFD</b></td><td>Out for Delivery</td></tr>
+<tr><td><b>OR</b></td><td>Other Relief</td></tr>
+<tr><td><b>O/S</b></td><td>Oversize</td></tr>
+<tr><td><b>PCI</b></td><td>Personal Contact Item</td></tr>
+<tr><td><b>PCR</b></td><td>Production Control and Reporting</td></tr>
+<tr><td><b>PDT</b></td><td>Portable Data Terminal</td></tr>
+<tr><td><b>PIF</b></td><td>Pacific International Facility</td></tr>
+<tr><td><b>PM</b></td><td>Personalized Mail</td></tr>
+<tr><td><b>POC</b></td><td>Point of Call</td></tr>
+<tr><td><b>POCUR</b></td><td>Point of Call Update Request</td></tr>
+<tr><td><b>PPC</b></td><td>Pacific Processing Centre</td></tr>
+<tr><td><b>PPE</b></td><td>Personal Protective Equipment</td></tr>
+<tr><td><b>PT</b></td><td>Postal Transformation</td></tr>
+<tr><td><b>RHD</b></td><td>Right Hand Drive</td></tr>
+<tr><td><b>RMO</b></td><td>Route Measurement Officer</td></tr>
+<tr><td><b>RO</b></td><td>Resource Officer</td></tr>
+<tr><td><b>RPG</b></td><td>Return Postage Guaranteed</td></tr>
+<tr><td><b>RPO</b></td><td>Retail Postal Outlet</td></tr>
+<tr><td><b>RSMC</b></td><td>Rural and Suburban Mail Carrier</td></tr>
+<tr><td><b>RTS</b></td><td>Return to Sender</td></tr>
+<tr><td><b>RVU</b></td><td>Receipt Verification Unit</td></tr>
+</table>`},
+{h:"CPC Acronyms (S-Z)",content:`<table>
+<tr><th>Acronym</th><th>Full Name</th></tr>
+<tr><td><b>SIS</b></td><td>Service Identification System</td></tr>
+<tr><td><b>S/L</b></td><td>Short and Long</td></tr>
+<tr><td><b>SLB</b></td><td>Street Letter Box</td></tr>
+<tr><td><b>SO-95</b></td><td>SLB Container</td></tr>
+<tr><td><b>SS</b></td><td>Suburban Service</td></tr>
+<tr><td><b>SSD</b></td><td>Separate Sort from Delivery</td></tr>
+<tr><td><b>SSINA</b></td><td>Successful Scan Item Not Available</td></tr>
+<tr><td><b>UMO</b></td><td>Undeliverable Mail Office</td></tr>
+<tr><td><b>VOP</b></td><td>Vehicle Operator Permit</td></tr>
+<tr><td><b>VOIR</b></td><td>Vehicle Operator Incident Report</td></tr>
+<tr><td><b>VR</b></td><td>Vacation Relief</td></tr>
+<tr><td><b>VTS</b></td><td>Vehicle Tray System</td></tr>
+</table>`},
+{h:"Street Furniture",content:`<table>
+<tr><th>Acronym</th><th>Full Name</th></tr>
+<tr><td><b>SLB</b></td><td>Street Letter Box</td></tr>
+<tr><td><b>CMB</b></td><td>Community Mailbox</td></tr>
+</table>`},
+{h:"Plant Machines",content:`<table>
+<tr><th>Acronym</th><th>Full Name</th></tr>
+<tr><td><b>FSM</b></td><td>(Alcatel) Flat Sortation Machine</td></tr>
+<tr><td><b>MLOCR</b></td><td>Multi-Line Optical Character Reader</td></tr>
+<tr><td><b>ODC/EFM</b></td><td>Open, Dump & Cull/Edger Facer Machine</td></tr>
+</table>`}
+]},
+{cat:"Sorting",title:"Sorting & Case Work",subs:[
+{h:"A-62 Sortation Case",content:`<p>The sortation case sequences your mail in delivery order and divides the route into manageable portions. It has 2-3 <b>modules</b>, each with multiple shelves. Each shelf has slots called <b>separations</b> (typically one per POC).</p>
+<div class="danger">In an A-62 sortation case, you sort ABOVE the case strips.</div>
+<h4>Key Features at Your Case</h4>
+<table><tr><th>Feature</th><th>Purpose</th></tr>
+<tr><td>Header board</td><td>Route organization info</td></tr>
+<tr><td>C-48 cart</td><td>Obtain mail from around the depot</td></tr>
+<tr><td>Elastic band holder</td><td>Elastics for bundling</td></tr>
+<tr><td>Anti-fatigue mat</td><td>Reduces effects of standing</td></tr>
+<tr><td>Case ledge</td><td>Surface for sorting and organizing</td></tr>
+</table>`},
+{h:"Reading the Case Strip",content:`<p>Below each shelf is a <b>case strip</b> showing civic numbers and street names. Key information on case strips:</p>
+<ul>
+<li><b>Change in strip colour</b> = change in street name</li>
+<li><b>Tie-out numbers</b> = order to pull out and bundle mail after sorting</li>
+<li><b>Coloured stripes at base</b> = which "colour day" for Neighbourhood Mail</li>
+<li><b>Business name</b> = if there is one at that address</li>
+<li><b>Dog sticker</b> = dog at that address</li>
+<li><b>Red dot (Consumers' Choice)</b> = customer opted out of NM. Red dot always appears AFTER the civic number. Yellow dot = apartment or business opt-out</li>
+</ul>
+<h4>Sorting Direction</h4>
+<p>Sort mail to match how civic addresses fall on the case strip. Higher number on left = sort with higher number to left. Match the case strip order because that's your line of route.</p>`},
+{h:"Where to Start When Sorting",content:`<ol class="steps">
+<li>Start with <b>Standard Lettermail (STD)</b>. Pick up a bundle with addresses facing up.</li>
+<li>For each item: look at the address, find the street name on the case strip.</li>
+<li>Read case modules like a book: left to right, top to bottom.</li>
+<li>Place the mail in the separation ABOVE the address on the case strip.</li>
+</ol>
+<h4>Sorting Different Mail Types</h4>
+<table><tr><th>Type</th><th>How to Sort</th></tr>
+<tr><td>Standard (STD)</td><td>Sort directly into case separations</td></tr>
+<tr><td>Oversize (OS)</td><td>Small OS goes in case like STD. Large OS: place identifier card in separation, put OS item in LFT or relay bag</td></tr>
+<tr><td>Packets & Documents</td><td>Small ones go in case. Large/uneven: use identifier card in separation, item goes in LFT or relay bag</td></tr>
+<tr><td>Barcoded Items</td><td>All barcoded items must be scanned BEFORE sorting</td></tr>
+</table>
+<h4>Blocking Technique</h4>
+<p>For new employees learning a case: divide all mail by street name first, then sort into the case one street at a time.</p>`},
+{h:"1000 Series Routes",content:`<p>Some routes have more POCs than the A-62 case can hold. The flip side of the case strips is used for additional points of call. These are called <b>1000 series routes</b> (also called flip routes or phantom routes).</p>
+<p>If you have a 1000 series route, you sort and tie out the first portion, then flip the case strips to sort the second portion.</p>
+<div class="warn">If tie-out numbers start with "1006" or similar, you have a 1000 series route.</div>`}
+]},
+{cat:"Header Board",title:"Reading the Header Board",subs:[
+{h:"Overview",content:`<div class="danger">Always study the header board FIRST when on a new route.</div>
+<p>The header board provides everything you need to know about the route. All header boards contain the same basic information across 6 main sections:</p>
+<div class="diagram" style="overflow-x:auto">
+<svg viewBox="0 0 820 1520" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9">
+<defs><style>text{dominant-baseline:central}</style></defs>
+<rect width="820" height="1520" fill="#fff"/>
+<!-- ===== TOP HEADER: Canada Post logo + Depot name ===== -->
+<rect x="5" y="5" width="80" height="40" fill="#e00000" rx="2"/>
+<text x="45" y="18" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">CANADA</text>
+<text x="45" y="32" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">POST</text>
+<rect x="87" y="5" width="380" height="40" fill="#fff" stroke="#000" stroke-width="1"/>
+<text x="277" y="25" text-anchor="middle" fill="#000" font-size="13" font-weight="700">BURNABY LCD NORTH FRASER 2 - LC0110</text>
+<rect x="469" y="5" width="120" height="40" fill="#fff" stroke="#000" stroke-width="1"/>
+<text x="529" y="19" text-anchor="middle" fill="#000" font-size="9" font-weight="600">Printed</text>
+<rect x="591" y="5" width="120" height="40" fill="#fff" stroke="#000" stroke-width="1"/>
+<text x="651" y="25" text-anchor="middle" fill="#000" font-size="10" font-weight="600">2026/02/21</text>
+<!-- Row: Start Time / Total POC / Hazards / Wave -->
+<rect x="5" y="47" width="130" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="10" y="56" fill="#000" font-size="8">Start Time</text>
+<rect x="137" y="47" width="60" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="167" y="56" text-anchor="middle" fill="#000" font-size="10" font-weight="700">10:10</text>
+<rect x="199" y="47" width="100" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="204" y="56" fill="#000" font-size="8">Total POC  <tspan font-weight="700">428</tspan></text>
+<rect x="301" y="47" width="170" height="18" fill="#f97316" stroke="#000" stroke-width="0.5"/>
+<text x="306" y="56" fill="#fff" font-size="8" font-weight="600">Total Hazards/Warnings</text>
+<rect x="473" y="47" width="40" height="18" fill="#f97316" stroke="#000" stroke-width="0.5"/>
+<text x="493" y="56" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">13</text>
+<!-- Row: Estimated Departure / Vehicle Type -->
+<rect x="5" y="67" width="130" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="10" y="76" fill="#000" font-size="8">Estimated Departure Time</text>
+<rect x="137" y="67" width="160" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="217" y="76" text-anchor="middle" fill="#000" font-size="10" font-weight="700">11:30</text>
+<rect x="299" y="67" width="170" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="304" y="76" fill="#000" font-size="8">Vehicle Type  <tspan font-weight="700">Step Van</tspan></text>
+<rect x="600" y="47" width="115" height="38" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="657" y="66" text-anchor="middle" fill="#000" font-size="11" font-weight="700">Wave 2</text>
+<!-- Row: Phone / Keys -->
+<rect x="5" y="87" width="60" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="10" y="96" fill="#000" font-size="8">Phone</text>
+<rect x="67" y="87" width="120" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="72" y="96" fill="#000" font-size="9" font-weight="600">604-555-5555</text>
+<rect x="189" y="87" width="40" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="194" y="96" fill="#000" font-size="8">Keys</text>
+<rect x="231" y="87" width="290" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="236" y="96" fill="#000" font-size="9">11281,24485,35189,13112</text>
+<!-- Row: Special Instructions -->
+<rect x="5" y="107" width="120" height="20" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="10" y="117" fill="#000" font-size="8" font-weight="600">SPECIAL INSTRUCTIONS</text>
+<rect x="127" y="107" width="588" height="20" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="132" y="117" fill="#000" font-size="9" font-weight="700">DROP OWN CARDED ITEMS- Gordon Park RPO - 6495 Victoria Dr.</text>
+<!-- Row: AM / PM delivery portions -->
+<rect x="5" y="129" width="120" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="10" y="138" fill="#000" font-size="8">AM delivery portion</text>
+<rect x="127" y="129" width="80" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="167" y="138" text-anchor="middle" fill="#000" font-size="10" font-weight="700">1 - 21</text>
+<rect x="209" y="129" width="120" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="269" y="138" text-anchor="middle" fill="#000" font-size="8">PM delivery portion</text>
+<rect x="331" y="129" width="180" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="421" y="138" text-anchor="middle" fill="#000" font-size="10" font-weight="700">22 - 42</text>
+<!-- ===== SCHEDULED CUSTOMER PICKUP ===== -->
+<rect x="5" y="152" width="710" height="14" fill="#f97316"/>
+<text x="360" y="159" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">Scheduled Customer Pickup</text>
+<!-- Pickup table header -->
+<rect x="5" y="168" width="110" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.5"/>
+<text x="10" y="176" fill="#000" font-size="8" font-weight="600">Name</text>
+<rect x="117" y="168" width="150" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.5"/>
+<text x="122" y="176" fill="#000" font-size="8" font-weight="600">Address</text>
+<rect x="269" y="168" width="60" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.5"/>
+<text x="299" y="176" text-anchor="middle" fill="#000" font-size="8" font-weight="600">Mon</text>
+<rect x="331" y="168" width="60" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.5"/>
+<text x="361" y="176" text-anchor="middle" fill="#000" font-size="8" font-weight="600">Tues</text>
+<rect x="393" y="168" width="60" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.5"/>
+<text x="423" y="176" text-anchor="middle" fill="#000" font-size="8" font-weight="600">Wed</text>
+<rect x="455" y="168" width="60" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.5"/>
+<text x="485" y="176" text-anchor="middle" fill="#000" font-size="8" font-weight="600">Thu</text>
+<rect x="517" y="168" width="60" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.5"/>
+<text x="547" y="176" text-anchor="middle" fill="#000" font-size="8" font-weight="600">Fri</text>
+<rect x="579" y="168" width="60" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.5"/>
+<text x="609" y="176" text-anchor="middle" fill="#000" font-size="8" font-weight="600">Time</text>
+<!-- ULP row -->
+<rect x="5" y="186" width="110" height="16" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="10" y="194" fill="#000" font-size="8">ULP</text>
+<rect x="117" y="186" width="150" height="16" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="122" y="194" fill="#000" font-size="8">5289 VICTORIA DR</text>
+<rect x="269" y="186" width="60" height="16" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="299" y="194" text-anchor="middle" fill="#000" font-size="10">&#x2713;</text>
+<rect x="331" y="186" width="60" height="16" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="361" y="194" text-anchor="middle" fill="#000" font-size="10">&#x2713;</text>
+<rect x="393" y="186" width="60" height="16" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="423" y="194" text-anchor="middle" fill="#000" font-size="10">&#x2713;</text>
+<rect x="455" y="186" width="60" height="16" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="485" y="194" text-anchor="middle" fill="#000" font-size="10">&#x2713;</text>
+<rect x="517" y="186" width="60" height="16" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="547" y="194" text-anchor="middle" fill="#000" font-size="8">X</text>
+<rect x="579" y="186" width="60" height="16" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="609" y="194" text-anchor="middle" fill="#000" font-size="8">16:10</text>
+<!-- SLB CLEARANCE -->
+<rect x="5" y="204" width="710" height="14" fill="#e00000"/>
+<text x="360" y="211" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">SLB CLEARANCE</text>
+<rect x="5" y="220" width="110" height="16" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="10" y="228" fill="#000" font-size="8">6993 ARGYLE Dr.</text>
+<rect x="117" y="220" width="150" height="16" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="122" y="228" fill="#000" font-size="8">Argyle Dr.&amp; 55Th Ave</text>
+<rect x="269" y="220" width="60" height="16" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="299" y="228" text-anchor="middle" fill="#000" font-size="10">&#x2713;</text>
+<rect x="331" y="220" width="60" height="16" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="361" y="228" text-anchor="middle" fill="#000" font-size="10">&#x2713;</text>
+<rect x="393" y="220" width="60" height="16" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<rect x="455" y="220" width="60" height="16" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<rect x="517" y="220" width="60" height="16" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<rect x="579" y="220" width="60" height="16" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="609" y="228" text-anchor="middle" fill="#000" font-size="8">15:00</text>
+<!-- ===== OT SPLITS ===== -->
+<rect x="5" y="244" width="80" height="32" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="10" y="254" fill="#000" font-size="8" font-weight="700">OT SPLITS</text>
+<rect x="87" y="244" width="40" height="32" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="92" y="260" fill="#000" font-size="8">2/4 Way</text>
+<rect x="129" y="244" width="20" height="32" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="139" y="260" text-anchor="middle" fill="#000" font-size="8" font-weight="700">1</text>
+<rect x="151" y="244" width="100" height="32" fill="#fef3cd" stroke="#000" stroke-width="0.5"/>
+<text x="201" y="254" text-anchor="middle" fill="#000" font-size="8" font-weight="700">SORT &amp; PULL</text>
+<text x="201" y="268" text-anchor="middle" fill="#000" font-size="8" font-weight="700">HH PREP</text>
+<rect x="253" y="244" width="20" height="32" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="263" y="260" text-anchor="middle" fill="#000" font-size="8" font-weight="700">2</text>
+<rect x="275" y="244" width="100" height="32" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="325" y="260" text-anchor="middle" fill="#000" font-size="10" font-weight="700">1 - 16</text>
+<rect x="377" y="244" width="20" height="32" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="387" y="260" text-anchor="middle" fill="#000" font-size="8" font-weight="700">3</text>
+<rect x="399" y="244" width="100" height="32" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="449" y="260" text-anchor="middle" fill="#000" font-size="10" font-weight="700">17 - 26</text>
+<rect x="501" y="244" width="20" height="32" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="511" y="260" text-anchor="middle" fill="#000" font-size="8" font-weight="700">4</text>
+<rect x="523" y="244" width="192" height="32" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="619" y="260" text-anchor="middle" fill="#000" font-size="10" font-weight="700">27 - 42</text>
+<!-- ===== NM DELIVERY ===== -->
+<rect x="5" y="280" width="80" height="38" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="10" y="293" fill="#000" font-size="8" font-weight="700">NM Delivery</text>
+<!-- 3 Day row -->
+<rect x="87" y="280" width="40" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="92" y="289" fill="#000" font-size="8" font-weight="600">3 Day</text>
+<rect x="129" y="280" width="20" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="139" y="289" text-anchor="middle" fill="#000" font-size="8" font-weight="700">1</text>
+<rect x="151" y="280" width="100" height="18" fill="#f97316" stroke="#000" stroke-width="0.5"/>
+<text x="201" y="289" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">1 - 13</text>
+<rect x="253" y="280" width="20" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="263" y="289" text-anchor="middle" fill="#000" font-size="8" font-weight="700">2</text>
+<rect x="275" y="280" width="222" height="18" fill="#ec4899" stroke="#000" stroke-width="0.5"/>
+<text x="386" y="289" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">14 - 24</text>
+<rect x="499" y="280" width="20" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="509" y="289" text-anchor="middle" fill="#000" font-size="8" font-weight="700">3</text>
+<rect x="521" y="280" width="194" height="18" fill="#3b82f6" stroke="#000" stroke-width="0.5"/>
+<text x="618" y="289" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">25 - 42</text>
+<!-- 5 Day row -->
+<rect x="87" y="300" width="40" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="92" y="309" fill="#000" font-size="8" font-weight="600">5 Day</text>
+<rect x="129" y="300" width="20" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="139" y="309" text-anchor="middle" fill="#000" font-size="8" font-weight="700">1</text>
+<rect x="151" y="300" width="100" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="201" y="309" text-anchor="middle" fill="#000" font-size="9" font-weight="700">1 - 8</text>
+<rect x="253" y="300" width="20" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="263" y="309" text-anchor="middle" fill="#000" font-size="8" font-weight="700">2</text>
+<rect x="275" y="300" width="100" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="325" y="309" text-anchor="middle" fill="#000" font-size="9" font-weight="700">9 - 16</text>
+<rect x="377" y="300" width="20" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="387" y="309" text-anchor="middle" fill="#000" font-size="8" font-weight="700">3</text>
+<rect x="399" y="300" width="100" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="449" y="309" text-anchor="middle" fill="#000" font-size="9" font-weight="700">17 - 23</text>
+<rect x="501" y="300" width="20" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="511" y="309" text-anchor="middle" fill="#000" font-size="8" font-weight="700">4</text>
+<rect x="523" y="300" width="100" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="573" y="309" text-anchor="middle" fill="#000" font-size="9" font-weight="700">24 - 31</text>
+<rect x="625" y="300" width="20" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="635" y="309" text-anchor="middle" fill="#000" font-size="8" font-weight="700">5</text>
+<rect x="647" y="300" width="68" height="18" fill="#fff" stroke="#000" stroke-width="0.5"/>
+<text x="681" y="309" text-anchor="middle" fill="#000" font-size="9" font-weight="700">32 - 42</text>
+<!-- ===== MAIN TABLE: Stop data ===== -->
+<!-- Column headers -->
+<rect x="5" y="326" width="30" height="28" fill="#1a1a2e" stroke="#000" stroke-width="0.5"/>
+<text x="20" y="340" text-anchor="middle" fill="#fff" font-size="7" font-weight="700">RPO</text>
+<rect x="37" y="326" width="30" height="28" fill="#1a1a2e" stroke="#000" stroke-width="0.5"/>
+<text x="52" y="340" text-anchor="middle" fill="#fff" font-size="7" font-weight="700">FSA</text>
+<rect x="69" y="326" width="30" height="28" fill="#1a1a2e" stroke="#000" stroke-width="0.5"/>
+<text x="84" y="340" text-anchor="middle" fill="#fff" font-size="7" font-weight="700">Stop</text>
+<rect x="101" y="326" width="40" height="28" fill="#1a1a2e" stroke="#000" stroke-width="0.5"/>
+<text x="121" y="340" text-anchor="middle" fill="#fff" font-size="7" font-weight="700">Tie-out</text>
+<rect x="143" y="326" width="160" height="28" fill="#1a1a2e" stroke="#000" stroke-width="0.5"/>
+<text x="223" y="340" text-anchor="middle" fill="#fff" font-size="7" font-weight="700">Street</text>
+<rect x="305" y="326" width="55" height="28" fill="#1a1a2e" stroke="#000" stroke-width="0.5"/>
+<text x="332" y="340" text-anchor="middle" fill="#fff" font-size="7" font-weight="700">From</text>
+<rect x="362" y="326" width="55" height="28" fill="#1a1a2e" stroke="#000" stroke-width="0.5"/>
+<text x="389" y="340" text-anchor="middle" fill="#fff" font-size="7" font-weight="700">To</text>
+<!-- R/NM headers -->
+<rect x="419" y="326" width="30" height="14" fill="#1a1a2e" stroke="#000" stroke-width="0.5"/>
+<rect x="451" y="326" width="30" height="14" fill="#1a1a2e" stroke="#000" stroke-width="0.5"/>
+<text x="434" y="333" text-anchor="middle" fill="#fff" font-size="6">R</text>
+<text x="466" y="333" text-anchor="middle" fill="#fff" font-size="6">NM</text>
+<rect x="419" y="342" width="30" height="12" fill="#e5e7eb" stroke="#000" stroke-width="0.5"/>
+<rect x="451" y="342" width="30" height="12" fill="#e5e7eb" stroke="#000" stroke-width="0.5"/>
+<text x="434" y="348" text-anchor="middle" fill="#000" font-size="6">R</text>
+<text x="466" y="348" text-anchor="middle" fill="#000" font-size="6">NM</text>
+<!-- A headers -->
+<rect x="483" y="326" width="55" height="14" fill="#1a1a2e" stroke="#000" stroke-width="0.5"/>
+<text x="510" y="333" text-anchor="middle" fill="#fff" font-size="6" font-weight="700">A</text>
+<rect x="483" y="342" width="27" height="12" fill="#e5e7eb" stroke="#000" stroke-width="0.5"/>
+<rect x="512" y="342" width="26" height="12" fill="#e5e7eb" stroke="#000" stroke-width="0.5"/>
+<text x="496" y="348" text-anchor="middle" fill="#000" font-size="6">A</text>
+<text x="525" y="348" text-anchor="middle" fill="#000" font-size="6">NM</text>
+<!-- C/B headers -->
+<rect x="540" y="326" width="55" height="14" fill="#1a1a2e" stroke="#000" stroke-width="0.5"/>
+<text x="567" y="333" text-anchor="middle" fill="#fff" font-size="6" font-weight="700">C/B</text>
+<rect x="540" y="342" width="27" height="12" fill="#e5e7eb" stroke="#000" stroke-width="0.5"/>
+<rect x="569" y="342" width="26" height="12" fill="#e5e7eb" stroke="#000" stroke-width="0.5"/>
+<text x="553" y="348" text-anchor="middle" fill="#000" font-size="6">C/B</text>
+<text x="582" y="348" text-anchor="middle" fill="#000" font-size="6">NM</text>
+<!-- POC Total / NM Total -->
+<rect x="597" y="326" width="55" height="28" fill="#1a1a2e" stroke="#000" stroke-width="0.5"/>
+<text x="624" y="336" text-anchor="middle" fill="#fff" font-size="6" font-weight="700">POC</text>
+<text x="624" y="348" text-anchor="middle" fill="#fff" font-size="6" font-weight="700">Total</text>
+<rect x="654" y="326" width="55" height="28" fill="#1a1a2e" stroke="#000" stroke-width="0.5"/>
+<text x="681" y="336" text-anchor="middle" fill="#fff" font-size="6" font-weight="700">NM</text>
+<text x="681" y="348" text-anchor="middle" fill="#fff" font-size="6" font-weight="700">Total</text>
+<!-- ===== PARK & LOOP 1 (green bar) ===== -->
+<rect x="5" y="356" width="704" height="14" fill="#22c55e"/>
+<text x="143" y="363" fill="#fff" font-size="7" font-weight="700">PARK &amp; LOOP 1</text>
+<text x="440" y="363" fill="#fff" font-size="7" font-weight="600">1807 E 56TH AVE</text>
+<!-- Stop 1 -->
+<rect x="69" y="372" width="30" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="84" y="380" text-anchor="middle" fill="#000" font-size="8">1</text>
+<rect x="143" y="372" width="160" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="148" y="380" fill="#000" font-size="8">E 56TH AVE</text>
+<rect x="305" y="372" width="55" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="332" y="380" text-anchor="middle" fill="#000" font-size="8">1807</text>
+<rect x="362" y="372" width="55" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="389" y="380" text-anchor="middle" fill="#000" font-size="8">1891</text>
+<rect x="419" y="372" width="30" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="434" y="380" text-anchor="middle" fill="#000" font-size="8">8</text>
+<rect x="451" y="372" width="30" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="466" y="380" text-anchor="middle" fill="#000" font-size="8">6</text>
+<rect x="597" y="372" width="55" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="624" y="380" text-anchor="middle" fill="#000" font-size="8">8</text>
+<rect x="654" y="372" width="55" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="681" y="380" text-anchor="middle" fill="#000" font-size="8">6</text>
+<!-- Stop 2 -->
+<rect x="69" y="390" width="30" height="16" fill="#f9fafb" stroke="#000" stroke-width="0.3"/>
+<text x="84" y="398" text-anchor="middle" fill="#000" font-size="8">2</text>
+<rect x="143" y="390" width="160" height="16" fill="#f9fafb" stroke="#000" stroke-width="0.3"/>
+<text x="148" y="398" fill="#000" font-size="8">BALMORAL ST</text>
+<rect x="305" y="390" width="55" height="16" fill="#f9fafb" stroke="#000" stroke-width="0.3"/>
+<text x="332" y="398" text-anchor="middle" fill="#000" font-size="8">7008</text>
+<rect x="362" y="390" width="55" height="16" fill="#f9fafb" stroke="#000" stroke-width="0.3"/>
+<text x="389" y="398" text-anchor="middle" fill="#000" font-size="8">7008</text>
+<rect x="419" y="390" width="30" height="16" fill="#f9fafb" stroke="#000" stroke-width="0.3"/>
+<rect x="451" y="390" width="30" height="16" fill="#f9fafb" stroke="#000" stroke-width="0.3"/>
+<rect x="483" y="390" width="27" height="16" fill="#f9fafb" stroke="#000" stroke-width="0.3"/>
+<text x="496" y="398" text-anchor="middle" fill="#000" font-size="8">21</text>
+<rect x="512" y="390" width="26" height="16" fill="#f9fafb" stroke="#000" stroke-width="0.3"/>
+<text x="525" y="398" text-anchor="middle" fill="#000" font-size="8">19</text>
+<rect x="597" y="390" width="55" height="16" fill="#f9fafb" stroke="#000" stroke-width="0.3"/>
+<text x="624" y="398" text-anchor="middle" fill="#000" font-size="8">21</text>
+<rect x="654" y="390" width="55" height="16" fill="#f9fafb" stroke="#000" stroke-width="0.3"/>
+<text x="681" y="398" text-anchor="middle" fill="#000" font-size="8">19</text>
+<!-- Stop 3 -->
+<rect x="69" y="408" width="30" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="84" y="416" text-anchor="middle" fill="#000" font-size="8">3</text>
+<rect x="143" y="408" width="160" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="148" y="416" fill="#000" font-size="8">ARGYLE DR</text>
+<rect x="305" y="408" width="55" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="332" y="416" text-anchor="middle" fill="#000" font-size="8">1950</text>
+<rect x="362" y="408" width="55" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="389" y="416" text-anchor="middle" fill="#000" font-size="8">1920</text>
+<rect x="540" y="408" width="27" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="553" y="416" text-anchor="middle" fill="#000" font-size="8">2</text>
+<rect x="569" y="408" width="26" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="582" y="416" text-anchor="middle" fill="#000" font-size="8">2</text>
+<rect x="597" y="408" width="55" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="624" y="416" text-anchor="middle" fill="#000" font-size="8">2</text>
+<rect x="654" y="408" width="55" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="681" y="416" text-anchor="middle" fill="#000" font-size="8">2</text>
+<!-- Stops 4-9 abbreviated -->
+<rect x="69" y="426" width="30" height="16" fill="#f9fafb" stroke="#000" stroke-width="0.3"/>
+<text x="84" y="434" text-anchor="middle" fill="#000" font-size="8">4</text>
+<rect x="143" y="426" width="160" height="16" fill="#f9fafb" stroke="#000" stroke-width="0.3"/>
+<text x="148" y="434" fill="#000" font-size="8">NASSAU DR</text>
+<rect x="305" y="426" width="55" height="16" fill="#f9fafb" stroke="#000" stroke-width="0.3"/>
+<text x="332" y="434" text-anchor="middle" fill="#000" font-size="8">1939</text>
+<rect x="362" y="426" width="55" height="16" fill="#f9fafb" stroke="#000" stroke-width="0.3"/>
+<text x="389" y="434" text-anchor="middle" fill="#000" font-size="8">1716</text>
+<rect x="419" y="426" width="30" height="16" fill="#f9fafb" stroke="#000" stroke-width="0.3"/>
+<text x="434" y="434" text-anchor="middle" fill="#000" font-size="8">30</text>
+<rect x="451" y="426" width="30" height="16" fill="#f9fafb" stroke="#000" stroke-width="0.3"/>
+<text x="466" y="434" text-anchor="middle" fill="#000" font-size="8">27</text>
+<rect x="597" y="426" width="55" height="16" fill="#f9fafb" stroke="#000" stroke-width="0.3"/>
+<text x="624" y="434" text-anchor="middle" fill="#000" font-size="8">30</text>
+<rect x="654" y="426" width="55" height="16" fill="#f9fafb" stroke="#000" stroke-width="0.3"/>
+<text x="681" y="434" text-anchor="middle" fill="#000" font-size="8">27</text>
+<!-- Subtotal row for Park & Loop 1 -->
+<rect x="143" y="444" width="160" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="223" y="452" text-anchor="middle" fill="#000" font-size="7" font-weight="600">Arr&#xEA;t /Stop Total</text>
+<rect x="419" y="444" width="30" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="434" y="452" text-anchor="middle" fill="#000" font-size="8" font-weight="700">69</text>
+<rect x="451" y="444" width="30" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="466" y="452" text-anchor="middle" fill="#000" font-size="8" font-weight="700">59</text>
+<rect x="483" y="444" width="27" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="496" y="452" text-anchor="middle" fill="#000" font-size="8" font-weight="700">21</text>
+<rect x="512" y="444" width="26" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="525" y="452" text-anchor="middle" fill="#000" font-size="8" font-weight="700">19</text>
+<rect x="540" y="444" width="27" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="553" y="452" text-anchor="middle" fill="#000" font-size="8" font-weight="700">2</text>
+<rect x="569" y="444" width="26" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="582" y="452" text-anchor="middle" fill="#000" font-size="8" font-weight="700">2</text>
+<rect x="597" y="444" width="55" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="624" y="452" text-anchor="middle" fill="#000" font-size="8" font-weight="700">92</text>
+<rect x="654" y="444" width="55" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="681" y="452" text-anchor="middle" fill="#000" font-size="8" font-weight="700">80</text>
+<!-- ===== PARK & LOOP 2 (yellow bar) ===== -->
+<rect x="5" y="464" width="704" height="14" fill="#eab308"/>
+<text x="143" y="471" fill="#fff" font-size="7" font-weight="700">PARK &amp; LOOP 2</text>
+<text x="440" y="471" fill="#fff" font-size="7" font-weight="600">1511 E 57TH AVE</text>
+<!-- Stop 10 -->
+<rect x="69" y="480" width="30" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="84" y="488" text-anchor="middle" fill="#000" font-size="8">10</text>
+<rect x="143" y="480" width="160" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="148" y="488" fill="#000" font-size="8">E 57TH AVE</text>
+<rect x="305" y="480" width="55" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="332" y="488" text-anchor="middle" fill="#000" font-size="8">1511</text>
+<rect x="362" y="480" width="55" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="389" y="488" text-anchor="middle" fill="#000" font-size="8">1699</text>
+<rect x="419" y="480" width="30" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="434" y="488" text-anchor="middle" fill="#000" font-size="8">21</text>
+<rect x="451" y="480" width="30" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="466" y="488" text-anchor="middle" fill="#000" font-size="8">17</text>
+<rect x="597" y="480" width="55" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="624" y="488" text-anchor="middle" fill="#000" font-size="8">21</text>
+<rect x="654" y="480" width="55" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="681" y="488" text-anchor="middle" fill="#000" font-size="8">17</text>
+<!-- Abbreviated indicator -->
+<rect x="69" y="498" width="640" height="16" fill="#f5f5f7" stroke="#000" stroke-width="0.3"/>
+<text x="389" y="506" text-anchor="middle" fill="#6b7280" font-size="8" font-style="italic">... stops 11-16 (see full header board) ...</text>
+<!-- Subtotal for P&L 2 -->
+<rect x="143" y="516" width="160" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="223" y="524" text-anchor="middle" fill="#000" font-size="7" font-weight="600">Arr&#xEA;t /Stop Total</text>
+<rect x="419" y="516" width="30" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="434" y="524" text-anchor="middle" fill="#000" font-size="8" font-weight="700">59</text>
+<rect x="451" y="516" width="30" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="466" y="524" text-anchor="middle" fill="#000" font-size="8" font-weight="700">49</text>
+<rect x="597" y="516" width="55" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="624" y="524" text-anchor="middle" fill="#000" font-size="8" font-weight="700">72</text>
+<rect x="654" y="516" width="55" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="681" y="524" text-anchor="middle" fill="#000" font-size="8" font-weight="700">59</text>
+<!-- ===== STOP section (blue CMB) ===== -->
+<rect x="5" y="536" width="704" height="14" fill="#3b82f6"/>
+<text x="143" y="543" fill="#fff" font-size="7" font-weight="700">STOP</text>
+<rect x="5" y="552" width="704" height="14" fill="#93c5fd"/>
+<text x="10" y="559" fill="#1e3a5f" font-size="7" font-weight="600">CMB SITE: VSP0022</text>
+<text x="305" y="559" fill="#1e3a5f" font-size="7">located 1448 54 TH Ave - 11281</text>
+<!-- Stop 17 -->
+<rect x="69" y="568" width="30" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="84" y="576" text-anchor="middle" fill="#000" font-size="8">17</text>
+<rect x="143" y="568" width="160" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="148" y="576" fill="#000" font-size="8">KNIGHT ST</text>
+<rect x="305" y="568" width="55" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="332" y="576" text-anchor="middle" fill="#000" font-size="8">7108</text>
+<rect x="362" y="568" width="55" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="389" y="576" text-anchor="middle" fill="#000" font-size="8">7282</text>
+<rect x="419" y="568" width="30" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="434" y="576" text-anchor="middle" fill="#000" font-size="8">10</text>
+<rect x="451" y="568" width="30" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="466" y="576" text-anchor="middle" fill="#000" font-size="8">8</text>
+<rect x="597" y="568" width="55" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="624" y="576" text-anchor="middle" fill="#000" font-size="8">10</text>
+<rect x="654" y="568" width="55" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="681" y="576" text-anchor="middle" fill="#000" font-size="8">8</text>
+<!-- Abbreviated stops 18-21 -->
+<rect x="69" y="586" width="640" height="16" fill="#f5f5f7" stroke="#000" stroke-width="0.3"/>
+<text x="389" y="594" text-anchor="middle" fill="#6b7280" font-size="8" font-style="italic">... stops 18-21 ...</text>
+<rect x="143" y="604" width="160" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="223" y="612" text-anchor="middle" fill="#000" font-size="7" font-weight="600">Arr&#xEA;t /Stop Total</text>
+<rect x="419" y="604" width="30" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="434" y="612" text-anchor="middle" fill="#000" font-size="8" font-weight="700">51</text>
+<rect x="451" y="604" width="30" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="466" y="612" text-anchor="middle" fill="#000" font-size="8" font-weight="700">41</text>
+<rect x="597" y="604" width="55" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="624" y="612" text-anchor="middle" fill="#000" font-size="8" font-weight="700">51</text>
+<rect x="654" y="604" width="55" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="681" y="612" text-anchor="middle" fill="#000" font-size="8" font-weight="700">40</text>
+<!-- ===== PARK & LOOP 4 (pink) ===== -->
+<rect x="5" y="624" width="704" height="14" fill="#ec4899"/>
+<text x="143" y="631" fill="#fff" font-size="7" font-weight="700">PARK &amp; LOOP 4</text>
+<text x="440" y="631" fill="#fff" font-size="7" font-weight="600">7020 LANARK ST</text>
+<rect x="69" y="640" width="640" height="16" fill="#f5f5f7" stroke="#000" stroke-width="0.3"/>
+<text x="389" y="648" text-anchor="middle" fill="#6b7280" font-size="8" font-style="italic">... stops 22-27 ...</text>
+<rect x="143" y="658" width="160" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="223" y="666" text-anchor="middle" fill="#000" font-size="7" font-weight="600">Arr&#xEA;t /Stop Total</text>
+<rect x="419" y="658" width="30" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="434" y="666" text-anchor="middle" fill="#000" font-size="8" font-weight="700">110</text>
+<rect x="451" y="658" width="30" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="466" y="666" text-anchor="middle" fill="#000" font-size="8" font-weight="700">94</text>
+<rect x="597" y="658" width="55" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="624" y="666" text-anchor="middle" fill="#000" font-size="8" font-weight="700">110</text>
+<rect x="654" y="658" width="55" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="681" y="666" text-anchor="middle" fill="#000" font-size="8" font-weight="700">94</text>
+<!-- ===== PARK & LOOP 5 (red) ===== -->
+<rect x="5" y="678" width="704" height="14" fill="#e00000"/>
+<text x="143" y="685" fill="#fff" font-size="7" font-weight="700">PARK &amp; LOOP 5</text>
+<text x="440" y="685" fill="#fff" font-size="7" font-weight="600">7011 FLEMING ST</text>
+<rect x="69" y="694" width="640" height="16" fill="#f5f5f7" stroke="#000" stroke-width="0.3"/>
+<text x="389" y="702" text-anchor="middle" fill="#6b7280" font-size="8" font-style="italic">... stops 28-32 ...</text>
+<!-- SLB Clearance row -->
+<rect x="5" y="712" width="704" height="16" fill="#fef3cd" stroke="#000" stroke-width="0.3"/>
+<text x="10" y="720" fill="#000" font-size="7" font-weight="600">SLB Clearance - 6993 ARGYLE ST (Corner of E55TH AVE and ARGYLE ST) - 13112</text>
+<!-- Stop 33 -->
+<rect x="69" y="730" width="30" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="84" y="738" text-anchor="middle" fill="#000" font-size="8">33</text>
+<rect x="143" y="730" width="160" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="148" y="738" fill="#000" font-size="8">E 55TH AVE</text>
+<rect x="305" y="730" width="55" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="332" y="738" text-anchor="middle" fill="#000" font-size="8">1682</text>
+<rect x="362" y="730" width="55" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="389" y="738" text-anchor="middle" fill="#000" font-size="8">1608</text>
+<rect x="419" y="730" width="30" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="434" y="738" text-anchor="middle" fill="#000" font-size="8">5</text>
+<rect x="451" y="730" width="30" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="466" y="738" text-anchor="middle" fill="#000" font-size="8">5</text>
+<rect x="597" y="730" width="55" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="624" y="738" text-anchor="middle" fill="#000" font-size="8">5</text>
+<rect x="654" y="730" width="55" height="16" fill="#fff" stroke="#000" stroke-width="0.3"/>
+<text x="681" y="738" text-anchor="middle" fill="#000" font-size="8">5</text>
+<!-- RELOAD OPPORTUNITY -->
+<rect x="5" y="748" width="704" height="14" fill="#a855f7"/>
+<text x="143" y="755" fill="#fff" font-size="7" font-weight="700">RELOAD OPPORTUNITY</text>
+<!-- Remaining stops 34-42 abbreviated -->
+<rect x="69" y="764" width="640" height="16" fill="#f5f5f7" stroke="#000" stroke-width="0.3"/>
+<text x="389" y="772" text-anchor="middle" fill="#6b7280" font-size="8" font-style="italic">... stops 34-42 ...</text>
+<!-- Stop Total -->
+<rect x="143" y="782" width="160" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="223" y="790" text-anchor="middle" fill="#000" font-size="7" font-weight="600">Stop Total</text>
+<rect x="419" y="782" width="30" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="434" y="790" text-anchor="middle" fill="#000" font-size="8" font-weight="700">104</text>
+<rect x="451" y="782" width="30" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="466" y="790" text-anchor="middle" fill="#000" font-size="8" font-weight="700">89</text>
+<rect x="597" y="782" width="55" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="624" y="790" text-anchor="middle" fill="#000" font-size="8" font-weight="700">104</text>
+<rect x="654" y="782" width="55" height="16" fill="#e5e7eb" stroke="#000" stroke-width="0.3"/>
+<text x="681" y="790" text-anchor="middle" fill="#000" font-size="8" font-weight="700">89</text>
+<!-- ===== COLOUR TOTALS ===== -->
+<rect x="5" y="806" width="250" height="20" fill="#f97316" stroke="#000" stroke-width="0.5"/>
+<text x="10" y="816" fill="#fff" font-size="9" font-weight="700">ORANGE</text>
+<rect x="257" y="806" width="100" height="20" fill="#f97316" stroke="#000" stroke-width="0.5"/>
+<text x="307" y="816" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">TOTAL 1/3</text>
+<rect x="419" y="806" width="30" height="20" fill="#f97316" stroke="#000" stroke-width="0.5"/>
+<text x="434" y="816" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">111</text>
+<rect x="451" y="806" width="30" height="20" fill="#f97316" stroke="#000" stroke-width="0.5"/>
+<text x="466" y="816" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">96</text>
+<rect x="483" y="806" width="27" height="20" fill="#f97316" stroke="#000" stroke-width="0.5"/>
+<text x="496" y="816" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">21</text>
+<rect x="512" y="806" width="26" height="20" fill="#f97316" stroke="#000" stroke-width="0.5"/>
+<text x="525" y="816" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">19</text>
+<rect x="540" y="806" width="27" height="20" fill="#f97316" stroke="#000" stroke-width="0.5"/>
+<text x="553" y="816" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">2</text>
+<rect x="569" y="806" width="26" height="20" fill="#f97316" stroke="#000" stroke-width="0.5"/>
+<text x="582" y="816" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">2</text>
+<rect x="597" y="806" width="55" height="20" fill="#f97316" stroke="#000" stroke-width="0.5"/>
+<text x="624" y="816" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">134</text>
+<rect x="654" y="806" width="55" height="20" fill="#f97316" stroke="#000" stroke-width="0.5"/>
+<text x="681" y="816" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">117</text>
+<!-- Pink total -->
+<rect x="5" y="828" width="250" height="20" fill="#ec4899" stroke="#000" stroke-width="0.5"/>
+<text x="10" y="838" fill="#fff" font-size="9" font-weight="700">PINK</text>
+<rect x="257" y="828" width="100" height="20" fill="#ec4899" stroke="#000" stroke-width="0.5"/>
+<text x="307" y="838" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">TOTAL 2/3</text>
+<rect x="419" y="828" width="30" height="20" fill="#ec4899" stroke="#000" stroke-width="0.5"/>
+<text x="434" y="838" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">118</text>
+<rect x="451" y="828" width="30" height="20" fill="#ec4899" stroke="#000" stroke-width="0.5"/>
+<text x="466" y="838" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">93</text>
+<rect x="483" y="828" width="27" height="20" fill="#ec4899" stroke="#000" stroke-width="0.5"/>
+<text x="496" y="838" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">7</text>
+<rect x="512" y="828" width="26" height="20" fill="#ec4899" stroke="#000" stroke-width="0.5"/>
+<text x="525" y="838" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">5</text>
+<rect x="540" y="828" width="27" height="20" fill="#ec4899" stroke="#000" stroke-width="0.5"/>
+<text x="553" y="838" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">9</text>
+<rect x="569" y="828" width="26" height="20" fill="#ec4899" stroke="#000" stroke-width="0.5"/>
+<text x="582" y="838" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">8</text>
+<rect x="597" y="828" width="55" height="20" fill="#ec4899" stroke="#000" stroke-width="0.5"/>
+<text x="624" y="838" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">134</text>
+<rect x="654" y="828" width="55" height="20" fill="#ec4899" stroke="#000" stroke-width="0.5"/>
+<text x="681" y="838" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">106</text>
+<!-- Blue total -->
+<rect x="5" y="850" width="250" height="20" fill="#3b82f6" stroke="#000" stroke-width="0.5"/>
+<text x="10" y="860" fill="#fff" font-size="9" font-weight="700">BLUE</text>
+<rect x="257" y="850" width="100" height="20" fill="#3b82f6" stroke="#000" stroke-width="0.5"/>
+<text x="307" y="860" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">TOTAL 3/3</text>
+<rect x="419" y="850" width="30" height="20" fill="#3b82f6" stroke="#000" stroke-width="0.5"/>
+<text x="434" y="860" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">160</text>
+<rect x="451" y="850" width="30" height="20" fill="#3b82f6" stroke="#000" stroke-width="0.5"/>
+<text x="466" y="860" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">138</text>
+<rect x="597" y="850" width="55" height="20" fill="#3b82f6" stroke="#000" stroke-width="0.5"/>
+<text x="624" y="860" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">160</text>
+<rect x="654" y="850" width="55" height="20" fill="#3b82f6" stroke="#000" stroke-width="0.5"/>
+<text x="681" y="860" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">138</text>
+<!-- ===== GRAND TOTALS ===== -->
+<rect x="419" y="874" width="30" height="14" fill="#e5e7eb" stroke="#000" stroke-width="0.5"/>
+<text x="434" y="881" text-anchor="middle" fill="#000" font-size="6" font-weight="600">R</text>
+<rect x="451" y="874" width="30" height="14" fill="#e5e7eb" stroke="#000" stroke-width="0.5"/>
+<text x="466" y="881" text-anchor="middle" fill="#000" font-size="6">NM</text>
+<rect x="483" y="874" width="27" height="14" fill="#e5e7eb" stroke="#000" stroke-width="0.5"/>
+<text x="496" y="881" text-anchor="middle" fill="#000" font-size="6">A</text>
+<rect x="512" y="874" width="26" height="14" fill="#e5e7eb" stroke="#000" stroke-width="0.5"/>
+<text x="525" y="881" text-anchor="middle" fill="#000" font-size="6">NM</text>
+<rect x="540" y="874" width="27" height="14" fill="#e5e7eb" stroke="#000" stroke-width="0.5"/>
+<text x="553" y="881" text-anchor="middle" fill="#000" font-size="6">C</text>
+<rect x="569" y="874" width="26" height="14" fill="#e5e7eb" stroke="#000" stroke-width="0.5"/>
+<text x="582" y="881" text-anchor="middle" fill="#000" font-size="6">NM</text>
+<rect x="5" y="890" width="412" height="20" fill="#1a1a2e" stroke="#000" stroke-width="0.5"/>
+<text x="10" y="900" fill="#fff" font-size="9" font-weight="700">Total R A C</text>
+<rect x="419" y="890" width="30" height="20" fill="#1a1a2e" stroke="#000" stroke-width="0.5"/>
+<text x="434" y="900" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">379</text>
+<rect x="451" y="890" width="30" height="20" fill="#1a1a2e" stroke="#000" stroke-width="0.5"/>
+<text x="466" y="900" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">327</text>
+<rect x="483" y="890" width="27" height="20" fill="#1a1a2e" stroke="#000" stroke-width="0.5"/>
+<text x="496" y="900" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">28</text>
+<rect x="512" y="890" width="26" height="20" fill="#1a1a2e" stroke="#000" stroke-width="0.5"/>
+<text x="525" y="900" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">24</text>
+<rect x="540" y="890" width="27" height="20" fill="#1a1a2e" stroke="#000" stroke-width="0.5"/>
+<text x="553" y="900" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">11</text>
+<rect x="569" y="890" width="26" height="20" fill="#1a1a2e" stroke="#000" stroke-width="0.5"/>
+<text x="582" y="900" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">10</text>
+<rect x="597" y="890" width="112" height="20" fill="#fef3cd" stroke="#000" stroke-width="0.5"/>
+<text x="653" y="900" text-anchor="middle" fill="#000" font-size="8" font-weight="700">Total NM: 361</text>
+<!-- Total POC -->
+<rect x="540" y="912" width="169" height="22" fill="#1a1a2e" stroke="#000" stroke-width="0.5"/>
+<text x="624" y="923" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">Total POC    428</text>
+<!-- ===== DISCLAIMER ===== -->
+<rect x="5" y="942" width="710" height="60" fill="#f5f5f7" stroke="#000" stroke-width="0.5"/>
+<text x="10" y="956" fill="#000" font-size="7">You must check your PDT daily prior to leaving the depot for customer pickup information. On Demand pickups may be added.</text>
+<text x="10" y="968" fill="#000" font-size="7">The 108 and 103 form must be taken enroute in case the PDT becomes inoperative.</text>
+<text x="10" y="980" fill="#000" font-size="7">Please contact the supervisor immediately should any delay/difficulty occur.</text>
+<text x="10" y="995" fill="#000" font-size="7" font-weight="600">Remarks:</text>
+</svg>
+<div class="diagram-caption">Header board for LC0110 (Michael's route at Burnaby LCD North Fraser 2). Matches the actual printed format.</div>
+</div>
+<table><tr><th>Section</th><th>What It Contains</th></tr>
+<tr><td>General Information</td><td>Depot name, route number, start time, departure time, total POC count, hazards & warnings, keys needed, phone, special instructions, AM/PM delivery portions, scheduled pickups, SLB clearances</td></tr>
+<tr><td>OT (Overtime) Splits</td><td>How to split the route if overtime is needed</td></tr>
+<tr><td>NM Delivery</td><td>Neighbourhood Mail delivery schedule (3-day or 5-day)</td></tr>
+<tr><td>RPO / FSA / Stop</td><td>The RPO for each section, FSA, and stop number</td></tr>
+<tr><td>Street Distribution</td><td>Ordered list of streets, address ranges, LDUs, tie-outs, and stops</td></tr>
+<tr><td>Transportation</td><td>Vehicle type and details for motorized routes</td></tr>
+</table>`},
+{h:"General Information Details",content:`<p>Key fields in the general information section:</p>
+<ul>
+<li><b>A.</b> Depot Name and Route Number</li>
+<li><b>B.</b> Start Time</li>
+<li><b>C.</b> Estimated Departure Time from Depot</li>
+<li><b>D.</b> Total POC count</li>
+<li><b>E.</b> Total Hazards/Warnings</li>
+<li><b>F.</b> Keys needed</li>
+<li><b>G.</b> Phone number</li>
+<li><b>H.</b> Special Instructions (may include Directs and Callers info)</li>
+<li><b>I.</b> AM and PM Delivery Portions</li>
+<li><b>J.</b> Scheduled Customer Pickup and SLB Clearances</li>
+<li><b>K.</b> OT Splits</li>
+<li><b>L.</b> Neighbourhood Mail Delivery schedule</li>
+</ul>`},
+{h:"Tie-Out or Pull Section",content:`<p>This section shows:</p>
+<ul>
+<li><b>A.</b> RPO and FSA</li>
+<li><b>B.</b> Stop number</li>
+<li><b>C.</b> Tie-Out column</li>
+<li><b>D.</b> Street Name and Civic Address range</li>
+<li><b>E.</b> Residence (R), Apartment (A), and Business (C/B) counts</li>
+<li><b>F.</b> Neighbourhood Mail (NM) and Consumer's Choice counts</li>
+<li><b>G.</b> POC and NM totals</li>
+</ul>
+<h4>Colour Bars</h4>
+<p>Horizontal <b>green bars</b> indicate a vehicle stop (motorized) or relay box location (foot routes) and the delivery area beneath.</p>
+<h4>NM Colour Days</h4>
+<p>The tie-out section shows what sections of the route to deliver on each colour day. NM columns show total POCs <b>minus</b> Consumers' Choice POCs.</p>`},
+{h:"Route Map",content:`<p>Each header board has an accompanying route map showing:</p>
+<ul>
+<li>AM and PM sections of the route</li>
+<li>Direction of travel (arrows)</li>
+<li>LDUs for the delivery areas</li>
+</ul>
+<div class="warn">Study the route map BEFORE leaving the depot when new to a route. Having the street layout in mind helps you visualize your delivery day.</div>`}
+]},
+{cat:"Tying Out",title:"Tying Out the Mail",subs:[
+{h:"What is Tying Out?",content:`<p>After sorting, you pull the mail from the case in a specific order and bundle it with elastics. This is called <b>tying out</b>. The tie-out numbers on the case strip tell you the order.</p>`},
+{h:"Types of Stops",content:`<table><tr><th>Stop Type</th><th>Description</th></tr>
+<tr><td>Park & Loop</td><td>Park the vehicle, walk a loop delivering mail, return to vehicle</td></tr>
+<tr><td>Dismount</td><td>Drive to each POC, get out, deliver, return to vehicle</td></tr>
+<tr><td>CMB Stop</td><td>Drive to a Community Mailbox site, deliver to all compartments</td></tr>
+</table>`},
+{h:"Tie-Out Process",content:`<ol class="steps">
+<li>Start at tie-out #1 and pull the mail from the case separations in order</li>
+<li>Bundle the mail for each tie-out with an elastic band</li>
+<li>Place bundled mail into LFTs in delivery sequence</li>
+<li>Include any oversize items, packets, or parcels with the correct tie-out</li>
+<li>Check that no mail is left in the case separations</li>
+</ol>`}
+]},
+{cat:"NM",title:"Neighbourhood Mail",subs:[
+{h:"What is Neighbourhood Mail?",content:`<p>Neighbourhood Mail (NM) includes flyers, coupons, samples, brochures, public notices, and government/election promotions. It is delivered on a colour-day rotation schedule.</p>`},
+{h:"Delivery Cycles",content:`<p>Routes follow either a <b>3-day</b> or <b>5-day</b> delivery cycle. The header board shows which sections of the route get NM on which colour day.</p>
+<p>Coloured stripes on the base of the case strip indicate which colour day each section receives NM.</p>`},
+{h:"Delivery Control Slip (DCS)",content:`<p>Each NM bundle comes with a DCS showing:</p>
+<ul>
+<li>The number of pieces in the bundle</li>
+<li>Which route and colour day it belongs to</li>
+<li>A blue barcode to scan</li>
+</ul>
+<div class="warn">Scan the DCS blue barcode before leaving the depot. At end of day, record overages and shortages through NM Exceptions on the PDT.</div>`},
+{h:"Preparing NM",content:`<ul>
+<li>Count the pieces per bundle using DCS totals</li>
+<li>Use the NM totals from the header board to determine how many pieces you need per stop</li>
+<li>NM totals = total POCs minus Consumers' Choice POCs</li>
+<li>Do NOT deliver NM to Consumers' Choice addresses (red dot on case strip)</li>
+</ul>`},
+{h:"End of Day NM",content:`<ol class="steps">
+<li>Select 'End of Day' then 'NM Exceptions' on PDT</li>
+<li>Scan the blue barcode on the DCS</li>
+<li>Select 'Overage' or 'Shortage'</li>
+<li>Enter the count of extra or missing pieces</li>
+<li>Submit</li>
+</ol>`}
+]},
+{cat:"Delivery",title:"Delivery Procedures",subs:[
+{h:"Safe Drop vs. Carding",content:`<table><tr><th>Safe Drop (OK)</th><th>Must Card (DNC)</th></tr>
+<tr><td>Non-PCI items</td><td>Collection of payment</td></tr>
+<tr><td>Safe-drop approved neighbourhood</td><td>Registered Mail</td></tr>
+<tr><td>Location protected from weather and out of sight</td><td>Priority - Signature required</td></tr>
+<tr><td>Too large for mail receptacle</td><td>Proof of age or identity required</td></tr>
+<tr><td>Not perishable</td><td>Label says "No safe drop"</td></tr>
+<tr><td></td><td>Perishable item</td></tr>
+<tr><td></td><td>Left in parcel locker or CMB for more than 5 days</td></tr>
+</table>`},
+{h:"Delivery Notice Card (DNC)",content:`<p>Left when an item cannot be delivered. It tells the customer where and when to pick up their item.</p>
+<h4>How to Fill Out the DNC</h4>
+<ol class="steps">
+<li>Verify you're using the correct DNC for the call-for site that matches the address</li>
+<li>Write the customer's first and last name and address</li>
+<li>Check off any delivery options that apply. Enter amount of funds due if applicable</li>
+<li>Enter the date the card was completed and when the item will be available</li>
+<li>Scan the item as "carded," then scan the DNC's barcode</li>
+</ol>
+<h4>DNC Tips</h4>
+<ul>
+<li>Always fill out the complete name and address</li>
+<li>Never place a DNC sticker over the address field or any barcode</li>
+<li>Ensure adequate supply of cards before leaving depot</li>
+<li>Remove extra cards from your vehicle at end of day</li>
+<li>Transfer all carded items to the Call-for site by the cut-off time on the Transfer Bill</li>
+</ul>
+<h4>If Customer Appears After You Left DNC</h4>
+<p>If still at the POC: tear up the DNC (discard at depot), use PDT to collect signature/payment/proof of age as needed, and hand over the item.</p>`},
+{h:"Personal Contact Items (PCI)",content:`<div class="danger">PCI items must NEVER be delivered to a CMB or left as a safe drop. They must always be handed directly to the customer.</div>
+<p>Check the label on every item you deliver. PCI requirements are always marked on the label:</p>
+<ul>
+<li><b>Signature Required</b> - customer must sign on PDT</li>
+<li><b>18+ Signature</b> - proof of age with government-issued photo ID</li>
+<li><b>Payment Due</b> - customs or other fees to collect</li>
+</ul>
+<div class="warn">Never sign for an item on behalf of the receiver. If the person can't sign, enter an X. If you can't get their name, enter an X.</div>`},
+{h:"Deliver to Door - All Modes",content:`<p>When a label says "DELIVER TO DOOR," you <b>must</b> go to the customer's door, regardless of regular delivery mode (apartment mailbox, CMB, etc.).</p>
+<p>"Leave at Door" means first attempt to the POC mail receptacle. If delivery attempt is unsuccessful, safe drop the item (if eligible).</p>`},
+{h:"Registered Mail",content:`<p>Requires proof of mailing and/or proof of delivery. Signature of addressee or representative is required.</p>
+<h4>How to Identify</h4>
+<ul>
+<li><b>Domestic:</b> Large "R" and "Registered" on label. 2-9-2 barcode starts with R.</li>
+<li><b>International:</b> May show large R or "Registered" on label. First letter of 2-9-2 barcode is always R.</li>
+</ul>
+<div class="warn">Registered Mail cannot be safe dropped. If customer is not home, card the item.</div>`},
+{h:"FlexDelivery",content:`<p>Canada Post service that lets customers have online purchases delivered to a pre-selected post office instead of home. Label will show "FlexDelivery" and an RPO address (PO BOX).</p>`},
+{h:"Deliver to Post Office (DTPO)",content:`<p>Commercial service for business customers. Allows direct delivery to a chosen post office. Applies to Xpresspost and Expedited parcels only. Label shows "DELIVER TO PO / LIVRER AU B. DE P."</p>`}
+]},
+{cat:"CMB",title:"CMB & Parcel Lockers",subs:[
+{h:"Delivering to a CMB",content:`<ol class="steps">
+<li>Retrieve returned parcel compartment keys from outgoing mail slot. Put each key back in its correct compartment.</li>
+<li>Sort the mail into customer compartments.</li>
+<li>Place Neighbourhood Mail into compartments (skip Consumers' Choice customers).</li>
+<li>Put packets and small parcels into compartments (check they fit easily).</li>
+<li>Put parcels too large for mail compartments into parcel compartments. Check the Attention box for special instructions. Write the date on the parcel. Place parcel compartment key in the customer's mail compartment so they see it when they open the door.</li>
+<li>If Attention box says Signature/Payment/Proof of Age/Deliver to Door, or if parcel compartment is full (items under 2 days old) or item is too large: deliver to the customer's door.</li>
+</ol>
+<div class="warn">Always scan the outgoing mail compartment barcode, even if there's no mail to deliver to that site. Always clear the outgoing mail.</div>`},
+{h:"Unclaimed Items in Parcel Compartments",content:`<table><tr><th>Step</th><th>Action</th></tr>
+<tr><td>1. Check dates</td><td>Items may remain up to 5 business days if space is not needed</td></tr>
+<tr><td>2. Remove item</td><td>Take the unclaimed item out</td></tr>
+<tr><td>3. Complete DNC</td><td>Place DNC in customer's mail compartment</td></tr>
+<tr><td>4. Update status</td><td>Scan parcel and change status to Carded</td></tr>
+<tr><td>5. Transfer</td><td>Take item to the RPO</td></tr>
+</table>`},
+{h:"Reporting CMB Damage",content:`<ol class="steps">
+<li>Scan the unit's barcode (right inside edge of outgoing mail compartment). If interior barcode is damaged, scan the external barcode.</li>
+<li>Indicate the appropriate damage reason code</li>
+<li>If mail is compromised, secure it and notify your supervisor</li>
+</ol>`},
+{h:"Customer Accommodation (Weekly To-the-Door)",content:`<p>Some customers can't access the CMB. Three types of accommodation identifiers in the compartment:</p>
+<table><tr><th>Colour</th><th>Type</th></tr>
+<tr><td>Red</td><td>Permanent door delivery</td></tr>
+<tr><td>Blue</td><td>Seasonal door delivery</td></tr>
+<tr><td>Green</td><td>Temporary door delivery</td></tr>
+</table>
+<p>When you see an identifier: deliver mail (including NM) to the CMB compartment daily. Every Wednesday, clear the compartment and deliver all accumulated mail to the door.</p>
+<div class="danger">Deliver parcels, packets, and Registered items to the door on the day they are received, not on Wednesday.</div>`},
+{h:"Parcel Lockers (E100, E200, E211)",content:`<table><tr><th>Model</th><th>Key Return</th></tr>
+<tr><td>E100</td><td>Customer returns key via outgoing mail slot</td></tr>
+<tr><td>E200</td><td>Customer returns key via designated slot on each compartment door</td></tr>
+<tr><td>E211</td><td>Outdoor version with same features as E200</td></tr>
+</table>
+<h4>Delivering to Parcel Lockers</h4>
+<ol class="steps">
+<li>Open master door with your corporate key</li>
+<li>Transfer returned compartment keys from outgoing slot to their proper compartments</li>
+<li>Remove and card overdue parcels (over 5 days, or 2+ days if room is needed)</li>
+<li>Deposit new parcels with date facing out. Note compartment keys with apartment numbers on paper.</li>
+<li>At the mailroom/lockbox assembly, remove parcel locker keys for carded items, deliver DNCs to POCs</li>
+<li>Deliver all other mail items including NM</li>
+<li>Return to parcel locker on your way out, deposit retrieved compartment keys in outgoing slot</li>
+</ol>
+<div class="warn">Parcels can remain up to 5 business days. Check dates on parcels that have been there for more than 2 days.</div>`},
+{h:"Damaged Parcel Locker",content:`<ol class="steps">
+<li>Assess the damage. Check if still operational and parcels are secure.</li>
+<li>If unsecured or inoperable: remove and card all items</li>
+<li>Advise your supervisor ASAP</li>
+<li>Scan interior barcode with PDT and indicate damage code (if barcode damaged, use exterior barcode)</li>
+<li>Isolate damaged mail in your vehicle</li>
+<li>Advise supervisor or Inside Depot Support when you return</li>
+<li>Consult supervisor about when repairs will be done</li>
+</ol>`}
+]},
+{cat:"Vehicle",title:"Vehicle & Loading",subs:[
+{h:"Pre-Trip Inspection",content:`<ol class="steps">
+<li>Go to parking lot and locate your vehicle</li>
+<li>Perform a complete pre-trip inspection</li>
+<li>Record mileage and date in the PDT</li>
+<li>Move vehicle from parking lot to designated dock space. Back in carefully.</li>
+</ol>`},
+{h:"Vehicle Safety Rules",content:`<ul>
+<li>No smoking or vaping in the vehicle</li>
+<li>Ensure load is secure before moving</li>
+<li>No electronic devices or cell phones while driving</li>
+<li>Never wear headsets or headphones</li>
+<li>Remove your satchel before wearing a seatbelt</li>
+<li>Vehicle doors closed at all times when in motion</li>
+<li>Fasten seatbelt before starting the vehicle</li>
+<li>Apply parking brake and shut off engine before exiting</li>
+<li>Always have your driver's licence</li>
+<li>Complete pre-trip inspection every shift</li>
+</ul>
+<div class="danger">Under NO conditions may motorized delivery employees transport passengers.</div>`},
+{h:"Loading the Ford Transit Connect",content:`<ol class="steps">
+<li>Consider route terrain and volume when loading</li>
+<li>Ensure you can access mail safely when parked on route</li>
+<li>Stick to a consistent loading strategy every day</li>
+<li>Use the header board to sequence parcels - first to deliver loaded last</li>
+<li>Place carded items in LFTs behind bulkhead or VTS bottom shelf by call-for location</li>
+</ol>
+<h4>Layout</h4>
+<table><tr><th>Position</th><th>What Goes There</th></tr>
+<tr><td>A</td><td>Packet LFTs (stacked 2 high, 1 deep)</td></tr>
+<tr><td>B</td><td>Sequenced mail LFTs (2 high, 2 deep)</td></tr>
+<tr><td>C</td><td>Manual mail LFTs (2 high, 2 deep)</td></tr>
+<tr><td>D</td><td>NM LFTs (2 high, 1 deep)</td></tr>
+<tr><td>E</td><td>Floating NM/empty LFTs (on top of existing stack)</td></tr>
+<tr><td>F</td><td>Small parcels (for CMBs)</td></tr>
+<tr><td>G</td><td>Large/heavy parcels (loaded/unloaded at rear)</td></tr>
+</table>
+<div class="warn">Parcels over 22.7 kg: get assistance or use a hand cart.</div>`},
+{h:"Loading the Step Van",content:`<ol class="steps">
+<li>Load items on shelves front to back, first stops at front near bulkhead</li>
+<li>Place carded items behind bulkhead by call-for location</li>
+<li>Large heavy items on floor, sequenced in line of travel towards rear door</li>
+<li>Place empty SLB tubs (SO-95s) behind bulkhead on floor</li>
+<li>At each stop, shift remaining packages forward on shelves</li>
+<li>Check packages as you move them forward. Plan ahead!</li>
+<li>Periodically adjust and sequence parcels on floor close to rear door</li>
+<li>Secure the dolly or C-45 cart</li>
+</ol>
+<p><b>LFT Types:</b> M = Manual Mail, S = Sequenced Mail, P = Packets, N = Neighbourhood Mail</p>`},
+{h:"Loading the Ford Transit",content:`<ul>
+<li><b>Manual mail (A):</b> Upper or lower shelf</li>
+<li><b>Sequenced mail (B):</b> Next to manual mail, stack to comfortable height</li>
+<li><b>Packets/documents (C):</b> Next to sequenced mail</li>
+<li><b>NM (D):</b> Next to packets, stack to comfortable height</li>
+<li><b>Additional LFTs:</b> Lower shelf or ground</li>
+</ul>
+<div class="warn">Always refer to the header board to determine the delivery sequence for each parcel, no matter the vehicle type.</div>`}
+]},
+{cat:"PDT",title:"PDT Device (CT40/CT45)",subs:[
+{h:"Hardware Overview",content:`<p>The PDT (Portable Data Terminal) is a handheld Honeywell device used to manage your activities throughout the day. Canada Post uses two models:</p>
+<div class="diagram-grid">
+<div class="diagram">
+<svg viewBox="0 0 280 420" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,sans-serif">
+<rect width="280" height="420" fill="#fff"/>
+<text x="140" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a2e">CT40</text>
+<!-- Phone body -->
+<rect x="70" y="35" width="140" height="280" rx="16" fill="#2d2d2d" stroke="#1a1a1a" stroke-width="2"/>
+<!-- Screen -->
+<rect x="82" y="70" width="116" height="200" rx="4" fill="#4a90d9"/>
+<text x="140" y="170" text-anchor="middle" fill="#fff" font-size="10" font-weight="600">POCUR</text>
+<!-- Top area -->
+<rect x="120" y="42" width="40" height="6" rx="3" fill="#1a1a1a"/>
+<!-- Parts labels with lines -->
+<!-- Speaker -->
+<text x="10" y="48" fill="#e00000" font-size="8" font-weight="600">Speaker</text>
+<line x1="48" y1="45" x2="70" y2="45" stroke="#e00000" stroke-width="0.8" stroke-dasharray="2"/>
+<!-- Scan Status LED -->
+<circle cx="90" y="55" r="3" fill="#22c55e" cx="90" cy="55"/>
+<text x="5" y="62" fill="#333" font-size="8">Scan Status LED</text>
+<line x1="52" y1="59" x2="87" y2="55" stroke="#333" stroke-width="0.5" stroke-dasharray="2"/>
+<!-- Battery LED -->
+<circle cx="90" cy="65" r="2" fill="#f59e0b"/>
+<text x="5" y="78" fill="#333" font-size="8">Battery/</text>
+<text x="5" y="87" fill="#333" font-size="8">Notification LED</text>
+<line x1="52" y1="80" x2="88" y2="65" stroke="#333" stroke-width="0.5" stroke-dasharray="2"/>
+<!-- Imager window (top) -->
+<rect x="125" y="36" width="20" height="4" rx="1" fill="#555"/>
+<text x="215" y="42" fill="#e00000" font-size="8" font-weight="600">Imager Window</text>
+<text x="215" y="51" fill="#e00000" font-size="7">(LED/Laser)</text>
+<line x1="213" y1="44" x2="146" y2="38" stroke="#e00000" stroke-width="0.8" stroke-dasharray="2"/>
+<!-- Microphone -->
+<text x="218" y="66" fill="#333" font-size="8">Microphone</text>
+<line x1="215" y1="63" x2="195" y2="48" stroke="#333" stroke-width="0.5" stroke-dasharray="2"/>
+<!-- Power button -->
+<rect x="210" y="120" width="5" height="18" rx="2" fill="#555"/>
+<text x="222" y="133" fill="#333" font-size="8">Power Button</text>
+<line x1="219" y1="130" x2="215" y2="130" stroke="#333" stroke-width="0.5" stroke-dasharray="2"/>
+<!-- Scan button (right side) -->
+<rect x="210" y="170" width="5" height="30" rx="2" fill="#e00000"/>
+<text x="222" y="188" fill="#e00000" font-size="8" font-weight="600">Scan Button</text>
+<line x1="219" y1="185" x2="215" y2="185" stroke="#e00000" stroke-width="0.8" stroke-dasharray="2"/>
+<!-- Touch panel label -->
+<text x="8" y="175" fill="#333" font-size="8">Touch Panel</text>
+<line x1="52" y1="172" x2="82" y2="170" stroke="#333" stroke-width="0.5" stroke-dasharray="2"/>
+<!-- Bottom speaker -->
+<rect x="120" y="300" width="40" height="4" rx="2" fill="#1a1a1a"/>
+<text x="8" y="310" fill="#333" font-size="8">Speaker</text>
+<line x1="40" y1="307" x2="120" y2="302" stroke="#333" stroke-width="0.5" stroke-dasharray="2"/>
+<!-- Bottom microphone -->
+<circle cx="140" cy="310" r="2" fill="#555"/>
+<text x="8" y="325" fill="#333" font-size="8">Microphone</text>
+<line x1="48" y1="322" x2="138" y2="310" stroke="#333" stroke-width="0.5" stroke-dasharray="2"/>
+</svg>
+<div class="diagram-caption">CT40 - Front view</div>
+</div>
+<div class="diagram">
+<svg viewBox="0 0 280 420" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,sans-serif">
+<rect width="280" height="420" fill="#fff"/>
+<text x="140" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a2e">CT45</text>
+<!-- Phone body - slightly larger/boxier -->
+<rect x="65" y="35" width="150" height="290" rx="12" fill="#2d2d2d" stroke="#1a1a1a" stroke-width="2"/>
+<!-- Screen -->
+<rect x="78" y="75" width="124" height="200" rx="4" fill="#4a90d9"/>
+<text x="140" y="175" text-anchor="middle" fill="#fff" font-size="10" font-weight="600">POCUR</text>
+<!-- Top area -->
+<rect x="115" y="42" width="50" height="6" rx="3" fill="#1a1a1a"/>
+<!-- Parts labels -->
+<!-- Speaker -->
+<text x="5" y="42" fill="#333" font-size="8">Speaker</text>
+<text x="5" y="51" fill="#333" font-size="7">(Handset Receiver)</text>
+<line x1="58" y1="45" x2="65" y2="45" stroke="#333" stroke-width="0.5" stroke-dasharray="2"/>
+<!-- Scan Status LED -->
+<circle cx="85" cy="55" r="3" fill="#22c55e"/>
+<text x="5" y="66" fill="#333" font-size="8">Scan Status LED</text>
+<line x1="58" y1="63" x2="82" y2="55" stroke="#333" stroke-width="0.5" stroke-dasharray="2"/>
+<!-- Battery LED -->
+<circle cx="85" cy="67" r="2" fill="#f59e0b"/>
+<text x="5" y="82" fill="#333" font-size="8">Battery/</text>
+<text x="5" y="91" fill="#333" font-size="8">Notification LED</text>
+<line x1="50" y1="84" x2="83" y2="67" stroke="#333" stroke-width="0.5" stroke-dasharray="2"/>
+<!-- Imager window -->
+<rect x="120" y="36" width="25" height="5" rx="1" fill="#555"/>
+<text x="220" y="42" fill="#e00000" font-size="8" font-weight="600">Imager Window</text>
+<text x="220" y="51" fill="#e00000" font-size="7">(LED/Laser)</text>
+<line x1="217" y1="44" x2="146" y2="38" stroke="#e00000" stroke-width="0.8" stroke-dasharray="2"/>
+<!-- Front Camera (deactivated) -->
+<circle cx="175" cy="55" r="4" fill="#555"/>
+<text x="220" y="66" fill="#999" font-size="7">Front Camera</text>
+<text x="220" y="74" fill="#999" font-size="7" font-style="italic">(deactivated)</text>
+<line x1="217" y1="68" x2="179" y2="55" stroke="#999" stroke-width="0.5" stroke-dasharray="2"/>
+<!-- Microphone -->
+<text x="222" y="90" fill="#333" font-size="8">Microphone</text>
+<line x1="219" y1="87" x2="200" y2="55" stroke="#333" stroke-width="0.5" stroke-dasharray="2"/>
+<!-- Power button -->
+<rect x="215" y="120" width="5" height="18" rx="2" fill="#555"/>
+<text x="225" y="133" fill="#333" font-size="8">Power</text>
+<!-- Push-to-talk (deactivated) -->
+<rect x="215" y="155" width="5" height="15" rx="2" fill="#999"/>
+<text x="225" y="166" fill="#999" font-size="7">Push-to-Talk</text>
+<text x="225" y="174" fill="#999" font-size="7" font-style="italic">(deactivated)</text>
+<!-- Scan button (right side) -->
+<rect x="215" y="185" width="5" height="30" rx="2" fill="#e00000"/>
+<text x="225" y="204" fill="#e00000" font-size="8" font-weight="600">Scan Button</text>
+<!-- Left scan button (deactivated) -->
+<rect x="60" y="185" width="5" height="25" rx="2" fill="#999"/>
+<text x="5" y="200" fill="#999" font-size="7">Scan Button</text>
+<text x="5" y="209" fill="#999" font-size="7" font-style="italic">(deactivated)</text>
+<!-- Touch panel -->
+<text x="8" y="175" fill="#333" font-size="8">Touch Panel</text>
+<line x1="52" y1="172" x2="78" y2="170" stroke="#333" stroke-width="0.5" stroke-dasharray="2"/>
+<!-- Bottom speaker -->
+<rect x="115" y="306" width="50" height="4" rx="2" fill="#1a1a1a"/>
+<text x="8" y="312" fill="#333" font-size="8">Speaker</text>
+<line x1="40" y1="309" x2="115" y2="308" stroke="#333" stroke-width="0.5" stroke-dasharray="2"/>
+<!-- Bottom microphone -->
+<circle cx="140" cy="318" r="2" fill="#555"/>
+<text x="218" y="320" fill="#333" font-size="8">Microphone</text>
+<line x1="215" y1="317" x2="142" y2="318" stroke="#333" stroke-width="0.5" stroke-dasharray="2"/>
+</svg>
+<div class="diagram-caption">CT45 - Front view (some features deactivated)</div>
+</div>
+</div>
+<div class="warn">Both models are functionally the same for your duties. The active Scan Button is on the right side.</div>`},
+{h:"Health & Safety",content:`<ul>
+<li>Do not use the PDT while driving. Only consult it when your vehicle is parked and in a safe location.</li>
+<li>Do not stare into the scanning beam. Prolonged exposure can injure your eyes.</li>
+<li>Do not leave the PDT in extreme heat (parked vehicle in summer, near a radiator).</li>
+<li>If you have a pacemaker, keep at least 15cm (6 inches) between you and the PDT. Do not carry it in your breast pocket.</li>
+</ul>`},
+{h:"How to Scan",content:`<ol class="steps">
+<li>Hold the PDT with the laser side towards the barcode, about 15 to 20 cm away</li>
+<li>The barcode must be within the illuminated area</li>
+<li>Press the SCAN button on the right side of the PDT</li>
+</ol>
+<div class="warn">Scanning is best done while standing.</div>`},
+{h:"PDT Screens Overview",content:`<p>The PDT has two main modes depending on where you are in your day:</p>
+<div class="diagram">
+<svg viewBox="0 0 600 380" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,sans-serif">
+<rect width="600" height="380" fill="#fff"/>
+<!-- At Depot screen -->
+<rect x="30" y="10" width="230" height="360" rx="8" fill="#f5f5f7" stroke="#ccc" stroke-width="1"/>
+<rect x="30" y="10" width="230" height="30" rx="8" fill="#1a1a2e"/>
+<rect x="30" y="30" width="230" height="10" fill="#1a1a2e"/>
+<text x="145" y="30" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">At Depot</text>
+<!-- Menu items -->
+<rect x="42" y="55" width="206" height="30" rx="4" fill="#fff" stroke="#e5e7eb"/>
+<text x="52" y="75" fill="#333" font-size="10" font-weight="600">DEPOT SCANNING</text>
+<text x="236" y="75" fill="#6b7280" font-size="12">v</text>
+<rect x="42" y="92" width="206" height="30" rx="4" fill="#fff" stroke="#e5e7eb"/>
+<text x="52" y="112" fill="#333" font-size="10" font-weight="600">END OF DAY</text>
+<text x="236" y="112" fill="#6b7280" font-size="12">v</text>
+<rect x="42" y="130" width="206" height="24" rx="4" fill="#ecfdf5" stroke="#059669"/>
+<text x="52" y="147" fill="#059669" font-size="9" font-weight="600">Download / Confirm OFD</text>
+<rect x="42" y="162" width="206" height="24" rx="4" fill="#fff" stroke="#e5e7eb"/>
+<text x="52" y="179" fill="#333" font-size="9">NM Exceptions</text>
+<rect x="42" y="194" width="206" height="24" rx="4" fill="#fff" stroke="#e5e7eb"/>
+<text x="52" y="211" fill="#333" font-size="9">Key Ring Check Out / In</text>
+<rect x="42" y="226" width="206" height="24" rx="4" fill="#fff" stroke="#e5e7eb"/>
+<text x="52" y="243" fill="#333" font-size="9">Vehicle Mileage</text>
+<!-- Action required popup -->
+<rect x="52" y="265" width="186" height="80" rx="6" fill="#fef2f2" stroke="#e00000" stroke-width="1.5"/>
+<text x="145" y="285" text-anchor="middle" fill="#e00000" font-size="10" font-weight="700">ACTION REQUIRED</text>
+<text x="145" y="305" text-anchor="middle" fill="#333" font-size="8">7023 2105 3395 3104</text>
+<text x="145" y="318" text-anchor="middle" fill="#333" font-size="8">added to Recovery List.</text>
+<rect x="115" y="325" width="60" height="18" rx="4" fill="#e00000"/>
+<text x="145" y="338" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">OK</text>
+<!-- En Route screen -->
+<rect x="340" y="10" width="230" height="360" rx="8" fill="#f5f5f7" stroke="#ccc" stroke-width="1"/>
+<rect x="340" y="10" width="230" height="30" rx="8" fill="#1a1a2e"/>
+<rect x="340" y="30" width="230" height="10" fill="#1a1a2e"/>
+<text x="455" y="30" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">En Route</text>
+<!-- Route list items -->
+<rect x="352" y="55" width="206" height="26" rx="4" fill="#fff" stroke="#e5e7eb"/>
+<text x="362" y="73" fill="#333" font-size="9">10:00 SLB - 6993 ARGYLE ST</text>
+<rect x="352" y="87" width="206" height="26" rx="4" fill="#fff" stroke="#e5e7eb"/>
+<text x="362" y="105" fill="#333" font-size="9">10:15 SLB - 1282 KNIGHT ST</text>
+<rect x="352" y="119" width="206" height="26" rx="4" fill="#fff" stroke="#e5e7eb"/>
+<text x="362" y="137" fill="#333" font-size="9">11:00 CMB - 7108 KNIGHT ST</text>
+<rect x="352" y="151" width="206" height="26" rx="4" fill="#fff" stroke="#e5e7eb"/>
+<text x="362" y="169" fill="#333" font-size="9">12:30 PICKUP - Commercial</text>
+<rect x="352" y="183" width="206" height="26" rx="4" fill="#ecfdf5" stroke="#059669"/>
+<text x="362" y="201" fill="#059669" font-size="9" font-weight="600">NEW STOP</text>
+<!-- Reports section -->
+<rect x="352" y="225" width="206" height="24" rx="4" fill="#eff6ff" stroke="#2563eb"/>
+<text x="362" y="242" fill="#2563eb" font-size="9" font-weight="600">Reports</text>
+<text x="546" y="242" fill="#6b7280" font-size="12">v</text>
+<!-- On-demand pickup popup -->
+<rect x="355" y="265" width="200" height="95" rx="6" fill="#fff" stroke="#2563eb" stroke-width="1.5"/>
+<text x="365" y="283" fill="#1a1a2e" font-size="9" font-weight="700">PICKUP REQUEST</text>
+<text x="365" y="298" fill="#333" font-size="8">ACME CORP</text>
+<text x="365" y="310" fill="#333" font-size="8">1319 COLONY ST</text>
+<text x="365" y="325" fill="#555" font-size="8">READY: 12:30  CLOSED: 16:00</text>
+<rect x="365" y="335" width="60" height="18" rx="4" fill="#e00000"/>
+<text x="395" y="348" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">Decline</text>
+<rect x="480" y="335" width="60" height="18" rx="4" fill="#059669"/>
+<text x="510" y="348" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">Accept</text>
+</svg>
+<div class="diagram-caption">Left: At Depot screen with key functions. Right: En Route screen with delivery list and pickup requests.</div>
+</div>`},
+{h:"Key PDT Functions by Phase",content:`<table><tr><th>Phase</th><th>PDT Functions</th></tr>
+<tr><td><b>Start of Day</b></td><td>Log in, scan NM barcodes (DCS), scan key ring check-out, record vehicle mileage</td></tr>
+<tr><td><b>Before Leaving</b></td><td>Download/Confirm OFD (Out for Delivery), review parcel list, check for pickups/clearances</td></tr>
+<tr><td><b>En Route</b></td><td>Scan deliveries, new stops, accept/decline on-demand pickups, SSINA notifications, capture signatures/proof of age</td></tr>
+<tr><td><b>End of Day</b></td><td>NM Exceptions (overage/shortage), scan key ring check-in, vehicle check, logout, dock PDT to charger</td></tr>
+</table>
+<div class="warn">Always check your PDT daily before leaving the depot for customer pickup information. On-demand pickups may be added.</div>`},
+{h:"SSINA & Recovery Requests",content:`<p><b>SSINA</b> (Successful Scan, Item Not Available) occurs when a customer receives delivery confirmation but cannot locate their package.</p>
+<ul>
+<li>Notifications appear on both At Depot and En Route screens</li>
+<li>Recovery Requests initiated on <b>Day-0</b> (same day) are part of your delivery duties</li>
+<li>Requests after Day-0 are handled by Customer Service</li>
+</ul>
+<div class="danger">SSINA can result from theft, misdelivery, or placing a parcel in the wrong compartment. Always double-check addresses.</div>`},
+{h:"PDT Acronyms",content:`<p>Due to limited screen space, the PDT uses abbreviations:</p>
+<table><tr><th>Acronym</th><th>Meaning</th></tr>
+<tr><td>APT</td><td>Apartment</td></tr>
+<tr><td>CMB</td><td>Community Mailbox</td></tr>
+<tr><td>DNC</td><td>Delivery Notice Card</td></tr>
+<tr><td>DTB</td><td>Depot Transfer Bill</td></tr>
+<tr><td>SLB</td><td>Street Letter Box</td></tr>
+<tr><td>SSINA</td><td>Successful Scan, Item Not Available</td></tr>
+<tr><td>POC</td><td>Point of Call</td></tr>
+<tr><td>RPO</td><td>Retail Postal Outlet</td></tr>
+<tr><td>OFD</td><td>Out for Delivery</td></tr>
+<tr><td>NM</td><td>Neighbourhood Mail</td></tr>
+</table>`},
+{h:"POCUR App Reports",content:`<p>The POCUR app on your PDT contains reports to help plan your route:</p>
+<ul>
+<li><b>Hazard & Warning report</b> - Dog warnings, unsafe conditions</li>
+<li><b>Route Data</b> - Route details and parameters</li>
+<li><b>Route Split details</b> - For OT splits</li>
+<li><b>Asset Series report</b> - Equipment tracking</li>
+<li><b>Delivery Accommodation report</b> - Special delivery instructions for customers</li>
+<li><b>Clearance report</b> - SLB/CMB clearance schedule</li>
+<li><b>Call-for Site report</b> - RPO pickup locations</li>
+<li><b>Scheduled Customer Pickups</b> - Commercial pickup schedule</li>
+</ul>`}
+]},
+{cat:"Scanning",title:"Scanning & Barcodes",subs:[
+{h:"The Four Scanning Rules",content:`<p>Follow these rules in order to determine what to scan:</p>
+<ol class="steps">
+<li><b>Hash marks and logo:</b> Look for a barcode surrounded by hash marks and a Canada Post logo. Scan this.</li>
+<li><b>Logo only:</b> No hash marks? Look for a label with the Canada Post logo. Scan this.</li>
+<li><b>The RaCHEL Rule:</b> No hash marks, no logo, no NGB, but you see a 9-digit barcode or a 2-9-2 barcode starting with R, C, H, E, or L? Scan it. <b>R</b>=Registered, <b>C</b>=Parcels and Customs, <b>H</b>=Parcels, <b>E</b>=EMS, <b>L</b>=Expres.</li>
+<li><b>None of the above?</b> Do not scan anything.</li>
+</ol>
+<div class="diagram">
+<svg viewBox="0 0 600 580" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,sans-serif">
+<rect width="600" height="580" fill="#fff"/>
+<text x="300" y="25" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a2e">The Four Scanning Rules - Visual Guide</text>
+<!-- Rule 1: Hash marks + Logo -->
+<rect x="15" y="40" width="570" height="120" rx="6" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+<circle cx="40" cy="60" r="14" fill="#059669"/>
+<text x="40" y="65" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">1</text>
+<text x="65" y="64" fill="#059669" font-size="13" font-weight="700">Hash Marks + Logo = SCAN</text>
+<!-- Label mockup -->
+<rect x="30" y="78" width="250" height="72" rx="4" fill="#fff" stroke="#ccc" stroke-width="1"/>
+<text x="40" y="95" fill="#e00000" font-size="9" font-weight="700">CANADA POST</text>
+<rect x="40" y="100" width="200" height="8" rx="1" fill="#e00000"/>
+<text x="40" y="118" fill="#333" font-size="8" font-weight="600">Xpresspost</text>
+<!-- Hash marks -->
+<line x1="40" y1="124" x2="50" y2="124" stroke="#333" stroke-width="2"/>
+<line x1="53" y1="124" x2="63" y2="124" stroke="#333" stroke-width="2"/>
+<line x1="66" y1="124" x2="76" y2="124" stroke="#333" stroke-width="2"/>
+<line x1="79" y1="124" x2="89" y2="124" stroke="#333" stroke-width="2"/>
+<line x1="92" y1="124" x2="102" y2="124" stroke="#333" stroke-width="2"/>
+<rect x="40" y="128" width="200" height="14" rx="2" fill="#333"/>
+<text x="140" y="139" text-anchor="middle" fill="#fff" font-size="7">||||||||||||||||||||||||||||||||||||||||||||||</text>
+<line x1="40" y1="144" x2="50" y2="144" stroke="#333" stroke-width="2"/>
+<line x1="53" y1="144" x2="63" y2="144" stroke="#333" stroke-width="2"/>
+<line x1="66" y1="144" x2="76" y2="144" stroke="#333" stroke-width="2"/>
+<line x1="79" y1="144" x2="89" y2="144" stroke="#333" stroke-width="2"/>
+<line x1="92" y1="144" x2="102" y2="144" stroke="#333" stroke-width="2"/>
+<text x="300" y="98" fill="#333" font-size="11">Look for:</text>
+<text x="300" y="115" fill="#333" font-size="11">- Canada Post logo at top</text>
+<text x="300" y="132" fill="#333" font-size="11">- Hash marks (===) above</text>
+<text x="300" y="149" fill="#333" font-size="11">  and below the barcode</text>
+<!-- Rule 2: Logo Only -->
+<rect x="15" y="170" width="570" height="120" rx="6" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+<circle cx="40" cy="190" r="14" fill="#2563eb"/>
+<text x="40" y="195" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">2</text>
+<text x="65" y="194" fill="#2563eb" font-size="13" font-weight="700">Logo Only (no hash marks) = SCAN</text>
+<!-- Label mockup -->
+<rect x="30" y="208" width="250" height="72" rx="4" fill="#fff" stroke="#ccc" stroke-width="1"/>
+<text x="40" y="225" fill="#e00000" font-size="9" font-weight="700">CANADA POST</text>
+<text x="40" y="240" fill="#333" font-size="8">Collect Customs / Percevoir douanes</text>
+<text x="40" y="255" fill="#333" font-size="8">CU 451 123 783 CA</text>
+<rect x="40" y="260" width="160" height="12" rx="2" fill="#333"/>
+<text x="120" y="269" text-anchor="middle" fill="#fff" font-size="6">||||||||||||||||||||||||||||||||||</text>
+<text x="300" y="230" fill="#333" font-size="11">Look for:</text>
+<text x="300" y="247" fill="#333" font-size="11">- Canada Post logo present</text>
+<text x="300" y="264" fill="#333" font-size="11">- NO hash marks around barcode</text>
+<!-- Rule 3: RaCHEL -->
+<rect x="15" y="300" width="570" height="185" rx="6" fill="#fef3cd" stroke="#f59e0b" stroke-width="1.5"/>
+<circle cx="40" cy="320" r="14" fill="#f59e0b"/>
+<text x="40" y="325" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">3</text>
+<text x="65" y="324" fill="#a16207" font-size="13" font-weight="700">RaCHEL Rule = SCAN</text>
+<text x="30" y="348" fill="#333" font-size="11">No hash marks, no logo, no NGB, but a 2-9-2 barcode starting with:</text>
+<!-- R -->
+<circle cx="50" cy="375" r="14" fill="#e00000"/>
+<text x="50" y="380" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">R</text>
+<text x="72" y="380" fill="#333" font-size="11">= Registered</text>
+<text x="180" y="380" fill="#555" font-size="9">e.g. RX 123 456 789 CN</text>
+<!-- C -->
+<circle cx="50" cy="405" r="14" fill="#e00000"/>
+<text x="50" y="410" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">C</text>
+<text x="72" y="410" fill="#333" font-size="11">= Parcels and Customs</text>
+<text x="220" y="410" fill="#555" font-size="9">e.g. CH 123 456 789 KR</text>
+<!-- H -->
+<circle cx="50" cy="435" r="14" fill="#e00000"/>
+<text x="50" y="440" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">H</text>
+<text x="72" y="440" fill="#333" font-size="11">= Parcels</text>
+<text x="150" y="440" fill="#555" font-size="9">e.g. HL 123 456 789 US</text>
+<!-- E -->
+<circle cx="320" cy="375" r="14" fill="#e00000"/>
+<text x="320" y="380" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">E</text>
+<text x="342" y="380" fill="#333" font-size="11">= EMS</text>
+<text x="400" y="380" fill="#555" font-size="9">e.g. EP 123 456 789 FR</text>
+<!-- L -->
+<circle cx="320" cy="405" r="14" fill="#e00000"/>
+<text x="320" y="410" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">L</text>
+<text x="342" y="410" fill="#333" font-size="11">= Expres</text>
+<text x="410" y="410" fill="#555" font-size="9">e.g. LZ 123 456 789 CN</text>
+<text x="30" y="470" fill="#a16207" font-size="11" font-weight="600">Remember: RaCHEL = scan all labels with 2-9-2 barcodes starting with R, C, H, E, or L</text>
+<!-- Rule 4: None -->
+<rect x="15" y="495" width="570" height="70" rx="6" fill="#fef2f2" stroke="#e00000" stroke-width="1.5"/>
+<circle cx="40" cy="520" r="14" fill="#e00000"/>
+<text x="40" y="525" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">4</text>
+<text x="65" y="524" fill="#e00000" font-size="13" font-weight="700">None of the Above = DO NOT SCAN</text>
+<text x="65" y="548" fill="#333" font-size="11">No hash marks, no logo, no RaCHEL match. Leave it alone.</text>
+</svg>
+<div class="diagram-caption">The four scanning rules in order of priority. Always check from Rule 1 down.</div>
+</div>`},
+{h:"Handling Damaged Labels",content:`<p>When a label is damaged, smudged, or placed incorrectly:</p>
+<ul>
+<li><b>If partially readable:</b> Manually enter the barcode digits into your PDT</li>
+<li><b>If completely unreadable:</b> Bring the item to your supervisor</li>
+</ul>
+<div class="warn">Never skip scanning an item because of a damaged label. Manual entry keeps tracking accurate.</div>`},
+{h:"Delivery Labels Journey",content:`<p>Every piece of mail receives 5 key scans:</p>
+<table><tr><th>#</th><th>Scan</th><th>When</th></tr>
+<tr><td>1</td><td>Induction</td><td>When Canada Post first receives the mail</td></tr>
+<tr><td>2</td><td>In Process</td><td>During automated sorting</td></tr>
+<tr><td>3</td><td>Depot Sortation</td><td>When mail reaches the local depot</td></tr>
+<tr><td>4</td><td>Out for Delivery</td><td>Just before the item leaves for its final stop</td></tr>
+<tr><td>5</td><td>Delivery</td><td>When delivered (or if delivery fails)</td></tr>
+</table>`},
+{h:"Delivery Label Types",content:`<p>Different services have distinct label styles. Knowing these helps you identify the service level and any special handling at a glance:</p>
+<div class="diagram">
+<svg viewBox="0 0 600 520" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,sans-serif">
+<rect width="600" height="520" fill="#fff"/>
+<text x="300" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a2e">Delivery Label Types - Quick Reference</text>
+<!-- Label 1: Regular Parcel -->
+<rect x="15" y="35" width="270" height="130" rx="6" fill="#fff" stroke="#ccc" stroke-width="1.5"/>
+<rect x="15" y="35" width="270" height="22" rx="6" fill="#1a1a2e"/>
+<rect x="15" y="48" width="270" height="9" fill="#1a1a2e"/>
+<text x="25" y="52" fill="#fff" font-size="9" font-weight="600">CANADA POST</text>
+<rect x="250" y="38" width="28" height="16" rx="2" fill="#6b7280"/>
+<text x="264" y="50" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">3</text>
+<text x="25" y="70" fill="#333" font-size="8" font-weight="600">Regular Parcel | Colis standard</text>
+<text x="25" y="82" fill="#555" font-size="7">TO/A:</text>
+<text x="25" y="92" fill="#333" font-size="8">CUSTOMER NAME</text>
+<text x="25" y="102" fill="#333" font-size="8">123 MAIN ST</text>
+<text x="25" y="112" fill="#333" font-size="8">CITY ON K2H 7J6</text>
+<rect x="180" y="95" width="90" height="14" rx="2" fill="#f5f5f7" stroke="#ccc"/>
+<text x="225" y="105" text-anchor="middle" fill="#333" font-size="7">SIGNATURE</text>
+<text x="25" y="128" fill="#1a1a2e" font-size="11" font-weight="700">K2H 7J6</text>
+<rect x="100" y="120" width="170" height="10" rx="1" fill="#333"/>
+<rect x="100" y="132" width="170" height="3" fill="#e00000"/>
+<text x="25" y="155" fill="#333" font-size="7">TRACKING: 7023 2100 1194 9605</text>
+<!-- Priority number badge explanation -->
+<text x="305" y="50" fill="#6b7280" font-size="10" font-weight="600">Priority</text>
+<text x="305" y="62" fill="#6b7280" font-size="10" font-weight="600">Number</text>
+<line x1="302" y1="50" x2="280" y2="46" stroke="#6b7280" stroke-width="0.8" stroke-dasharray="2"/>
+<text x="305" y="82" fill="#333" font-size="9">1 = Xpresspost</text>
+<text x="305" y="95" fill="#333" font-size="9">2 = Expedited</text>
+<text x="305" y="108" fill="#333" font-size="9">3 = Regular Parcel</text>
+<text x="305" y="121" fill="#333" font-size="9">P = Priority</text>
+<!-- Label 2: FlexDelivery -->
+<rect x="15" y="175" width="270" height="130" rx="6" fill="#fff" stroke="#2563eb" stroke-width="1.5"/>
+<rect x="15" y="175" width="270" height="22" rx="6" fill="#1a1a2e"/>
+<rect x="15" y="188" width="270" height="9" fill="#1a1a2e"/>
+<text x="25" y="192" fill="#fff" font-size="9" font-weight="600">CANADA POST</text>
+<rect x="250" y="178" width="28" height="16" rx="2" fill="#2563eb"/>
+<text x="264" y="190" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">P</text>
+<text x="100" y="210" fill="#2563eb" font-size="10" font-weight="700">FlexDelivery</text>
+<text x="25" y="225" fill="#555" font-size="7">TO/A   Tel./Tel.: 555-555-1212</text>
+<text x="25" y="237" fill="#333" font-size="8">MRS LALONDE</text>
+<text x="25" y="249" fill="#333" font-size="8" font-weight="600">PO BOX 99900 AB 123 456</text>
+<text x="25" y="261" fill="#333" font-size="8" font-weight="600">RPO CANADA POST PL</text>
+<text x="25" y="273" fill="#333" font-size="8">OTTAWA ON K1V 2R3</text>
+<rect x="100" y="278" width="170" height="10" rx="1" fill="#333"/>
+<text x="25" y="295" fill="#333" font-size="7">TRACKING: 1234 5678 8765 8876</text>
+<text x="305" y="200" fill="#2563eb" font-size="10" font-weight="600">FlexDelivery</text>
+<text x="305" y="218" fill="#333" font-size="9">Customer chose to pick</text>
+<text x="305" y="231" fill="#333" font-size="9">up at a post office.</text>
+<text x="305" y="250" fill="#333" font-size="9">Look for: PO BOX + RPO</text>
+<text x="305" y="263" fill="#333" font-size="9">in the address field.</text>
+<text x="305" y="282" fill="#e00000" font-size="9" font-weight="600">Deliver to the RPO,</text>
+<text x="305" y="295" fill="#e00000" font-size="9" font-weight="600">not the customer.</text>
+<!-- Label 3: DTPO -->
+<rect x="15" y="315" width="270" height="130" rx="6" fill="#fff" stroke="#f59e0b" stroke-width="1.5"/>
+<rect x="15" y="315" width="270" height="22" rx="6" fill="#1a1a2e"/>
+<rect x="15" y="328" width="270" height="9" fill="#1a1a2e"/>
+<text x="25" y="332" fill="#fff" font-size="9" font-weight="600">CANADA POST</text>
+<rect x="250" y="318" width="28" height="16" rx="2" fill="#f59e0b"/>
+<text x="264" y="330" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">1</text>
+<text x="160" y="350" fill="#a16207" font-size="9" font-weight="700">DTPO</text>
+<text x="25" y="365" fill="#555" font-size="7">TO/A   Tel./Tel.: 6475632357</text>
+<text x="25" y="377" fill="#333" font-size="8">MICHAEL NWAKA</text>
+<text x="25" y="389" fill="#333" font-size="8">C/O A/S TORONTO 1ST CAN PLACE PO</text>
+<text x="25" y="401" fill="#333" font-size="8">100 KING STREET W SUITE CN0119</text>
+<text x="25" y="413" fill="#1a1a2e" font-size="11" font-weight="700">M5X 1C0</text>
+<rect x="140" y="405" width="130" height="14" rx="2" fill="#f59e0b"/>
+<text x="205" y="416" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">DELIVER TO PO / LIVRER AU B. DE P.</text>
+<rect x="100" y="425" width="170" height="10" rx="1" fill="#333"/>
+<text x="305" y="340" fill="#a16207" font-size="10" font-weight="600">DTPO</text>
+<text x="305" y="355" fill="#333" font-size="9">Deliver to Post Office.</text>
+<text x="305" y="368" fill="#333" font-size="9">For commercial customers</text>
+<text x="305" y="381" fill="#333" font-size="9">(Xpresspost and Expedited</text>
+<text x="305" y="394" fill="#333" font-size="9">parcels only).</text>
+<text x="305" y="415" fill="#333" font-size="9">Look for: yellow banner</text>
+<text x="305" y="428" fill="#e00000" font-size="9" font-weight="600">"DELIVER TO PO"</text>
+<!-- Vehicle label -->
+<rect x="15" y="460" width="270" height="45" rx="6" fill="#fff" stroke="#6b7280" stroke-width="1"/>
+<text x="100" y="480" fill="#333" font-size="8" font-weight="600">Vehicle label</text>
+<rect x="80" y="485" width="130" height="12" rx="1" fill="#333"/>
+<text x="145" y="494" text-anchor="middle" fill="#fff" font-size="6">CPCA1434343331</text>
+<text x="305" y="478" fill="#333" font-size="9">Scan under the hood</text>
+<text x="305" y="493" fill="#333" font-size="9">during pre-trip inspection.</text>
+</svg>
+<div class="diagram-caption">Common label types showing key identifying features and service priority numbers.</div>
+</div>`}
+]},
+{cat:"Pickups",title:"Pickups & Clearances",subs:[
+{h:"Scheduled Pickup",content:`<ol class="steps">
+<li>Check your PDT for pickup instructions</li>
+<li>If unsure about volume, bring a dolly just in case</li>
+<li>At the customer's location, select them from the pickup list on your PDT</li>
+<li>Select the appropriate label option on your PDT</li>
+<li>Scan the labels or manifest as required</li>
+<li>Load your vehicle, keeping pickups separate from outgoing deliveries</li>
+</ol>
+<div class="warn">Always begin pickups at or after the scheduled start time. Arriving early may inconvenience the customer.</div>`},
+{h:"On-Demand Pickup",content:`<p>Commercial customers can request unscheduled pickups (mainly parcels, sometimes Lettermail). You receive the request on your PDT and must accept or decline.</p>
+<h4>Reasons to Decline</h4>
+<ul>
+<li>Not in my area</li>
+<li>Vehicle disabled</li>
+<li>Unable to reach before business close</li>
+<li>No room in my truck</li>
+<li>On break</li>
+</ul>
+<p>If you decline and no one else is available, you may need to return to the depot to unload and go back for the pickup. Always communicate with the dispatcher.</p>`},
+{h:"Clearing an RPO",content:`<ol class="steps">
+<li>Lock your vehicle, then go into the RPO with the equipment you need</li>
+<li>Place mail containers and parcels on the dolly. Keep types separate per local guidelines.</li>
+<li>Collect mail from indoor and outdoor receptacles, plus any containers/parcels from Retail staff</li>
+<li>Scan the RPO's barcode with your PDT</li>
+<li>Separate damaged mail into designated container. Unload vehicle before finishing your route.</li>
+</ol>`},
+{h:"Clearing SLBs",content:`<p>You are responsible for clearing Street Letter Boxes on your route.</p>
+<ol class="steps">
+<li>Wear puncture-resistant gloves</li>
+<li>Open the door and look inside to check for safety hazards</li>
+<li>Place any suspicious-looking materials in a separate container</li>
+<li>Note the SLB location and any hazardous/suspicious items found</li>
+</ol>
+<div class="danger">Do not handle dangerous goods. Contact your supervisor immediately.</div>
+<div class="warn">You must always clear SLBs and capture that on the PDT, even if there is no outgoing mail.</div>`},
+{h:"Shipping Documents",content:`<p>Four types you may encounter at pickups:</p>
+<table><tr><th>Type</th><th>Notes</th></tr>
+<tr><td>Bill of Lading (BOL)</td><td>Accompanies each shipment. May require signature.</td></tr>
+<tr><td>Prepaid label</td><td>Pre-purchased shipping label</td></tr>
+<tr><td>Manifest</td><td>Lists multiple items in a shipment. "MANIFEST NOT REQ" means paperless (online).</td></tr>
+<tr><td>EST-generated label</td><td>Electronic shipping tool label</td></tr>
+</table>
+<div class="warn">If 50+ items on a manifest, you can "eye ball" the count instead of scanning every barcode.</div>`}
+]},
+{cat:"Safety",title:"Safety",subs:[
+{h:"Inside Hazards",content:`<p>Two types: <b>Environmental</b> (building conditions, spills, poor lighting) and <b>Behavioural</b> (rushing, not paying attention, improper lifting).</p>
+<p>Three things for a safe work environment: <b>Be prepared, Pay attention, Report hazards.</b></p>
+<div class="danger">"Make it safe, make it home." Everyone is responsible for safety.</div>`},
+{h:"Outside Hazards",content:`<p>Your safety is the top priority. If something doesn't feel right, make the call:</p>
+<ol class="steps">
+<li>Pause the task</li>
+<li>Bundle and endorse the mail</li>
+<li>Report the hazard</li>
+<li>Continue with remaining deliveries</li>
+<li>Inform your team leader of the missed delivery when you return</li>
+</ol>`},
+{h:"Dog Bite Prevention",content:`<h4>Before Leaving Depot</h4>
+<ul>
+<li>Review Hazards & Warnings report on PDT (POCUR app > Reports)</li>
+<li>Always take dog repellent or air horn, even if no warnings on the report</li>
+</ul>
+<h4>Avoid These Actions</h4>
+<ul>
+<li>Don't ignore barking</li>
+<li>Don't sneak up on a dog</li>
+<li>Don't deliver before ensuring the dog is secure</li>
+<li>Don't attempt delivery with a loose dog present</li>
+<li>Don't hand out dog treats</li>
+</ul>
+<div class="danger">If there's even a hint of a threat, don't attempt delivery.</div>
+<h4>During a Dog Attack</h4>
+<table><tr><th>Don't</th><th>Do</th></tr>
+<tr><td>Run</td><td>Place mail in front of you as barrier</td></tr>
+<tr><td>Turn your back</td><td>Use dog repellent spray or air horn</td></tr>
+<tr><td>Look the dog in the eyes</td><td>Stay on your feet if attacked</td></tr>
+<tr><td>Kick the dog</td><td>Back away slowly</td></tr>
+</table>
+<h4>After an Incident</h4>
+<table><tr><th>On Site</th><th>Back at Depot</th></tr>
+<tr><td>Disinfect & cover wound</td><td>Log incident in POCUR app on PDT</td></tr>
+<tr><td>Contact your supervisor</td><td>Complete Dog Attack Action Checklist with supervisor</td></tr>
+<tr><td>Seek immediate medical care</td><td>Request replacement repellent/air horn</td></tr>
+</table>`},
+{h:"Key Safety",content:`<p>Keys must always be on a CPC-issued key ring, key tag, and lanyard, attached to your person by belt clip, belt loop, or parka D-ring.</p>
+<ul>
+<li>Never loan keys to coworkers</li>
+<li>Never leave keys in your car (even locked trunk)</li>
+<li>Always lock your vehicle when leaving it</li>
+</ul>
+<h4>If Keys Are Lost</h4>
+<p>Contact your team leader immediately with: location of loss, how it happened, whether keys were attached, whether they had a return tag.</p>
+<h4>If Confronted for Keys</h4>
+<ul>
+<li>Stay calm, don't risk your safety</li>
+<li>Listen and follow instructions</li>
+<li>Say out loud that you're following their instructions while placing your hand on the keys</li>
+<li>Do not chase the person. Your safety is the priority.</li>
+<li>When safe, call 911, then call your team leader</li>
+<li>Write down details while fresh in your memory</li>
+</ul>`},
+{h:"Cold Weather",content:`<ul>
+<li>Check weather and wind chill before work</li>
+<li>Wear water-resistant parka, wind-resistant pants, thermal base layer</li>
+<li>Boots: "one snowflake" rating or better on Rate My Treads, waterproof</li>
+<li>Anti-slip devices: always have them, wear on ice, remove before going indoors or driving</li>
+<li>Stay hydrated with warm, caffeine-free drinks</li>
+<li>Know warm-up locations along your route</li>
+</ul>
+<table><tr><th>Frostbite Signs</th><th>Hypothermia Signs</th></tr>
+<tr><td>Numbness, white areas on face/extremities</td><td>Confusion, slurred speech, stiff muscles, uncontrollable shivering</td></tr>
+<tr><td>Seek shelter, contact team leader</td><td>Seek shelter, call 911, contact team leader</td></tr>
+</table>`},
+{h:"Warm Weather",content:`<ul>
+<li>Wear loose-fitting, breathable clothing with wicking inner layer</li>
+<li>Apply water-resistant sunscreen, wear a hat</li>
+<li>Drink 1 cup of cool water every 20 minutes</li>
+<li>Avoid caffeine (coffee, tea, soda, energy drinks)</li>
+<li>Avoid rushing, pace yourself</li>
+<li>Humidex 40-45C: expect significant discomfort. 46C+: serious heat stroke risk.</li>
+<li>Watch for: severe sunburn, heat rash, cramps, dizziness, fainting, heat exhaustion</li>
+</ul>`},
+{h:"Year Round Gear Checklist",content:`<table><tr><th>Equipment</th><th>Notes</th></tr>
+<tr><td>Dual satchel</td><td>Max load 15.9 kg (35 lb)</td></tr>
+<tr><td>Head lamp</td><td>For outdoors at night or poorly lit areas</td></tr>
+<tr><td>Keys</td><td>Secured to CPC lanyard/belt clip/D-ring at all times</td></tr>
+<tr><td>PDT</td><td>Fully charged, secured, lock screen when not using. Dial 911 for emergencies.</td></tr>
+<tr><td>Puncture-resistant gloves</td><td>Request from team leader. Wear when clearing SLBs.</td></tr>
+<tr><td>Dog repellent/air horn</td><td>Carry in holster, stored upright in cool dry place. Only CPC-approved brands.</td></tr>
+<tr><td>High-visibility vest</td><td>Wear zipped up at all times (depot and route)</td></tr>
+<tr><td>Rain gear</td><td>Rain protection gear, GORE-TEX</td></tr>
+<tr><td>Emergency medication</td><td>Epi-pen, asthma inhaler if needed</td></tr>
+</table>`}
+]},
+{cat:"End of Day",title:"End of Day Procedures",subs:[
+{h:"End-of-Day Duties",content:`<ol class="steps">
+<li>Check fuel gauge. If half or less, refuel before returning.</li>
+<li>Unload all mail collected on route into designated containers at the dock</li>
+<li>Park your vehicle in the assigned space</li>
+<li>Return your corporate keys and other items including PDT</li>
+<li>Prepare the next day's Neighbourhood Mail</li>
+</ol>
+<h4>Also Remember</h4>
+<ul>
+<li>Add NM overages/shortages into PDT (NM Exceptions)</li>
+<li>Return shipping documents</li>
+<li>Dock the PDT to its charging cradle</li>
+<li>Return all undeliverable, defective, and damaged mail</li>
+<li>Return mis-sequenced mail (sequenced depots)</li>
+<li>Ensure your vehicle is completely empty of all mail and equipment including DNCs</li>
+</ul>`},
+{h:"PDT End of Day",content:`<ol class="steps">
+<li>Back into the dock safely to unload</li>
+<li>Collect your consolidation cart to transport items</li>
+<li>Scan your key tags and return keys to the appropriate area</li>
+<li>Record NM Exceptions (scan DCS blue barcode, select Overage/Shortage, enter count)</li>
+<li>Confirm vehicle check is completed, select LOGOUT</li>
+<li>Attach PDT to charging cradle and verify it's charging before leaving</li>
+</ol>`}
+]},
+{cat:"Customer",title:"Customer Service & Payments",subs:[
+{h:"Collecting Payment",content:`<h4>Accepted Payment Methods</h4>
+<table><tr><th>Method</th><th>Details</th></tr>
+<tr><td>Credit/prepaid card</td><td>VISA, MasterCard, or American Express only. Record card number, expiry, CVV, and customer name on PDT. Verify card is valid and not expired. Signature must match name on card.</td></tr>
+<tr><td>CPC commercial account</td><td>For business customers</td></tr>
+<tr><td>Proof of Payment (prepaid online)</td><td>PDT shows $0.00 owing. Customer can provide Proof of Payment number if amount still shows.</td></tr>
+</table>
+<div class="danger">Customers CANNOT pay with: cash, business cheques, personal cheques, money order, or debit card. If they want to use these, provide a DNC and explain they must pay at the RPO.</div>
+<p><b>One payment method per item.</b> Different items can use different methods.</p>
+<div class="warn">When using an IDB, you cannot accept credit cards. Customer without commercial account or online prepayment must be carded.</div>`},
+{h:"Customs Appeal",content:`<p>If a customer disagrees with the Customs Postal Import fee:</p>
+<ul>
+<li>Let them know they can appeal</li>
+<li>Explain that Canada Post will return the item to Customs as "Appealed"</li>
+<li>CBSA (Canada Border Services Agency) will follow up directly with the customer</li>
+</ul>
+<div class="danger">If the customer refuses to pay, do NOT deliver the item. Suggest they appeal the fees.</div>`},
+{h:"Tax-Exempt Customers",content:`<p>Customers with tax-exempt status must still pay the customs fee at delivery. They can obtain a refund by contacting CBSA (back of Form E14).</p>`},
+{h:"SSINA & Recovery Requests",content:`<p><b>SSINA</b> (Successful Scan, Item Not Available) = customer got a delivery confirmation but can't find the package. May be caused by theft or wrong compartment.</p>
+<p><b>Recovery Requests:</b> Initiated on Day-0 (same day as your route). You'll get a notification on PDT. Return to the delivery address, recover the item, perform recovery steps on PDT, then re-scan only when about to deliver to the correct address.</p>
+<p>Requests after Day-0 are handled by Customer Service, not you.</p>`}
+]},
+{cat:"Equipment",title:"Equipment & Containers",subs:[
+{h:"Letterflatainer (LFT)",content:`<p>Grey containers found in every depot. Used to transport Standard (STD) Lettermail and Oversize mail.</p>
+<h4>Full LFTs (Stacking)</h4>
+<p>Turn inner flaps DOWN, then stack one on top of another.</p>
+<h4>Empty LFTs (Nesting)</h4>
+<p>Flip inner flaps UP, then place one inside the other.</p>
+<h4>Reminders</h4>
+<ul>
+<li>Don't overfill (causes health issues from weight)</li>
+<li>Remove damaged LFTs from the work area</li>
+<li>Lift with both hands in the handle grooves, using safe technique</li>
+<li>Discard route cards after each use (garbage can, not floor)</li>
+</ul>`},
+{h:"SO-95 Container",content:`<p>Found in Street Letter Boxes (SLBs) and RPOs. Used to gather customer-posted mail.</p>
+<ul>
+<li>Max stack: 3 SO-95s on top of each other</li>
+<li>Test weight before lifting. If too heavy, remove some mail.</li>
+<li>Keep load close to body when carrying</li>
+<li>Avoid carrying multiple containers at once</li>
+</ul>`},
+{h:"Other Equipment",content:`<table><tr><th>Equipment</th><th>Description</th></tr>
+<tr><td>C-48</td><td>Depot-only. Transport containers around depot. Also used as extra work surface for sorting NM.</td></tr>
+<tr><td>Depot cart</td><td>Assigned to a route. Holds and transports mail/parcels to delivery vehicles.</td></tr>
+<tr><td>Monos</td><td>Large containers for plant-to-depot transport. Moved by hand jacks. You won't move these.</td></tr>
+<tr><td>IDCs</td><td>Large wheeled containers for plant-to-depot transport. You won't use these often.</td></tr>
+<tr><td>Flatbed dolly (C-8)</td><td>Transport larger items like parcels and tubs</td></tr>
+<tr><td>Rolling rack (A-59)</td><td>Transport mail containers around the depot</td></tr>
+<tr><td>Packet tub</td><td>Internal depot use only. Never taken on route. Too heavy/awkward for transport.</td></tr>
+</table>`},
+{h:"Letter Carrier Cart (C-46)",content:`<h4>Loading</h4>
+<ul>
+<li>Lock cart in position before loading a satchel</li>
+<li>Only place a single satchel on the platform</li>
+<li>Secure satchel by sliding metal rings over cart hooks</li>
+<li>When loading/unloading from vehicle: detach satchel, use safe lifting, lay cart flat</li>
+</ul>
+<h4>Using the Cart</h4>
+<ul>
+<li>Hold the handle to maintain control</li>
+<li>Don't retrieve mail while cart is in motion</li>
+<li>Use ramps, elevators, automatic door openers</li>
+<li>Avoid flights of more than 4 stairs</li>
+<li>Watch for cracks and uneven surfaces</li>
+<li>On a city bus: sit near the front, don't block the aisle, keep one hand on cart</li>
+</ul>
+<table><tr><th>Going Up Curbs/Steps</th><th>Going Down Curbs/Steps</th></tr>
+<tr><td>Wheels touching the curb, face the cart, bend knees, pull up using handle</td><td>Cart facing stairs at edge, bend knees, use handle to carefully roll over edge</td></tr>
+</table>
+<table><tr><th>Pulling (Uphill)</th><th>Pushing (Downhill)</th></tr>
+<tr><td>Cart behind you, handle high enough to avoid foot contact</td><td>Cart in front, handle at elbow height, arm relaxed at side</td></tr>
+</table>`},
+{h:"Dual Satchel",content:`<p>Max load: <b>15.9 kg (35 lb)</b>. First-time adjustment: get help, loosen all straps, unclip all buckles, load with no more than 25 lbs of mail.</p>
+<p>Purpose: stabilize the load, transfer weight from shoulders to lower body, maintain good posture.</p>`}
+]},
+{cat:"Postal Codes",title:"Postal Codes",subs:[
+{h:"Structure",content:`<p>Format: <b>A1A 1A1</b> (Letter-Number-Letter Number-Letter-Number)</p>
+<table><tr><th>Part</th><th>Name</th><th>What It Identifies</th></tr>
+<tr><td>First 3 characters</td><td>FSA (Forward Sortation Area)</td><td>Geographic area. 1st letter = province/region (18 areas). 2nd character: 0 = rural, 1-9 = urban. 3rd character further subdivides the area.</td></tr>
+<tr><td>Last 3 characters</td><td>LDU (Local Delivery Unit)</td><td>Specific POC or set of POCs. When a row of POCs share an LDU, it's called a block face.</td></tr>
+</table>
+<p>Ontario has 5 postal districts, Quebec has 3, due to dense population.</p>`}
+]},
+{cat:"Forwarding",title:"Mail Forwarding & RTS",subs:[
+{h:"Redirection Case Cards",content:`<p><b>Orange</b> redirection case cards identify mail to be forwarded due to change of address. Card shows:</p>
+<ul>
+<li>Original/Amendment, Comments, Names, Original address, New address</li>
+<li>Local or Forward, New/Old route numbers</li>
+<li>Permanent or Temporary, R (Residential) or B (Business)</li>
+<li>Forward start and end dates</li>
+</ul>
+<h4>A and B Cards</h4>
+<p>In depots without a Redirection Service clerk: A card goes with the forwarded mail, B card replaces it in the case.</p>
+<h4>Expiration</h4>
+<p>Remove case cards from the separation on the first working day AFTER the expiry date.</p>`},
+{h:"What Forwarded Mail Looks Like",content:`<ul>
+<li><b>Yellow label:</b> Forwarded at a Redirection Service site within a depot. New address printed on yellow label.</li>
+<li><b>Chevron markings:</b> Forwarded by sortation machines. Shows REDIRECTION/REEXPEDITION stamp and new address in lower right corner with chevron markings.</li>
+</ul>
+<div class="warn">If mail looks like a missort but has chevron markings, deliver to the NEW address beside the chevrons.</div>`},
+{h:"Other Redirection Rules",content:`<table><tr><th>Type</th><th>Rule</th></tr>
+<tr><td>Personalized Mail ("Occupant"/"Current Resident")</td><td>Do NOT redirect. Deliver as addressed. Exception: redirect if it has Return Postage Guaranteed (RPG) endorsement.</td></tr>
+<tr><td>Mail with "Do Not Forward"</td><td>Do not forward. Return to Sender (RTS).</td></tr>
+<tr><td>Parcels/PCIs</td><td>Can only redirect if new address is within Canada. If outside Canada, don't redirect.</td></tr>
+<tr><td>Proof of Age label</td><td>Do not forward. Return to sender.</td></tr>
+<tr><td>Forwarding address outside Canada</td><td>Do not forward. Return to sender.</td></tr>
+</table>`},
+{h:"Return to Sender (RTS) Reasons",content:`<table><tr><th>Reason</th><th>When to Use</th></tr>
+<tr><td>Unclaimed</td><td>Item unclaimed after being carded</td></tr>
+<tr><td>No such address</td><td>Street, civic number, or unit doesn't exist</td></tr>
+<tr><td>Address incomplete</td><td>Vital address elements missing</td></tr>
+<tr><td>Moved/Unknown</td><td>Addressee moved without redirect, or redirect expired</td></tr>
+<tr><td>No such Post Office</td><td>PO doesn't exist and no return address</td></tr>
+<tr><td>Refused</td><td>Addressee refused the item</td></tr>
+</table>
+<h4>Special RTS Rules</h4>
+<table><tr><th>Mail Type</th><th>Rule</th></tr>
+<tr><td>Lettermail (unknown/deceased/moved)</td><td>Do NOT write reason on the lettermail</td></tr>
+<tr><td>Lettermail (other reasons)</td><td>You CAN write the reason</td></tr>
+<tr><td>Publications</td><td>Do not write the reason</td></tr>
+<tr><td>Philatelic/First Day Covers</td><td>Do not write on them</td></tr>
+<tr><td>Literature for the Blind</td><td>Write reason on the address label, not on plastic covering</td></tr>
+<tr><td>Personalized Mail with Return Postage</td><td>Do not write the reason</td></tr>
+</table>
+<div class="warn">Make every reasonable effort to deliver mail before returning it to sender.</div>
+<h4>Undeliverable Mail</h4>
+<p>If an item can't be delivered, has no return address, or isn't eligible for RTS:</p>
+<ol class="steps">
+<li>Cross out the customer's name and address</li>
+<li>Indicate the reason it can't be delivered</li>
+<li>Deposit in the designated Undeliverable Mail area</li>
+</ol>`}
+]},
+{cat:"Case Cards",title:"Case Cards",subs:[
+{h:"Hold Mail (Yellow Card)",content:`<p>A yellow Hold Mail case card means: do not deliver mail to this address for the indicated period.</p>
+<h4>Card Fields</h4>
+<ul>
+<li>Original or Amendment</li>
+<li>Comments</li>
+<li>Names of addressees</li>
+<li>Customer's address</li>
+<li>Hold Mail case separation number</li>
+<li>Route number</li>
+<li>Service start and end dates</li>
+<li>Residential (R) or Business (B)</li>
+</ul>
+<h4>Holding PCIs and Parcels</h4>
+<table><tr><th>Barcoded Items (not parcels)</th><th>Parcels</th></tr>
+<tr><td>Can be held</td><td>Excluded from Hold Mail. Must be treated as RTS.</td></tr>
+</table>`},
+{h:"Quarantine Case Card (Yellow)",content:`<p>When a potentially fraudulent Hold Mail request is under investigation, you receive a yellow Quarantine card. Process all mail for that address as Hold Mail until the investigation is complete.</p>`},
+{h:"Directs and Callers",content:`<table><tr><th>Directs</th><th>Callers</th></tr>
+<tr><td>Mail delivered by a motorized employee to a customer who receives large volumes</td><td>Customer who picks up large-volume mail at the depot instead of receiving delivery</td></tr>
+<tr><td>May be prepared by one employee and delivered by another</td><td>Employee prepares the mail and places it in a designated pickup area</td></tr>
+</table>`},
+{h:"Missorts",content:`<table><tr><th>Type</th><th>Description</th><th>What to Do</th></tr>
+<tr><td>Missorted in-depot</td><td>Correct depot but wrong route</td><td>Sequenced/SSD depot: put on case ledge or in missort separation. Non-sequenced: put in missorts rack.</td></tr>
+<tr><td>Missorted out-of-depot</td><td>Wrong depot entirely</td><td>Same as above - it will be routed to the correct depot.</td></tr>
+</table>`}
+]},
+{cat:"Depot",title:"Depot Types & Layout",subs:[
+{h:"Sequenced Depot",content:`<p>A large portion of Standard Lettermail (STD) is machine-sorted into delivery sequence (route line of travel). Floor plan layout is standardized. Has Wave 1 and Wave 2 areas for sequenced STD and parcels.</p>`},
+{h:"Non-Sequenced Depot",content:`<p>Layout and equipment can vary. Familiarize yourself with what is consistent from depot to depot: types of mail and equipment.</p>`},
+{h:"Separate Sort from Delivery (SSD)",content:`<p>In SSD depots, the traditional letter carrier role is split:</p>
+<ul>
+<li><b>Routers:</b> Obtain, sort, and prepare manual mail for delivery using one A-62 case for multiple routes. Mail is delivered the next day.</li>
+<li><b>Delivery Employees:</b> Only responsible for delivering the already-sorted mail.</li>
+</ul>
+<div class="warn">In SSD depots, delivery employees will not have access to Hold or Mail Forwarding case cards. Routers primarily sort, but can be required to help with delivery. Every delivery employee can be required to deliver.</div>`}
+]},
+{cat:"Delivery Method",title:"Back-to-Back Delivery Method",subs:[
+{h:"What Is It?",content:`<p>A mail-handling method used in sequenced depots. You hold manually sorted mail facing up toward you and sequenced mail facing the opposite direction, combined in one hand.</p>`},
+{h:"Steps",content:`<ol class="steps">
+<li>Obtain a bundle from the satchel, hold in your preferred carrying hand</li>
+<li>Remove the elastics from around the combined bundle with your other hand</li>
+<li>Place both bundles onto your forearm</li>
+<li>Take the sequenced bundle and place it upside-down in your carrying hand with address facing away</li>
+<li>Remove remaining elastic from manual bundle, move manual mail down in front of sequenced mail (straight transfer from forearm to hand). Addresses will be in opposite directions.</li>
+<li>To see sequenced mail, pivot or rotate your carrying hand, resting bundle on forearm</li>
+<li>Obtain required mail for the POC with your other hand</li>
+<li>Reverse the bundle to obtain manual mail for that POC</li>
+<li>Hold and deliver with your other hand</li>
+<li>Grab corresponding NM for that POC</li>
+</ol>`}
+]},
+{cat:"Basic Rules",title:"Basic Delivery Guidelines",subs:[
+{h:"12 Rules of Delivery",content:`<ol class="steps">
+<li>Always follow the route as designed</li>
+<li>Never take shortcuts</li>
+<li>Verify the entire address</li>
+<li>Respect customer requests</li>
+<li>Only deliver to approved locations</li>
+<li>Follow the DNC process</li>
+<li>Always be courteous when delivering</li>
+<li>Have damaged mail repaired before delivering</li>
+<li>Don't give mail to children or unauthorized people</li>
+<li>Do not open mail addressed to someone else</li>
+<li>Don't nest Neighbourhood Mail inside other pieces</li>
+<li>Dispose of waste properly and return rubber bands to the depot</li>
+</ol>`},
+{h:"Full Mail Receptacles",content:`<ul>
+<li>If full and mail won't fit: bundle the mail and return it to the depot</li>
+<li>Notify your supervisor (they'll contact the customer)</li>
+<li>Never remove mail from a receptacle once delivered</li>
+<li>Delivered mail is the property of the recipient</li>
+</ul>`},
+{h:"Dropped Mail in Mailroom",content:`<p>Pick up mail tossed on the floor. Place a small <b>X</b> on the back of each envelope and re-sort into proper slots. The X identifies repeat offenders who may be trying to refuse or return mail.</p>
+<div class="warn">Always remove mail from the outgoing compartment of a CMB and scan the barcode, even if no mail to deliver. Always clear SLBs and capture on PDT, even with no outgoing mail.</div>`},
+{h:"When Delivering Barcoded Items",content:`<p>Always verify:</p>
+<ul>
+<li>Is a <b>Signature</b> required?</li>
+<li>Is there a <b>Customs amount due</b>?</li>
+<li>Does the <b>ATTENTION box</b> contain delivery instructions?</li>
+</ul>`}
+]}
+];
+
+const cats=new Set(DATA.map(d=>d.cat));
+const catsEl=document.getElementById('cats');
+const contentEl=document.getElementById('content');
+const searchEl=document.getElementById('search');
+const clearBtn=document.getElementById('clearBtn');
+const backTop=document.getElementById('backTop');
+let activeCat=null;
+let searchMode=false;
+
+function renderCats(){
+catsEl.innerHTML='<button class="cat-btn'+(activeCat===null?' active':'')+'" onclick="filterCat(null)">All</button>';
+cats.forEach(c=>{
+catsEl.innerHTML+=`<button class="cat-btn${activeCat===c?' active':''}" onclick="filterCat('${c}')">${c}</button>`;
+});
+}
+
+function filterCat(c){
+activeCat=c;
+searchEl.value='';
+clearBtn.style.display='none';
+searchMode=false;
+renderCats();
+renderContent();
+window.scrollTo({top:0});
+}
+
+function clearSearch(){
+searchEl.value='';
+clearBtn.style.display='none';
+searchMode=false;
+renderContent();
+searchEl.focus();
+}
+
+function stripHtml(html){
+const tmp=document.createElement('div');
+tmp.innerHTML=html;
+return tmp.textContent||tmp.innerText||'';
+}
+
+function extractPassage(html,query,maxLen){
+maxLen=maxLen||220;
+const text=stripHtml(html);
+const q=query.toLowerCase();
+const idx=text.toLowerCase().indexOf(q);
+if(idx===-1) return null;
+let start=Math.max(0,idx-80);
+let end=Math.min(text.length,idx+query.length+maxLen-80);
+if(start>0){
+const sp=text.indexOf(' ',start);
+if(sp!==-1&&sp<start+15) start=sp+1;
+}
+if(end<text.length){
+const sp=text.lastIndexOf(' ',end);
+if(sp>idx+query.length) end=sp;
+}
+let passage=(start>0?'...':'')+text.slice(start,end)+(end<text.length?'...':'');
+return passage;
+}
+
+function scoreResult(d,s,query){
+const q=query.toLowerCase();
+const words=q.split(/\s+/).filter(w=>w.length>1);
+let score=0;
+const titleL=d.title.toLowerCase();
+const headL=s.h.toLowerCase();
+const bodyText=stripHtml(s.content).toLowerCase();
+if(headL===q) score+=100;
+else if(headL.includes(q)) score+=60;
+if(titleL.includes(q)) score+=30;
+words.forEach(w=>{
+if(headL.includes(w)) score+=20;
+if(titleL.includes(w)) score+=10;
+});
+const bodyMatches=(bodyText.match(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'))||[]).length;
+score+=Math.min(bodyMatches*8,40);
+words.forEach(w=>{
+const wm=(bodyText.match(new RegExp(w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'))||[]).length;
+score+=Math.min(wm*3,15);
+});
+if(bodyText.length<300) score+=5;
+return score;
+}
+
+function highlightText(text,query){
+const words=query.split(/\s+/).filter(w=>w.length>1);
+const escaped=query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+let result=text.replace(new RegExp('('+escaped+')','gi'),'<mark>$1</mark>');
+words.forEach(w=>{
+if(w.toLowerCase()!==query.toLowerCase()){
+const we=w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+result=result.replace(new RegExp('('+we+')','gi'),'<mark>$1</mark>');
+}
+});
+return result;
+}
+
+function jumpToSection(dataIdx,subIdx){
+searchEl.value='';
+clearBtn.style.display='none';
+searchMode=false;
+activeCat=null;
+renderCats();
+renderContent();
+const sections=contentEl.querySelectorAll('.section');
+if(sections[dataIdx]){
+const title=sections[dataIdx].querySelector('.section-title');
+const body=sections[dataIdx].querySelector('.section-body');
+if(!title.classList.contains('open')){
+title.classList.add('open');
+body.classList.add('show');
+}
+const subs=body.querySelectorAll('.sub-section');
+const target=subs[subIdx]||title;
+setTimeout(()=>target.scrollIntoView({behavior:'smooth',block:'start'}),50);
+}
+}
+
+function renderSearchResults(query){
+const q=query.toLowerCase();
+const results=[];
+DATA.forEach((d,di)=>{
+d.subs.forEach((s,si)=>{
+const headL=s.h.toLowerCase();
+const bodyText=stripHtml(s.content).toLowerCase();
+const words=q.split(/\s+/).filter(w=>w.length>1);
+const fullMatch=headL.includes(q)||bodyText.includes(q);
+const wordMatch=words.length>1&&words.some(w=>headL.includes(w)||bodyText.includes(w));
+if(!fullMatch&&!wordMatch) return;
+const score=scoreResult(d,s,query);
+const passage=extractPassage(s.content,query,220)||
+(words.length>1?words.reduce((best,w)=>{
+if(best) return best;
+return extractPassage(s.content,w,220);
+},null):null);
+if(!passage) return;
+results.push({d,s,di,si,score,passage});
+});
+});
+results.sort((a,b)=>b.score-a.score);
+if(!results.length){
+contentEl.innerHTML='<div class="no-results">No results for "'+query+'"<br><br>Try different keywords or browse by category above.</div>';
+return;
+}
+let html='';
+const top=results[0];
+if(top.score>=20){
+const hPassage=highlightText(top.passage,query);
+html+=`<div class="answer-box">
+<div class="answer-label">&#x1F50D; Best match</div>
+<div class="answer-passage">${hPassage}</div>
+<div class="answer-source">${top.d.title} &rsaquo; ${top.s.h} &mdash; <a onclick="jumpToSection(${top.di},${top.si})">View full section</a></div>
+</div>`;
+}
+const shown=top.score>=20?results.slice(1,11):results.slice(0,10);
+if(shown.length){
+html+=`<div class="result-count">${results.length} result${results.length===1?'':'s'} found</div>`;
+shown.forEach(r=>{
+const hPassage=highlightText(r.passage,query);
+html+=`<div class="snippet" onclick="jumpToSection(${r.di},${r.si})">
+<div class="snippet-title">${r.s.h}</div>
+<div class="snippet-section">${r.d.title} &rsaquo; ${r.d.cat}</div>
+<div class="snippet-text">${hPassage}</div>
+</div>`;
+});
+if(results.length>10){
+html+=`<div class="result-count" style="text-align:center;padding-top:8px">Showing top 10 of ${results.length} results. Try a more specific query.</div>`;
+}
+}
+contentEl.innerHTML=html;
+}
+
+function renderContent(query){
+if(query){
+searchMode=true;
+renderSearchResults(query);
+return;
+}
+searchMode=false;
+let filtered=DATA;
+if(activeCat) filtered=filtered.filter(d=>d.cat===activeCat);
+let html='';
+filtered.forEach((d,i)=>{
+const open=filtered.length===1?' open':'';
+const show=filtered.length===1?' show':'';
+let subsHtml='';
+d.subs.forEach(s=>{
+subsHtml+=`<div class="sub-section"><h3>${s.h}</h3>${s.content}</div>`;
+});
+html+=`<div class="section">
+<div class="section-title${open}" onclick="toggleSection(this)">
+${d.title}
+<span class="arrow">&#x25B6;</span>
+</div>
+<div class="section-body${show}">${subsHtml}</div>
+</div>`;
+});
+contentEl.innerHTML=html||'<div class="no-results">No matching content found.</div>';
+}
+
+function toggleSection(el){
+el.classList.toggle('open');
+const body=el.nextElementSibling;
+body.classList.toggle('show');
+}
+
+let searchTimeout;
+searchEl.addEventListener('input',function(){
+clearBtn.style.display=this.value?'block':'none';
+clearTimeout(searchTimeout);
+searchTimeout=setTimeout(()=>{
+activeCat=null;
+renderCats();
+renderContent(this.value.trim());
+},200);
+});
+
+window.addEventListener('scroll',()=>{
+backTop.style.display=window.scrollY>300?'flex':'none';
+});
+
+renderCats();
+renderContent();
+</script>
+</body>
+</html>
