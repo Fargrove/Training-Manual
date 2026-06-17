@@ -119,7 +119,8 @@ Topics organized as:
 | App built and usable | 2026-06-05 (done) |
 | SVG diagrams + PDT section added | 2026-06-06 (done) |
 | Hosted on GitHub Pages | 2026-06-06 (done) |
-| Michael starts depot training | 2026-06-09 |
+| Michael starts depot training | 2026-06-09 (done) |
+| Repo restructured to Training Manual | 2026-06-16 (done) |
 
 ## 13. Open Questions
 1. Should additional content from the Appendices PDF be added in a future session?
@@ -137,3 +138,4 @@ Topics organized as:
 | OTJ checklist | Inline procedures | Each checklist task has full procedure embedded, not just a link |
 | Diagrams | Inline SVG | Vector diagrams stay sharp at any zoom, searchable, no external files |
 | Hosting | GitHub Pages (public repo) | Free hosting, accessible from any device via URL |
+| Repo structure | One repo per Canada Post subproject | Canada Post is a local parent folder only; Training Manual is first child repo |
