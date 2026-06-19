@@ -80,7 +80,8 @@ Search bar at top, topic categories below, expandable sections within each topic
 
 ### 6.3 Detailed Flow
 Topics organized as:
-0. **OTJ Training Checklist** - Full on-the-job checklist with inline procedures for every task, sequenced-depot-aware
+0. **Morning Routine: Woodland Drive (SSD)** - Start-of-day walkthrough for Michael's actual assigned depot, in order (arrive → packet prep → parcels → NM → load → PDT → depart). SSD model: router sorts, delivery agent delivers. LCD 1/LCD 2 callouts, on-site "Ask at the depot" boxes, generic SSD floor-map diagram, and a separate Router-role card.
+1. **OTJ Training Checklist** - Full on-the-job checklist with inline procedures for every task, sequenced-depot-aware
 1. **Glossary & Acronyms** - Quick term lookup + full CPC acronyms list (100+)
 2. **Sorting & Case Work** - A-62 case, sorting procedures, blocking technique, revising the case
 3. **Header Board** - How to read it, all 6 sections explained
@@ -104,7 +105,8 @@ Topics organized as:
 
 | # | Deliverable | Format | Owner | Status |
 |---|-------------|--------|-------|--------|
-| 1 | Reference app | Single HTML file | Claude | Done (v2) |
+| 1 | Reference app | Single HTML file | Claude | Done (v3) |
+| 2 | Morning Routine section (Woodland Drive, SSD) | Section within app | Claude | Done (v1); LCD 1/LCD 2 delivery skeletons await on-site detail |
 
 ### 8.1 Acceptance Criteria
 
@@ -121,10 +123,13 @@ Topics organized as:
 | Hosted on GitHub Pages | 2026-06-06 (done) |
 | Michael starts depot training | 2026-06-09 (done) |
 | Repo restructured to Training Manual | 2026-06-16 (done) |
+| Morning Routine section added (Woodland SSD) | 2026-06-19 (done) |
 
 ## 13. Open Questions
-1. Should additional content from the Appendices PDF be added in a future session?
-2. Does Michael want a "favourites" or "bookmark" feature for frequently referenced procedures?
+1. Are ALL routes at Woodland Drive SSD, or does it vary by route? (Written SSD-primary with the guide's caveat that any delivery agent can be asked to sort/deliver.)
+2. What are the real LCD 1 (high-rise/mailroom/keys) and LCD 2 (storefront/SRO/awareness) delivery procedures? Section skeletons await Michael's on-route experience.
+3. What is Woodland's actual floor layout? Current floor-map diagram is generic SSD; redraw once Michael maps the real positions.
+4. Does Michael want a "favourites" or "bookmark" feature for frequently referenced procedures?
 
 ## Appendix A: Decision Log
 
@@ -134,7 +139,10 @@ Topics organized as:
 | Phone or desktop? | Both equally | Used on phone between stops and laptop at home |
 | Study tool or reference? | Reference | Classroom training is done, needs on-the-job lookup |
 | Content priority | Procedures first | Operational knowledge is what's hardest to remember |
-| Depot type | Sequenced depot | Michael's training depot is sequenced; non-sequenced tasks de-emphasized |
+| Depot type (training) | Sequenced depot | Michael's Burnaby classroom-training depot was sequenced; non-sequenced tasks de-emphasized in OTJ Checklist |
+| Depot model (actual) | SSD (Woodland Drive) | Michael's assigned depot (333 Woodland Drive, LCD 1/LCD 2) is SSD: a router sorts manual mail, the delivery agent delivers it next day. Morning Routine section written to this model |
+| SSD sorting vs fallback | SSD-primary, sorting as marked fallback | DA doesn't case/tie out in SSD, but any DA can be asked to; tie-out kept as labelled fallback + separate Router card |
+| LCD differences | Shared routine + LCD 1/LCD 2 badge callouts | Blue (LCD 1 high-rise) and purple (LCD 2 DTES) callout boxes flag where procedures diverge |
 | OTJ checklist | Inline procedures | Each checklist task has full procedure embedded, not just a link |
 | Diagrams | Inline SVG | Vector diagrams stay sharp at any zoom, searchable, no external files |
 | Hosting | GitHub Pages (public repo) | Free hosting, accessible from any device via URL |
