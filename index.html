@@ -113,6 +113,86 @@ const DATA = [
 <div class="warn">You haven't started at Woodland yet. Anything in an <span class="fillin">amber blank</span> is something to confirm on-site. Green <b>"Ask at the depot"</b> boxes list specific questions for your supervisor or an experienced carrier. If you're ever assigned as a <b>Router</b>, see the separate <i>"If You're Called in as a Router"</i> card at the end.</div>`},
 
 {h:"1. Arrive & Get Oriented",content:`<p>First thing on the floor: figure out your assignment and study your route before you touch any mail.</p>
+<div class="diagram">
+<svg viewBox="0 0 600 470" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,BlinkMacSystemFont,sans-serif">
+<rect width="600" height="470" fill="#fff"/>
+<rect x="8" y="8" width="584" height="454" rx="10" fill="#fafafa" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="20" y="28" fill="#64748b" font-size="11" font-weight="700">SSD DEPOT FLOOR · generic layout</text>
+<!-- dashed path arrow connecting the flow -->
+<defs><marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#e00000"/></marker></defs>
+<path d="M 95 95 L 230 95 L 230 175 L 95 175 M 230 135 L 360 135 M 360 95 L 495 95 L 495 175 L 360 175 M 300 215 L 300 250 M 165 320 L 435 320 M 300 360 L 300 395" fill="none" stroke="#e00000" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah)" opacity="0.55"/>
+<!-- Router zone (someone else's job, teal) -->
+<rect x="20" y="50" width="170" height="100" rx="7" fill="#ecfeff" stroke="#0891b2" stroke-width="1.5"/>
+<text x="105" y="68" text-anchor="middle" fill="#0891b2" font-size="10" font-weight="700">ROUTER WORKSTATIONS</text>
+<text x="105" y="84" text-anchor="middle" fill="#0e7490" font-size="8">A-62 cases · sorts your mail</text>
+<text x="105" y="96" text-anchor="middle" fill="#0e7490" font-size="8">the day before (not you)</text>
+<rect x="35" y="106" width="60" height="32" rx="3" fill="#fff" stroke="#67e8f9"/><text x="65" y="126" text-anchor="middle" fill="#0e7490" font-size="8">A-62</text>
+<rect x="105" y="106" width="70" height="32" rx="3" fill="#fff" stroke="#67e8f9"/><text x="140" y="126" text-anchor="middle" fill="#0e7490" font-size="8">A-62</text>
+<!-- Packet Prep (your start, step 2) -->
+<rect x="210" y="50" width="180" height="120" rx="7" fill="#eef4ff" stroke="#2563eb" stroke-width="1.5"/>
+<circle cx="226" cy="66" r="9" fill="#2563eb"/><text x="226" y="70" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">2</text>
+<text x="300" y="69" text-anchor="middle" fill="#1d4ed8" font-size="10" font-weight="700">DA PACKET PREP (C-52)</text>
+<text x="300" y="84" text-anchor="middle" fill="#1e40af" font-size="8">collect route packet container,</text>
+<text x="300" y="95" text-anchor="middle" fill="#1e40af" font-size="8">count/confirm, sequence</text>
+<rect x="222" y="104" width="74" height="26" rx="3" fill="#fff" stroke="#93c5fd"/><text x="259" y="121" text-anchor="middle" fill="#1e40af" font-size="8">packet cont.</text>
+<rect x="304" y="104" width="74" height="26" rx="3" fill="#fff" stroke="#93c5fd"/><text x="341" y="121" text-anchor="middle" fill="#1e40af" font-size="8">C-48 cart</text>
+<text x="300" y="148" text-anchor="middle" fill="#1e40af" font-size="8">header board on mount-file organizer</text>
+<text x="300" y="160" text-anchor="middle" fill="#1e40af" font-size="8">redirection / hold binder here</text>
+<!-- Parcel staging (step 3) -->
+<rect x="410" y="50" width="170" height="120" rx="7" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+<circle cx="426" cy="66" r="9" fill="#ea580c"/><text x="426" y="70" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">3</text>
+<text x="495" y="69" text-anchor="middle" fill="#c2410c" font-size="10" font-weight="700">PARCEL SORT / STAGING</text>
+<text x="495" y="86" text-anchor="middle" fill="#9a3412" font-size="8">confirm parcels OFD on PDT</text>
+<text x="495" y="98" text-anchor="middle" fill="#9a3412" font-size="8">match to your route</text>
+<rect x="425" y="112" width="64" height="40" rx="3" fill="#fff" stroke="#fdba74"/><text x="457" y="136" text-anchor="middle" fill="#9a3412" font-size="8">parcels</text>
+<rect x="500" y="112" width="64" height="40" rx="3" fill="#fff" stroke="#fdba74"/><text x="532" y="136" text-anchor="middle" fill="#9a3412" font-size="8">oversize</text>
+<!-- NM bunker (step 4) -->
+<rect x="20" y="195" width="250" height="95" rx="7" fill="#fefce8" stroke="#ca8a04" stroke-width="1.5"/>
+<circle cx="36" cy="211" r="9" fill="#ca8a04"/><text x="36" y="215" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">4</text>
+<text x="150" y="214" text-anchor="middle" fill="#a16207" font-size="10" font-weight="700">NM BUNKER (A34 / A65)</text>
+<text x="150" y="230" text-anchor="middle" fill="#854d0e" font-size="8">+ Admail Control Board · colour-day splits</text>
+<rect x="35" y="240" width="46" height="38" rx="3" fill="#fce7f3" stroke="#f0abfc"/><text x="58" y="263" text-anchor="middle" fill="#9d174d" font-size="8">pink</text>
+<rect x="87" y="240" width="46" height="38" rx="3" fill="#ffedd5" stroke="#fdba74"/><text x="110" y="263" text-anchor="middle" fill="#9a3412" font-size="8">orange</text>
+<rect x="139" y="240" width="46" height="38" rx="3" fill="#dbeafe" stroke="#93c5fd"/><text x="162" y="263" text-anchor="middle" fill="#1e40af" font-size="8">blue</text>
+<text x="227" y="263" text-anchor="middle" fill="#854d0e" font-size="8">staged for<tspan x="227" dy="11">next day</tspan></text>
+<!-- Consolidation area (step 3/5) -->
+<rect x="290" y="195" width="140" height="95" rx="7" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+<text x="360" y="214" text-anchor="middle" fill="#475569" font-size="10" font-weight="700">CONSOLIDATION</text>
+<text x="360" y="226" text-anchor="middle" fill="#475569" font-size="9" font-weight="700">AREA</text>
+<text x="360" y="244" text-anchor="middle" fill="#64748b" font-size="8">move containers to</text>
+<text x="360" y="256" text-anchor="middle" fill="#64748b" font-size="8">your C-52 depot cart</text>
+<rect x="320" y="263" width="80" height="20" rx="3" fill="#fff" stroke="#cbd5e1"/><text x="360" y="277" text-anchor="middle" fill="#475569" font-size="8">C-52 depot cart</text>
+<!-- C-44 return cart (step 5) -->
+<rect x="450" y="195" width="130" height="95" rx="7" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+<circle cx="466" cy="211" r="9" fill="#dc2626"/><text x="466" y="215" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">5</text>
+<text x="520" y="214" text-anchor="middle" fill="#b91c1c" font-size="10" font-weight="700">C-44 RETURN</text>
+<text x="515" y="232" text-anchor="middle" fill="#991b1b" font-size="8">missorts · RTS ·</text>
+<text x="515" y="244" text-anchor="middle" fill="#991b1b" font-size="8">"In Station" /</text>
+<text x="515" y="256" text-anchor="middle" fill="#991b1b" font-size="8">"Out of Station"</text>
+<text x="515" y="276" text-anchor="middle" fill="#991b1b" font-size="8">+ POCUR updates</text>
+<!-- Loading dock + vehicle (steps 6-8) -->
+<rect x="20" y="335" width="560" height="115" rx="7" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+<circle cx="36" cy="351" r="9" fill="#16a34a"/><text x="36" y="355" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">6</text>
+<text x="300" y="354" text-anchor="middle" fill="#15803d" font-size="10" font-weight="700">VEHICLE LOADING AREA / DOCK</text>
+<text x="170" y="372" text-anchor="middle" fill="#166534" font-size="8">pre-trip circle check · enter mileage in PDT</text>
+<!-- step van -->
+<rect x="120" y="382" width="180" height="56" rx="5" fill="#fff" stroke="#16a34a" stroke-width="1.5"/>
+<rect x="120" y="382" width="44" height="56" rx="5" fill="#dcfce7" stroke="#16a34a"/>
+<text x="142" y="406" text-anchor="middle" fill="#15803d" font-size="7" font-weight="700">DRIVER</text>
+<text x="142" y="416" text-anchor="middle" fill="#15803d" font-size="6">Stop &amp; Go</text>
+<text x="142" y="424" text-anchor="middle" fill="#15803d" font-size="6">LFT here</text>
+<text x="232" y="408" text-anchor="middle" fill="#166534" font-size="8">other LFTs +</text>
+<text x="232" y="420" text-anchor="middle" fill="#166534" font-size="8">parcels (rear)</text>
+<rect x="305" y="382" width="40" height="56" rx="4" fill="#dcfce7" stroke="#16a34a"/>
+<circle cx="325" cy="356" r="9" fill="#16a34a"/><text x="325" y="360" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">8</text>
+<path d="M 360 410 L 560 410" fill="none" stroke="#16a34a" stroke-width="2.5" marker-end="url(#ah)"/>
+<text x="470" y="402" text-anchor="middle" fill="#15803d" font-size="9" font-weight="700">→ to route (Wave 2)</text>
+<!-- legend -->
+<text x="360" y="430" fill="#64748b" font-size="7">7. PDT final checks before you pull out</text>
+</svg>
+<div class="diagram-caption">Generic SSD depot flow, numbered to the morning steps below. Real station positions at Woodland get confirmed on your walk-through.</div>
+</div>
+<div class="warn"><b>This is a generic SSD layout, not Woodland's actual floor.</b> You haven't started yet, so the real positions of the packet-prep area, NM bunker, parcel staging, and loading dock are something to map on your first walk-through. Use the green "Ask at the depot" box below to pin them down, then tell me and I'll redraw this to match your real floor.</div>
 <ol class="steps">
 <li><b>Check the assignment board / whiteboard.</b> If you're newly assigned to a route, confirm your draw with the supervisor or the depot information board. <span class="fillin">Your route: ____ · Wave 2 start time: ____</span></li>
 <li><b>Find your route's A-62 sortation case</b> and review the <b>header board</b> first. It confirms relay box, SLB and CMB locations, required corporate keys, street distribution, and special instructions. (See the <i>Reading the Header Board</i> section.)</li>
