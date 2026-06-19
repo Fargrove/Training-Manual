@@ -49,6 +49,19 @@ tr:nth-child(even){background:#f9fafb}
 .na-row{opacity:.4;text-decoration:line-through}
 .na-row td{color:#9ca3af}
 .depot-badge{display:inline-block;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:700;background:#2563eb;color:#fff;margin-left:8px;vertical-align:middle}
+.lcd{padding:8px 10px 8px 12px;border-radius:6px;margin:8px 0;font-size:13px}
+.lcd .lcd-label{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:2px 8px;border-radius:4px;color:#fff;margin-bottom:5px}
+.lcd1{background:#eef4ff;border-left:4px solid #2563eb}
+.lcd1 .lcd-label{background:#2563eb}
+.lcd2{background:#f4f0fb;border-left:4px solid #7c3aed}
+.lcd2 .lcd-label{background:#7c3aed}
+.lcd ul{margin:2px 0 0;padding-left:18px}
+.lcd li{margin:2px 0}
+.ask{background:#f0fdf4;border:1.5px dashed #16a34a;border-radius:8px;padding:10px 12px;margin:10px 0;font-size:13px}
+.ask .ask-label{font-size:11px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:#15803d;display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.ask ul{margin:0;padding-left:18px}
+.ask li{margin:4px 0}
+.fillin{background:#fffbeb;border-bottom:1px dashed #d97706;color:#92400e;font-style:italic;padding:0 3px}
 .no-results{text-align:center;padding:40px 16px;color:var(--muted);font-size:15px}
 mark{background:#fde68a;padding:0 2px;border-radius:2px}
 .diagram{margin:12px 0;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:#fff}
@@ -90,6 +103,161 @@ mark{background:#fde68a;padding:0 2px;border-radius:2px}
 
 <script>
 const DATA = [
+{cat:"Morning",title:"Morning Routine: Woodland Drive",subs:[
+{h:"How to Use This Section",content:`<p>This is your start-of-day walkthrough for the <b>333 Woodland Drive</b> depot, in the order you actually do things: arrive → sort mail → parcels → Neighbourhood Mail → load vehicle → PDT → out the door. It follows the official <b>Inside Duties (Steps 1–28)</b> sequence from the Participant Guide (Appendices, pages 177–181).</p>
+<p><span class="depot-badge">STEP VAN · WAVE 2</span> Written for your <b>motorized</b> route. Foot-route differences are noted only where they matter.</p>
+<p>Two things to watch for as you read:</p>
+<div class="lcd lcd1"><span class="lcd-label">LCD 1 · High-rise / Downtown core</span><div>West End, Yaletown, Coal Harbour, Downtown business district. Apartment panels, concierge drops, corporate mailrooms, heavy parcel volume.</div></div>
+<div class="lcd lcd2"><span class="lcd-label">LCD 2 · Historic core / East Downtown</span><div>Gastown, Chinatown, DTES, Strathcona. Storefronts, SRO hotels, social housing, secure mail slots, community mailrooms. Street-level situational awareness matters.</div></div>
+<div class="warn">You haven't started at Woodland yet. Anything in an <span class="fillin">amber blank</span> is something to confirm on-site. Green <b>"Ask at the depot"</b> boxes list specific questions for your supervisor or an experienced carrier.</div>`},
+
+{h:"1. Arrive & Get Oriented",content:`<p>First thing on the floor: figure out your assignment and study your route before you touch any mail.</p>
+<ol class="steps">
+<li><b>Check the assignment board / whiteboard.</b> If you're newly assigned to a route, confirm your draw with the supervisor or the depot information board. <span class="fillin">Your route: ____ · Wave 2 start time: ____</span></li>
+<li><b>Find your route's A-62 sortation case</b> and review the <b>header board</b> first. It confirms relay box, SLB and CMB locations, required corporate keys, street distribution, and special instructions. (See the <i>Reading the Header Board</i> section.)</li>
+<li><b>Scope the route structure:</b> look for any Directs, Callers, and relay support. Review the AM and PM route map.</li>
+<li><b>Adjust the case</b> to your height for proper ergonomics, and flip the case strips to your route if required.</li>
+</ol>
+<div class="ask"><div class="ask-label">📋 Ask at the depot</div><ul>
+<li>Where is my assigned <b>supply area / draw area</b>, and where do I find the depot cart for my route?</li>
+<li>How is the floor laid out, and where do I draw mail, parcels, and NM? (The depot doc flags Woodland's layout as something to learn during walk-throughs.)</li>
+<li>What's my exact <b>Wave 2</b> departure time, and how much lead time do I realistically have?</li>
+<li>Anything special about this route I should know? (Guide Step 26 literally says to ask this.) Get the supervisors' names and the depot phone number(s).</li>
+</ul></div>`},
+
+{h:"2. Organize Your Mail (Sorting)",content:`<p>Pull your mail and sort it into the case. Load the depot cart <b>bottom to top</b>.</p>
+<ol class="steps">
+<li>Using a C-48 cart, retrieve your route's <b>(1) manual mail</b> and <b>(2) packets</b> from the depot cart at the end of the aisle. (Foot route also grabs sequenced mail here.)</li>
+<li><b>Redirection / Hold Mail case cards</b> (yellow sleeves): sort into the case if needed. Verify expiry dates; remove expired ones per local procedure.</li>
+<li><b>Sort manual Standard (STD) Lettermail</b> into the case.</li>
+<li><b>Sort all Oversized (OS) mail</b> into the case.</li>
+<li>Verify all packets and documents are for <b>YOUR</b> route. Do <b>not</b> card items in the depot unless they're Card-For-Pickup items.</li>
+<li>For any item too awkward to fit a separation, turn the last envelope for that POC backwards as a flag. Hint: write the tie-out number on the item.</li>
+</ol>
+<p>Detail on case work and sequencing is in the <i>Sorting &amp; Case Work</i> section.</p>
+<div class="lcd lcd1"><span class="lcd-label">LCD 1 · High-rise</span><div>High-rise routes carry a lot of <b>apartment-panel</b> mail. Expect heavy bundles per POC, so mind your tie-out so a single tower's mail stays together and in order.</div></div>
+<div class="lcd lcd2"><span class="lcd-label">LCD 2 · DTES / storefronts</span><div>Mixed delivery points: storefronts, SRO front desks, social-housing mailrooms. Watch for POCs that are businesses vs. residential within the same block.</div></div>`},
+
+{h:"3. Organize Your Parcels",content:`<p>Confirm your parcels, scan them, and get them ready to load in delivery sequence. <b>Always refer to the header board to determine the delivery sequence for each parcel.</b></p>
+<ol class="steps">
+<li><b>Itinerary / OFD confirmation:</b> verify and confirm the barcoded items on the PDT against the parcels in your possession. Download and confirm Customer Lists.</li>
+<li>If desired, <b>clear and rescan</b> all barcoded items Out For Delivery (OFD).</li>
+<li>Move manually sorted mail to the <b>Consolidation Area</b> with a C-48; transfer to your route's depot cart.</li>
+<li><b>Verify all parcels are for YOUR route.</b> Note any parcels for POCs that may need Hold Mail or Redirection.</li>
+<li>Confirm the parcels scanned to the PDT. (If you did a clear-and-rescan, scan all parcels OFD.)</li>
+</ol>
+<div class="lcd lcd1"><span class="lcd-label">LCD 1 · High-rise</span><div>Expect <b>high parcel volume</b>. Plan how you'll consolidate parcels by tower / concierge so you're not making repeat trips into the same building.</div></div>
+<div class="lcd lcd2"><span class="lcd-label">LCD 2 · DTES / SRO</span><div>Many parcels go to <b>SRO front desks or storefronts</b> rather than individual doors. Sequence them by building entrance.</div></div>
+<div class="ask"><div class="ask-label">📋 Ask at the depot</div><ul>
+<li>Where exactly is the <b>parcel staging area</b> and the Consolidation Area for my route?</li>
+<li>How are oversize / heavy parcels handled here, and is there separate staging?</li>
+<li>For high-rises with a concierge: do parcels get bulk-dropped at the desk, or door-by-door? Is there a building list?</li>
+</ul></div>`},
+
+{h:"4. Neighbourhood Mail (NM)",content:`<p>Get the right colour day's NM and prep it. Woodland uses an <b>Admail Control Board</b>; each mailing has a <b>Delivery Control Slip (DCS)</b>.</p>
+<ol class="steps">
+<li>Retrieve your route's NM for that day's designated delivery per the Admail Control Board and each mailing's DCS.</li>
+<li>Organize the NM storage area into the colour <b>splits</b> (pink, orange, blue). 3-day splits show by colour on the case strip and header board; 4-day splits are on the header board.</li>
+<li><b>Prepare NM:</b> 1–2 sets for central delivery → bundle into pure piles. 3+ sets → collate per POC and combine at tie-out, or sort individually into the case.</li>
+<li><b>Determine coverage</b> (which thirds you deliver today) and always deliver per the DCS: designated FSA(s), Houses, Apts., Businesses, Farms.</li>
+<li><b>Scan the DCS barcode:</b> BL = Blue, PI = Pink, OR = Orange. Delivering extra days requires supervisor approval (no overtime).</li>
+</ol>
+<p>More in the <i>Neighbourhood Mail</i> section.</p>
+<div class="lcd lcd1"><span class="lcd-label">LCD 1 · High-rise</span><div>For apartments/businesses, follow the DCS exactly. Some towers or commercial POCs may be flagged differently for NM.</div></div>
+<div class="ask"><div class="ask-label">📋 Ask at the depot</div><ul>
+<li>Where is the <b>NM bunker / Admail Control Board</b> for my route?</li>
+<li>What colour day is "today" for my route, and how do I read my split off the header board?</li>
+</ul></div>`},
+
+{h:"5. Tie Out & Revise the Case",content:`<p>Pull the mail from the case in delivery order and bundle it (tying out), then pull the items that don't go on the truck.</p>
+<ol class="steps">
+<li><b>Get enough LFTs</b> to tie out the route (motorized). Foot route: get and tag relay bags per the header board.</li>
+<li>Place an empty LFT on the case ledge. Follow the tie-out instructions and route sequence on the header board. Pull manual mail into manageable bundles, minding the <b>pink breaker bar</b> marks; wrap each with an elastic and place in the LFT.</li>
+<li><b>Park &amp; Loop</b> stops: lay bundles flat. <b>Stop &amp; Go</b>: bundles upright with packets/documents behind. Repeat until the LFT is full, then move it to the C-48, bottom shelf first.</li>
+<li><b>Revise the case.</b> Remove and set aside: Redirections (bundle with case card on top), Hold Mail (write Hold number on top piece), Callers, Directs, RTS/Undeliverable, Damaged. Place each in its designated area.</li>
+<li>Leave any missorts you spot in the proper separation (e.g. lower right). Update the route's <b>Edit Book</b> with any changes.</li>
+</ol>
+<div class="warn">Hint: number your bundles / LFTs with tie-out numbers. It keeps you organized when loading the vehicle.</div>`},
+
+{h:"6. Set Up & Load Your Vehicle",content:`<p>Grab your route kit, do your pre-trip, then load the Step Van in sequence.</p>
+<ol class="steps">
+<li><b>Retrieve and review the Route Kit.</b> Get: blank Items Delivered Bills (IDBs), vehicle logbook, keys and credit card, corporate keys (attach to yourself), enough route-specific Delivery Notice Cards, black pens.</li>
+<li><b>Check your PPE / personal gear:</b> dual satchel, sunglasses, sunscreen, water, bug spray, dog spray or horn, anti-slip devices, rain/snow gear.</li>
+<li>Take your depot cart to the vehicle. <b>Perform a pre-trip vehicle inspection (circle check)</b> before the shift. Enter mileage in the PDT (or logbook). Move the vehicle to the loading area.</li>
+<li><b>Fasten your seatbelt before starting the vehicle.</b> Remove your satchel while wearing a seatbelt. Use <b>three points of contact</b> entering and exiting.</li>
+</ol>
+<h4>Loading the Step Van (front → back, in line of travel)</h4>
+<ol class="steps">
+<li>Load shelf items <b>front to back</b>, first stops at the front near the bulkhead.</li>
+<li>Place <b>carded items behind the bulkhead</b> by call-for location.</li>
+<li>Large/heavy items on the floor, <b>sequenced toward the rear door.</b></li>
+<li>Empty SLB tubs (SO-95s) behind the bulkhead on the floor.</li>
+<li>At each stop, shift remaining packages forward an arm's length and check them as you go. Plan ahead.</li>
+<li>Keep the dolly / C-45 cart secured and within easy reach.</li>
+</ol>
+<div class="ask"><div class="ask-label">📋 Ask at the depot</div><ul>
+<li>Which <b>vehicle</b> is mine, where is it parked, and where's the loading area at Woodland?</li>
+<li>Walk me through the <b>pre-trip / circle check</b> for this Step Van the first time. What fails it?</li>
+<li>Where do I log mileage and pick up the vehicle keys, logbook, and credit card?</li>
+</ul></div>`},
+
+{h:"7. PDT Final Checks Before You Leave",content:`<p>Before pulling out, make sure the PDT has everything it needs for the day. (Full device walkthrough is in the <i>PDT Device</i> section.)</p>
+<ol class="steps">
+<li><b>Obtain the PDT, log in, and confirm battery charge.</b> Acknowledge any messages on first log-in.</li>
+<li><b>Download and verify Out for Delivery (OFD)</b> items. Confirm they match the parcels you loaded.</li>
+<li><b>Verify ALL pickups, CMBs and SLBs are downloaded</b> to the PDT. Check for any <b>On-Demand pickups</b> and pay attention to closing times.</li>
+<li>Ensure the PDT's <b>Jabber is connected</b> and the battery is adequate for the whole route.</li>
+<li>Check for any <b>RPO supplies</b> to be delivered. Enter vehicle mileage if you haven't.</li>
+</ol>
+<div class="ask"><div class="ask-label">📋 Ask at the depot</div><ul>
+<li>What's the normal <b>OFD download</b> flow here, and what do I do if a parcel won't confirm?</li>
+<li>How do I check for and accept <b>On-Demand pickups</b> on my route?</li>
+<li>Who do I call if the PDT won't log in or Jabber won't connect?</li>
+</ul></div>`},
+
+{h:"8. Prepare for Departure & Head Out",content:`<p>Final gate before the route. Once everything checks out, depart at your proper Wave 2 time.</p>
+<ol class="steps">
+<li><b>Ensure you have everything</b> before heading out: mail, parcels, NM, keys, PDT, route kit, PPE.</li>
+<li>Confirm supervisors' names and the depot phone number(s) are on you.</li>
+<li><b>Depart at the proper time</b> (your wave). Head <b>straight to the start of the route.</b></li>
+<li>On route: deliver to each POC safely, accurately, in sequence. Perform the <b>Delivery scan on the PDT only at the POC.</b> Deliver NM per the DCS even if there's no other mail for that POC. Never discard surplus NM on route.</li>
+</ol>
+<div class="danger">If your depot's process differs from the guide, follow the depot's process, but know the standard so you can tell the difference.</div>`},
+
+{h:"9. LCD 1: High-Rise, Mailrooms & Keys (skeleton)",content:`<div class="lcd lcd1"><span class="lcd-label">LCD 1 only · High-rise / Downtown</span><div>This is the workflow North Burnaby never gave you (your route there was all residential). Treat the steps below as a starting frame and fill it in once you've worked a tower.</div></div>
+<p><b>What the training already tells you about keys:</b></p>
+<ul>
+<li>Corporate keys must always be on a <b>CPC-issued key ring, key tag and lanyard</b>, and attached to you by a belt clip, belt loop, or parka D-ring.</li>
+<li><b>Never loan your keys</b> to a coworker. <b>Never leave keys in your vehicle</b>, even a locked trunk.</li>
+<li>If keys are lost/stolen, contact your team leader immediately. If someone approaches and demands your keys, stay calm and don't do anything that puts your safety at risk.</li>
+</ul>
+<p><b>The high-rise pieces to learn on-site</b> (not fully covered in your PDFs): <span class="fillin">apartment-panel master-key handling</span>, <span class="fillin">buzzer / concierge access</span>, <span class="fillin">corporate mailroom drops</span>, and <span class="fillin">how parcels are handed off in a tower</span>.</p>
+<div class="ask"><div class="ask-label">📋 Ask your supervisor / a senior high-rise carrier</div><ul>
+<li>For apartment panels: do I get a <b>master key</b> on my ring, or is it signed out daily? Which buildings need which key?</li>
+<li>How do I get into a building with a <b>buzzer / enterphone</b> when there's no concierge? Is there a standard suite/access code list?</li>
+<li>At buildings with a <b>concierge</b>: what gets handed to the desk vs. delivered to panels/doors? Any sign-in?</li>
+<li>How do <b>corporate / commercial mailroom</b> drops work? Do I sort into a wall of boxes, or hand a bundle to a mailroom clerk?</li>
+<li>What's the move for a <b>"DELIVER TO DOOR"</b> item in a high-rise? Buzz the suite, leave a card, or hand to concierge?</li>
+<li>Any towers with known <b>access quirks</b> (loading-dock entry, service elevator, restricted hours)?</li>
+</ul></div>`},
+
+{h:"10. LCD 2: Storefronts, SROs & Awareness (skeleton)",content:`<div class="lcd lcd2"><span class="lcd-label">LCD 2 only · DTES / Historic core</span><div>LCD 2 routes are street-level: storefronts, SRO hotels, social housing, community mailrooms, secure slots. The depot doc flags <b>situational awareness</b> as essential here. Frame below; fill in on-site.</div></div>
+<p><b>What the training already gives you on personal safety:</b></p>
+<ul>
+<li>If you ever feel your <b>personal safety is at risk</b>, don't proceed. Don't enter a space or approach a door that doesn't feel safe.</li>
+<li>Stay calm and avoid doing anything that escalates a situation. Keep the supervisors' names and the depot phone number(s) on you.</li>
+<li>Keep your keys and equipment secured to your person at all times (see LCD 1 key rules, they apply everywhere).</li>
+</ul>
+<p><b>The DTES / storefront pieces to learn on-site:</b> <span class="fillin">SRO front-desk delivery</span>, <span class="fillin">community mailroom / secure-slot procedure</span>, <span class="fillin">which buildings to enter vs. hand off at the door</span>, and <span class="fillin">local awareness norms for the route</span>.</p>
+<div class="ask"><div class="ask-label">📋 Ask your supervisor / a senior DTES carrier</div><ul>
+<li>For <b>SRO hotels</b>: do I deliver to a front desk / clerk, to individual room slots, or a community mailroom? Any buildings I should not enter alone?</li>
+<li>How do <b>secure mail slots</b> and <b>community mailrooms</b> work on this route? Keys, codes, or staff access?</li>
+<li>Which storefronts / social-housing sites have <b>specific delivery instructions</b> or contact people?</li>
+<li>What are the route's <b>situational-awareness norms</b>, such as areas, times, or buildings to be extra careful around, and what's the protocol if I don't feel safe?</li>
+<li>Who exactly do I call, and how fast is the response, if something goes wrong on route?</li>
+<li>Any buildings with <b>restricted hours</b> or where access depends on staff being present?</li>
+</ul></div>`},
+]},
 {cat:"OTJ Checklist",title:"OTJ Training Checklist",subs:[
 {h:"About This Checklist",content:`<p>This is the On-the-Job (OTJ) Training Session Checklist your peer mentor/coach will use to evaluate you. Tasks are marked <b>Observed</b> (you explained or demonstrated knowledge) or <b>Completed</b> (you performed it yourself). Tap any task to see the full procedure.</p>
 <p><span class="depot-badge">SEQUENCED DEPOT</span> Your depot is sequenced. Non-sequenced depot tasks are <span style="opacity:.4;text-decoration:line-through">crossed out</span> below.</p>
