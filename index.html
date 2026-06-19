@@ -104,12 +104,13 @@ mark{background:#fde68a;padding:0 2px;border-radius:2px}
 <script>
 const DATA = [
 {cat:"Morning",title:"Morning Routine: Woodland Drive",subs:[
-{h:"How to Use This Section",content:`<p>This is your start-of-day walkthrough for the <b>333 Woodland Drive</b> depot, in the order you actually do things: arrive → sort mail → parcels → Neighbourhood Mail → load vehicle → PDT → out the door. It follows the official <b>Inside Duties (Steps 1–28)</b> sequence from the Participant Guide (Appendices, pages 177–181).</p>
-<p><span class="depot-badge">STEP VAN · WAVE 2</span> Written for your <b>motorized</b> route. Foot-route differences are noted only where they matter.</p>
+{h:"How to Use This Section",content:`<p>This is your start-of-day walkthrough for the <b>333 Woodland Drive</b> depot, in the order you actually do things: arrive → confirm packets → parcels → Neighbourhood Mail → load vehicle → PDT → out the door.</p>
+<p><span class="depot-badge">STEP VAN · WAVE 2</span> <span class="depot-badge" style="background:#0891b2">SSD DEPOT</span> Written for your <b>motorized</b> route. Foot-route differences are noted only where they matter.</p>
+<div class="danger"><b>Your depot is SSD (Separate Sort from Delivery).</b> A <b>Router</b> sorts the manual mail during the day; you, the <b>Delivery Agent</b>, deliver mail that was already sorted the day before. <b>You do not case and tie out your own mail each morning.</b> Your morning is: collect pre-sorted packet containers, confirm/scan, load, and go. Steps below reflect this. (Source: Day 1 p.12, Day 3 p.81, Appendices "Delivery Agent's Tasks" p.199–202.)</div>
 <p>Two things to watch for as you read:</p>
 <div class="lcd lcd1"><span class="lcd-label">LCD 1 · High-rise / Downtown core</span><div>West End, Yaletown, Coal Harbour, Downtown business district. Apartment panels, concierge drops, corporate mailrooms, heavy parcel volume.</div></div>
 <div class="lcd lcd2"><span class="lcd-label">LCD 2 · Historic core / East Downtown</span><div>Gastown, Chinatown, DTES, Strathcona. Storefronts, SRO hotels, social housing, secure mail slots, community mailrooms. Street-level situational awareness matters.</div></div>
-<div class="warn">You haven't started at Woodland yet. Anything in an <span class="fillin">amber blank</span> is something to confirm on-site. Green <b>"Ask at the depot"</b> boxes list specific questions for your supervisor or an experienced carrier.</div>`},
+<div class="warn">You haven't started at Woodland yet. Anything in an <span class="fillin">amber blank</span> is something to confirm on-site. Green <b>"Ask at the depot"</b> boxes list specific questions for your supervisor or an experienced carrier. If you're ever assigned as a <b>Router</b>, see the separate <i>"If You're Called in as a Router"</i> card at the end.</div>`},
 
 {h:"1. Arrive & Get Oriented",content:`<p>First thing on the floor: figure out your assignment and study your route before you touch any mail.</p>
 <ol class="steps">
@@ -125,26 +126,37 @@ const DATA = [
 <li>Anything special about this route I should know? (Guide Step 26 literally says to ask this.) Get the supervisors' names and the depot phone number(s).</li>
 </ul></div>`},
 
-{h:"2. Organize Your Mail (Sorting)",content:`<p>Pull your mail and sort it into the case. Load the depot cart <b>bottom to top</b>.</p>
+{h:"2. Collect Your Mail at Packet Prep (SSD)",content:`<div class="danger">In SSD you do <b>not</b> sort manual mail or pull Hold/Redirection cards. The router did that yesterday. Your job is to collect the pre-sorted containers, confirm them, and sequence packets. (Source: Appendices "Delivery Agent's Tasks" p.199.)</div>
+<p>At the <b>DA Packet Prep area (C-52 workstation):</b></p>
 <ol class="steps">
-<li>Using a C-48 cart, retrieve your route's <b>(1) manual mail</b> and <b>(2) packets</b> from the depot cart at the end of the aisle. (Foot route also grabs sequenced mail here.)</li>
-<li><b>Redirection / Hold Mail case cards</b> (yellow sleeves): sort into the case if needed. Verify expiry dates; remove expired ones per local procedure.</li>
-<li><b>Sort manual Standard (STD) Lettermail</b> into the case.</li>
-<li><b>Sort all Oversized (OS) mail</b> into the case.</li>
-<li>Verify all packets and documents are for <b>YOUR</b> route. Do <b>not</b> card items in the depot unless they're Card-For-Pickup items.</li>
-<li>For any item too awkward to fit a separation, turn the last envelope for that POC backwards as a flag. Hint: write the tie-out number on the item.</li>
+<li>Go to the <b>Packet Prep area</b> and take the <b>C-48 cart</b>.</li>
+<li>Retrieve your <b>PDT</b> if you haven't already.</li>
+<li>Take the <b>route packet container</b> and place it on the C-48 cart.</li>
+<li>Place <b>two empty containers</b> next to the packets.</li>
+<li>Take the <b>third container</b> holding the manual mail tied out for <b>Stop &amp; Go</b>. If your route has no Stop &amp; Go, use an empty container instead (so you have 3 total).</li>
+<li>Collect any <b>other packets</b> that may have arrived, as required.</li>
+<li>Use the <b>count-and-confirm process</b> or <b>scan all items</b>.</li>
+<li><b>Park &amp; Loop packet</b> → sequence it in line of delivery into an empty container. <b>Stop &amp; Go packet</b> → place it behind the manual-mail tie-out container for Stop &amp; Go.</li>
+<li>Consult the <b>header board</b> from the mount-file organizer as needed.</li>
 </ol>
-<p>Detail on case work and sequencing is in the <i>Sorting &amp; Case Work</i> section.</p>
-<div class="lcd lcd1"><span class="lcd-label">LCD 1 · High-rise</span><div>High-rise routes carry a lot of <b>apartment-panel</b> mail. Expect heavy bundles per POC, so mind your tie-out so a single tower's mail stays together and in order.</div></div>
-<div class="lcd lcd2"><span class="lcd-label">LCD 2 · DTES / storefronts</span><div>Mixed delivery points: storefronts, SRO front desks, social-housing mailrooms. Watch for POCs that are businesses vs. residential within the same block.</div></div>`},
+<p><b>Redirection / Hold in SSD:</b> there's no casing of yellow-sleeve cards for you. Lists of <b>redirection and hold addresses</b> are kept in a <b>binder at the DA Packet Prep workstation</b>. Best-effort: pull those items and bring them to the designated area. Registered Mail redirect/hold is handled by the router.</p>
+<div class="warn"><b>Fallback, only if you're asked to sort/cover:</b> casing and tie-out are the <i>router's</i> job in SSD. If you ever have to do it, the full A-62 case-work, redirection/hold-card, and tie-out steps are in the <i>Sorting &amp; Case Work</i> and <i>Tying Out</i> sections, and summarized on the Router card at the end of this section.</div>
+<div class="lcd lcd1"><span class="lcd-label">LCD 1 · High-rise</span><div>High-rise routes generate a lot of <b>apartment-panel</b> mail and packets. Keep each tower's containers together and in sequence so a building isn't split across loads.</div></div>
+<div class="lcd lcd2"><span class="lcd-label">LCD 2 · DTES / storefronts</span><div>Mixed delivery points: storefronts, SRO front desks, social-housing mailrooms. Watch for POCs that are businesses vs. residential within the same block.</div></div>
+<div class="ask"><div class="ask-label">📋 Ask at the depot</div><ul>
+<li>Where is the <b>DA Packet Prep (C-52) workstation</b> and the route packet container for my route?</li>
+<li>Does my route have <b>Stop &amp; Go</b> stops, and how do I tell them apart from Park &amp; Loop here?</li>
+<li>Where's the <b>redirection / hold binder</b>, and what's the local best-effort process?</li>
+<li>Do we use <b>count-and-confirm</b> or full scan for packets on this route?</li>
+</ul></div>`},
 
 {h:"3. Organize Your Parcels",content:`<p>Confirm your parcels, scan them, and get them ready to load in delivery sequence. <b>Always refer to the header board to determine the delivery sequence for each parcel.</b></p>
 <ol class="steps">
 <li><b>Itinerary / OFD confirmation:</b> verify and confirm the barcoded items on the PDT against the parcels in your possession. Download and confirm Customer Lists.</li>
 <li>If desired, <b>clear and rescan</b> all barcoded items Out For Delivery (OFD).</li>
-<li>Move manually sorted mail to the <b>Consolidation Area</b> with a C-48; transfer to your route's depot cart.</li>
-<li><b>Verify all parcels are for YOUR route.</b> Note any parcels for POCs that may need Hold Mail or Redirection.</li>
+<li><b>Verify all parcels are for YOUR route.</b> Note any parcels for POCs that may need Hold Mail or Redirection (best-effort policy for packets/parcels in SSD).</li>
 <li>Confirm the parcels scanned to the PDT. (If you did a clear-and-rescan, scan all parcels OFD.)</li>
+<li><b>After confirming all packets (SSD):</b> with the C-48 cart, retrieve all containers of mail to be delivered, push to the <b>consolidation area</b>, and transfer them to your route's <b>depot cart (C-52)</b>. Return the C-48 to the Packet Prep area.</li>
 </ol>
 <div class="lcd lcd1"><span class="lcd-label">LCD 1 · High-rise</span><div>Expect <b>high parcel volume</b>. Plan how you'll consolidate parcels by tower / concierge so you're not making repeat trips into the same building.</div></div>
 <div class="lcd lcd2"><span class="lcd-label">LCD 2 · DTES / SRO</span><div>Many parcels go to <b>SRO front desks or storefronts</b> rather than individual doors. Sequence them by building entrance.</div></div>
@@ -154,9 +166,10 @@ const DATA = [
 <li>For high-rises with a concierge: do parcels get bulk-dropped at the desk, or door-by-door? Is there a building list?</li>
 </ul></div>`},
 
-{h:"4. Neighbourhood Mail (NM)",content:`<p>Get the right colour day's NM and prep it. Woodland uses an <b>Admail Control Board</b>; each mailing has a <b>Delivery Control Slip (DCS)</b>.</p>
+{h:"4. Neighbourhood Mail (NM)",content:`<p>Woodland uses an <b>Admail Control Board</b>; each mailing has a <b>Delivery Control Slip (DCS)</b>.</p>
+<div class="warn"><b>SSD timing:</b> in SSD, NM is largely <b>prepared at end of day</b> and staged in the A34/A65 NM bunker for <b>next-day delivery</b>. So in the morning you're mostly <b>collecting</b> the NM already staged for your route, not preparing it from scratch. The colour-day/DCS rules below still govern what you deliver on the street. (Source: Appendices "Delivery Agent's Tasks" p.201.)</div>
 <ol class="steps">
-<li>Retrieve your route's NM for that day's designated delivery per the Admail Control Board and each mailing's DCS.</li>
+<li>Collect your route's staged NM for that day's designated delivery per the Admail Control Board and each mailing's DCS.</li>
 <li>Organize the NM storage area into the colour <b>splits</b> (pink, orange, blue). 3-day splits show by colour on the case strip and header board; 4-day splits are on the header board.</li>
 <li><b>Prepare NM:</b> 1–2 sets for central delivery → bundle into pure piles. 3+ sets → collate per POC and combine at tie-out, or sort individually into the case.</li>
 <li><b>Determine coverage</b> (which thirds you deliver today) and always deliver per the DCS: designated FSA(s), Houses, Apts., Businesses, Farms.</li>
@@ -169,15 +182,19 @@ const DATA = [
 <li>What colour day is "today" for my route, and how do I read my split off the header board?</li>
 </ul></div>`},
 
-{h:"5. Tie Out & Revise the Case",content:`<p>Pull the mail from the case in delivery order and bundle it (tying out), then pull the items that don't go on the truck.</p>
-<ol class="steps">
-<li><b>Get enough LFTs</b> to tie out the route (motorized). Foot route: get and tag relay bags per the header board.</li>
-<li>Place an empty LFT on the case ledge. Follow the tie-out instructions and route sequence on the header board. Pull manual mail into manageable bundles, minding the <b>pink breaker bar</b> marks; wrap each with an elastic and place in the LFT.</li>
-<li><b>Park &amp; Loop</b> stops: lay bundles flat. <b>Stop &amp; Go</b>: bundles upright with packets/documents behind. Repeat until the LFT is full, then move it to the C-48, bottom shelf first.</li>
-<li><b>Revise the case.</b> Remove and set aside: Redirections (bundle with case card on top), Hold Mail (write Hold number on top piece), Callers, Directs, RTS/Undeliverable, Damaged. Place each in its designated area.</li>
-<li>Leave any missorts you spot in the proper separation (e.g. lower right). Update the route's <b>Edit Book</b> with any changes.</li>
-</ol>
-<div class="warn">Hint: number your bundles / LFTs with tie-out numbers. It keeps you organized when loading the vehicle.</div>`},
+{h:"5. Missorts, RTS & Undeliverables (SSD)",content:`<div class="danger"><b>You don't tie out the case in SSD.</b> The router pulled and tied out your mail yesterday. As a Delivery Agent you have <b>no Hold or Mail Forwarding case cards</b> (Day 3 p.81). The tie-out steps are kept lower down only as a fallback if you're asked to sort.</div>
+<p>What you <i>do</i> handle in the morning is anything that came to you wrong. Bring these to the designated area / <b>C-44 return cart</b>:</p>
+<table><tr><th>Issue</th><th>What it means</th><th>Where it goes</th></tr>
+<tr><td><b>Mis-sequence</b></td><td>Your route's mail, out of delivery order (or recurring bad sorts to your route)</td><td>Bundle → designated <b>C-44</b> container; flag recurring ones to supervisor</td></tr>
+<tr><td><b>Mis-sorted in depot</b></td><td>Correct depot, wrong route</td><td>C-44 container labelled <b>"In Station"</b></td></tr>
+<tr><td><b>Mis-sent out-of-depot</b></td><td>Wrong depot entirely</td><td>C-44 container labelled <b>"Out of Station"</b></td></tr>
+<tr><td><b>RTS / Undeliverable</b></td><td>Can't be delivered as addressed</td><td>Appropriate C-44 return container</td></tr>
+</table>
+<p>Update POC information using the <b>POCUR</b> application. Hand recurring and own-route mis-sequence mail to your supervisor for correction. (Source: Appendices "Delivery Agent's Tasks" p.202.)</p>
+<div class="warn"><b>Fallback tie-out, only if asked to sort/cover (router's job in SSD):</b><br>
+1. Get enough LFTs. Place an empty LFT on the case ledge, follow the header-board tie-out order, pull manual mail into bundles minding the <b>pink breaker bar</b>, elastic each, place in the LFT.<br>
+2. <b>Park &amp; Loop:</b> bundles flat. <b>Stop &amp; Go:</b> bundles upright with packets behind. Repeat, then move to the C-48 (bottom shelf first).<br>
+3. Hint: number bundles / LFTs with tie-out numbers. Full detail is on the <i>Router</i> card at the end and the <i>Tying Out</i> section.</div>`},
 
 {h:"6. Set Up & Load Your Vehicle",content:`<p>Grab your route kit, do your pre-trip, then load the Step Van in sequence.</p>
 <ol class="steps">
@@ -195,6 +212,7 @@ const DATA = [
 <li>At each stop, shift remaining packages forward an arm's length and check them as you go. Plan ahead.</li>
 <li>Keep the dolly / C-45 cart secured and within easy reach.</li>
 </ol>
+<div class="danger"><b>SSD loading rule:</b> place the LFT with your <b>Stop &amp; Go</b> single/multiple points of call in the <b>driver's compartment</b> (so it's right beside you for those quick stops). Put all other LFTs at the <b>back</b> of the vehicle with the rest of the mail. (Source: Appendices "Delivery Agent's Tasks" p.200.)</div>
 <div class="ask"><div class="ask-label">📋 Ask at the depot</div><ul>
 <li>Which <b>vehicle</b> is mine, where is it parked, and where's the loading area at Woodland?</li>
 <li>Walk me through the <b>pre-trip / circle check</b> for this Step Van the first time. What fails it?</li>
@@ -256,6 +274,36 @@ const DATA = [
 <li>What are the route's <b>situational-awareness norms</b>, such as areas, times, or buildings to be extra careful around, and what's the protocol if I don't feel safe?</li>
 <li>Who exactly do I call, and how fast is the response, if something goes wrong on route?</li>
 <li>Any buildings with <b>restricted hours</b> or where access depends on staff being present?</li>
+</ul></div>`},
+
+{h:"If You're Called in as a Router (SSD)",content:`<div class="lcd lcd2" style="border-left-color:#0891b2;background:#ecfeff"><span class="lcd-label" style="background:#0891b2">Different role · Router</span><div>This is a <b>separate job</b> from your delivery routine. A router sorts manual mail for <b>several routes</b> on one A-62 case during the day; that mail is delivered the <b>next day</b>. Any Delivery Agent can be asked to router. (Source: Appendices "Router's Tasks" p.193–196.)</div></div>
+<h4>Core duties (per route)</h4>
+<ol class="steps">
+<li>Take an <b>IDC of manual mail</b> from the staging area, read the routing card, bring it to the designated area.</li>
+<li><b>Distribute</b> the manual-mail containers to the DA Packet Prep &amp; staging workstation.</li>
+<li>Go to the <b>A-62 case</b> and get the C-48 cart. Pick up the mail of the route being sorted; transfer the LFTs onto the C-48. Return to the A-62. Use the <b>router poster</b> on the case side wing for sortation tips.</li>
+<li>If the case strips aren't for this route, swap or flip them. Put a container of manual mail on the case ledge and <b>sort into the A-62 separations.</b></li>
+</ol>
+<h4>Redirection / Hold (router's responsibility)</h4>
+<ul>
+<li>Routers verify redirection and hold requests for Lettermail, including <b>Registered Mail</b>.</li>
+<li>Addresses with an <b>active</b> request are marked with a <b>green translucid sticker</b> on the case strip (prepped by the restructure lead). For each green-sticker address: find the <b>yellow-sleeve case card</b>, check the expiry, tie out per the redirect/hold process, put Registered items on top, set aside for the designated area.</li>
+<li>If a request expires the next day: remove the green sticker + case card and tie out the mail to resume delivery. If a case card is missing, retrieve the <b>B-set</b> card from the second-set storage.</li>
+</ul>
+<h4>Tie-out & finish</h4>
+<ol class="steps">
+<li>On the header board, tie-out numbers <b>circled green = Park &amp; Loop</b>, <b>circled red = Stop &amp; Go.</b></li>
+<li><b>Park &amp; Loop:</b> bundles flat in containers, in delivery order. <b>Stop &amp; Go:</b> bundles vertical, in separate containers.</li>
+<li>Label bundles with stop + tie-out numbers. On each container, write the <b>route number and sequence order</b> on the back of the label.</li>
+<li>Place containers on the C-48. Bring all <b>unsorted</b> mail (mis-sorts, RTS, redirection, hold, Registered without a request) to the designated area. Bring the tie-out containers to the DA Packet Prep workstation.</li>
+<li>Leave <b>three empty containers</b> at the workstation; the rest go in the IDC for empties. Take the next route's mail and repeat. Stretch between routes.</li>
+</ol>
+<div class="warn"><b>Uncovered routes / returned POC:</b> obtain the previous day's manual + sequenced mail and the current day's manual mail, bring it all to the A-62, and sort as above. If the undelivered volume is excessive, sequenced mail can go back to the plant for re-processing.</div>
+<div class="ask"><div class="ask-label">📋 Ask before your first router shift</div><ul>
+<li>Which routes am I sorting, and where's the <b>router poster</b> / sortation reference for each?</li>
+<li>How does the <b>green-sticker</b> redirect/hold system work here, and where are the B-set case cards?</li>
+<li>Where do mis-sorts, RTS, redirection, hold, and Registered-without-request items go?</li>
+<li>What's the expectation on <b>volume / number of routes</b> per router shift?</li>
 </ul></div>`},
 ]},
 {cat:"OTJ Checklist",title:"OTJ Training Checklist",subs:[
