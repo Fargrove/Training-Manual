@@ -24,28 +24,32 @@ Personal on-the-job reference tool for a new Canada Post delivery employee (lett
 
 ---
 
-## SESSION HANDOFF [2026-06-19]:
+## SESSION HANDOFF [2026-06-19] (condensed):
+- Discovered actual assigned depot is **333 Woodland Drive** (LCD 1 high-rise / LCD 2 DTES), confirmed **SSD** (router sorts, delivery agent delivers next day, no self case/tie-out). Built the **"Morning Routine: Woodland Drive (SSD)"** section (first in `DATA`), grounded in Inside Duties Steps 1–28 + SSD job aids (Appendices p.193–202, Day 1 p.12, Day 3 p.81); DA packet-prep (C-52/C-48), C-44 missort/RTS + POCUR, Stop & Go LFT loading, separate Router card, generic SSD floor-map SVG.
+- Reusable depot CSS classes: `.lcd1` (blue), `.lcd2` (purple), `.ask` (green dashed supervisor Qs), `.fillin` (amber inline blank). LCD 1/LCD 2 delivery subs + floor map are intentional skeletons awaiting on-route detail.
+- App is **v3**, hosted at https://fargrove.github.io/Training-Manual/.
+
+---
+
+## SESSION HANDOFF [2026-07-01]:
 
 ### What happened
-- Discovered Michael's **actual assigned depot is 333 Woodland Drive** (LCD 1 / LCD 2), not the Burnaby depot he trained at. Burnaby was all-residential; Woodland is high-rise (LCD 1) and DTES/storefronts (LCD 2).
-- Confirmed mid-session that **LCD 1/LCD 2 are SSD depots** (Separate Sort from Delivery). This materially changed the work: in SSD a router sorts the mail, the delivery agent delivers it next day and does NOT case/tie out their own mail.
-- Built a new **"Morning Routine: Woodland Drive"** section (first in the `DATA` array), grounded in the official Inside Duties Steps 1–28 and SSD job aids (Appendices p.193–202, Day 1 p.12, Day 3 p.81). Written for Step Van / Wave 2 motorized.
-- Then **revised it to SSD**: rewrote the mail step to the DA packet-prep flow (C-52/C-48), replaced tie-out with C-44 missort/RTS handling + POCUR (tie-out kept as marked fallback), added SSD loading rule (Stop & Go LFT in driver's compartment), and added a separate **"If You're Called in as a Router"** card.
-- Added a **generic SSD floor-map diagram** (inline SVG) to section 1, numbered to the morning steps, clearly labelled as generic until the real Woodland floor is known.
-- New CSS classes for depot content: `.lcd1` (blue, high-rise), `.lcd2` (purple, DTES), `.ask` (green dashed, supervisor questions), `.fillin` (amber inline blank). Reuse these for future depot-specific content.
-- Verification approach that works here: extract the `DATA` literal and run it through `new Function(...)` in Node to confirm template literals parse; render via headless Chrome (`--remote-debugging-port=9222`) for visual checks; standalone-HTML render is the reliable way to screenshot a single SVG. Kept to the no-em-dash style rule throughout.
-- 3 commits pushed to `main`: `cdf0486` (Morning Routine), `74384f4` (SSD revision), `65a3bfc` (floor map).
+- New, separate deliverable: a **Claude Project setup kit** so Michael (a **relief carrier**, different route each day) can run per-route chats grounded in the raw training PDFs. This is conversational Q&A over the PDFs, complementary to the offline `index.html` lookup app.
+- Created 3 files in `External Documents/`:
+  - `CLAUDE-PROJECT-INSTRUCTIONS.md` — text to paste into the Project's custom-instructions box (role, the route-header protocol, answer-from-manuals-then-labelled-guess rule, cite sources, no em-dashes, SSD-vs-standard guardrail).
+  - `CLAUDE-PROJECT-SETUP.md` — human setup guide (create Project, upload the 9 PDFs + fact sheet, daily route-header routine, chat naming).
+  - `DEPOT-FACT-SHEET.md` — upload file capturing carrier/Woodland/SSD/LCD 1/LCD 2 context so every chat has it without re-typing.
+- Key design decisions (confirmed with Michael): **one Project, not one-per-depot** — a pasted route header handles the relief-carrier "different route daily" problem; instructions make Claude ask for the header if missing. **When manuals don't cover it:** answer from manuals first, then a clearly-labelled best guess + "confirm with trainer/supervisor." Did **not** upload `index.html` (200 KB markup = noise); folded its key facts into the fact sheet instead.
 
 ### Deliverable status
-- Reference app: **Done (v3)**, hosted at https://fargrove.github.io/Training-Manual/
-- Morning Routine section: **Done**, but LCD 1/LCD 2 delivery subs (9 & 10) and the floor map are intentional skeletons/generic, awaiting Michael's on-route experience.
+- Reference app: **Done (v3)**, hosted (unchanged this session).
+- Claude Project kit: **Done** (3 files written). **Not yet committed** — asked Michael if he wants them committed; awaiting answer. Michael still needs to create the Project on claude.ai and upload the files himself (can't be done from Claude Code).
 
 ### Open issues
-- Unconfirmed: whether ALL Woodland routes are SSD or it varies (written SSD-primary with caveat).
-- LCD 1/LCD 2 delivery workflows (high-rise master keys/mailrooms; SRO/community mailrooms/awareness) are skeletons with `.fillin` blanks + "Ask at the depot" boxes.
-- Floor-map diagram is generic SSD, not Woodland's actual layout.
+- Files in `External Documents/` are uncommitted pending Michael's go-ahead.
+- Still open from before: SSD-everywhere unconfirmed; LCD 1/LCD 2 delivery skeletons + generic floor map await on-route detail.
 
 ### Next 3 priorities
-1. Once Michael starts at Woodland: replace the LCD 1/LCD 2 skeleton blanks with the real procedures he learns on-route, and redraw the floor map to match the actual depot layout.
-2. Confirm the SSD-everywhere question and adjust the routine if some routes are non-SSD.
-3. Update the app based on what Michael actually needs to look up most often on the job (and revisit the "favourites/bookmark" idea).
+1. If Michael says yes, commit the 3 `External Documents/` files. Then he creates the Project on claude.ai and uploads the 9 PDFs + `DEPOT-FACT-SHEET.md` + `LCD 1 and LCD 2 Depots.md`.
+2. As Michael learns real Woodland specifics on-route, update `DEPOT-FACT-SHEET.md` (and re-upload to the Project) + fill the app's LCD 1/LCD 2 skeletons and redraw the floor map.
+3. Confirm the SSD-everywhere question and adjust both the app routine and the fact sheet if some routes are non-SSD.

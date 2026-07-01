@@ -107,6 +107,7 @@ Topics organized as:
 |---|-------------|--------|-------|--------|
 | 1 | Reference app | Single HTML file | Claude | Done (v3) |
 | 2 | Morning Routine section (Woodland Drive, SSD) | Section within app | Claude | Done (v1); LCD 1/LCD 2 delivery skeletons await on-site detail |
+| 3 | Claude Project setup kit (instructions + setup guide + depot fact sheet) | 3 `.md` files in `External Documents/` | Claude | Done; Michael to create the Project on claude.ai and upload the 9 PDFs + fact sheet |
 
 ### 8.1 Acceptance Criteria
 
